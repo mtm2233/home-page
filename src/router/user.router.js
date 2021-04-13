@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-10 23:50:09
- * @LastEditTime: 2021-04-13 22:58:22
+ * @LastEditTime: 2021-04-13 23:41:24
  * @LastEditors: mTm
  */
 const Router = require('koa-router');
@@ -11,8 +11,12 @@ const {
     list,
 } = require('../controller/user.controller')
 
+const {
+    limit
+} = require('../middleware/list.middleware')
+
 const userRouter = new Router({prefix: '/user'});
 
-userRouter.get('/list', list);
+userRouter.get('/list', limit, list);
 
 module.exports = userRouter;
