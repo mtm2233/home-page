@@ -2,10 +2,10 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-13 23:11:32
- * @LastEditTime: 2021-04-14 22:52:55
+ * @LastEditTime: 2021-04-14 23:14:19
  * @LastEditors: mTm
  */
-const connection = require('../app/database.js')
+const connection = require('../app/database')
 
 class UserService {
     async list(name, offset, size) {
