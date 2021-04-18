@@ -2,32 +2,32 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-17 11:40:11
- * @LastEditTime: 2021-04-17 13:00:50
+ * @LastEditTime: 2021-04-18 23:01:29
  * @LastEditors: mTm
  */
-const path = require('path')
-const fs = require('fs')
+import * as path from 'path';
+import * as fs from 'fs';
+import { BaseContext } from 'koa';
 
 const service = require('../service/file.service')
 
 class FileController {
-    async upload(ctx,next) {
+    async upload(ctx:any, next:Promise<any>) {
         let files = ctx.req.files;
-        console.log(files);
         if (ctx.user) {
-            files.map(file => ({
+            files.map((file:Object) => ({
                 ...file,
                 user_id: ctx.user.id
             }))
         }
-        const result = await Promise.all(files.map(file => service.fileCreate(file)))
+        const result = await Promise.all(files.map((file:Object) => service.fileCreate(file)))
         if (result) {
             ctx.body = {
                 message: '图片上传成功'
             }
         }
     }
-    async show(ctx,next) {
+    async show(ctx:any, next:Promise<any>) {
         const { filename } = ctx.request.params;
         const { type } = ctx.query;
 
@@ -60,4 +60,4 @@ class FileController {
     }
 }
 
-module.exports = new FileController();
+export default new FileController();

@@ -2,10 +2,10 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 13:02:11
- * @LastEditTime: 2021-04-14 23:13:29
+ * @LastEditTime: 2021-04-18 23:59:12
  * @LastEditors: mTm
  */
-const errorType = require('../constants/error-types')
+import * as errorType from '../constants/error-types';
 
 const failCodeMap = new Map([
     [errorType.SERVICE_ERROR, {
@@ -26,7 +26,7 @@ const failCodeMap = new Map([
     }],
 ]);
 
-const errorHandler = (error,ctx) => {
+const errorHandler = (error:Error | undefined,ctx:any) => {
     const message = error.message;
     const failCode = failCodeMap.get(message) || {
         message,

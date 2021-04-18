@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-17 12:31:18
- * @LastEditTime: 2021-04-17 13:03:44
+ * @LastEditTime: 2021-04-18 23:14:27
  * @LastEditors: mTm
  */
 const connection = require('../app/database')
@@ -16,7 +16,7 @@ class UserService {
         originalname,
         encoding,
         user_id = null,
-    }) {
+    }: any) {
         const statement = `
             INSERT INTO files (filename, mimetype, size, user_id, path, originalname, encoding) VALUES (?,?,?,?,?,?,?);
         `;
@@ -24,7 +24,7 @@ class UserService {
         return result;
     }
 
-    async getFileByFilename(filename) {
+    async getFileByFilename(filename: string) {
         const statement = `
             SELECT * FROM files WHERE filename = ?;
         `;
@@ -33,4 +33,4 @@ class UserService {
     }
 }
 
-module.exports = new UserService()
+export default new UserService();

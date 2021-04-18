@@ -2,20 +2,19 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-17 11:19:17
- * @LastEditTime: 2021-04-17 11:37:14
+ * @LastEditTime: 2021-04-18 23:11:15
  * @LastEditors: mTm
  */
-const path = require("path");
+import * as path from 'path';
 
-const Jimp = require('jimp')
-const mkdirsSync = require('../units/mkdirsSync')
+import * as Jimp from 'jimp';
+import * as Multer from 'koa-multer';
 
-const Multer = require("koa-multer");
-
-const { FILE_PATH } = require("../constants/file-path");
+import mkdirsSync from '../units/mkdirsSync';
+import { FILE_PATH } from '../constants/file-path';
 
 const articleFileStorage = Multer.diskStorage({
-    destination(req, file, cb) {
+    destination(req: any, file: any, cb: any) {
       const [y, m, d] = new Date(Number(new Date()) + (8 * 3600 * 1000))
         .toISOString()
         .replace(/T/g, ' ')
@@ -36,10 +35,10 @@ const articleFileStorage = Multer.diskStorage({
   
   const fileHandler = articleFileUpload.array('files')
   
-  const imagesResize = async (ctx,next) => {
+  const imagesResize = async (ctx: any, next: any) => {
     // 1.获取所有的图像信息
     let files = ctx.req.files;
-    files = files.filter(v => ['image/png', 'image/jpeg'].includes(v.mimetype))
+    files = files.filter((v: any) => ['image/png', 'image/jpeg'].includes(v.mimetype))
     
     // 2.对图像进行处理(sharp/jimp)
     for (let file of files) {
@@ -57,7 +56,8 @@ const articleFileStorage = Multer.diskStorage({
     await next();
   }
   
-  module.exports = {
-    fileHandler,
-    imagesResize,
-  };
+
+export {
+  fileHandler,
+  imagesResize,
+}

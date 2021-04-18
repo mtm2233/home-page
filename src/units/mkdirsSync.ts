@@ -2,13 +2,13 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-13 23:07:12
- * @LastEditTime: 2021-04-13 23:07:21
+ * @LastEditTime: 2021-04-18 23:14:43
  * @LastEditors: mTm
  */
-const fs = require("fs");
-const path = require("path");
+import * as fs from 'fs';
+import * as path from 'path';
 // 递归创建目录 同步方法
-function mkdirsSync(dirname) {
+function mkdirsSync(dirname: string): boolean {
   if (fs.existsSync(dirname)) {
     return true;
   } else {
@@ -19,4 +19,5 @@ function mkdirsSync(dirname) {
   }
 }
 
-module.exports = mkdirsSync;
+
+export default mkdirsSync;

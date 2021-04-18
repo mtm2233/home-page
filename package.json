@@ -5,15 +5,24 @@
   "main": "./src/main.js",
   "scripts": {
     "serve": "nodemon './src/main.js'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc && nodemon dist/main.js",
+    "tsc": "tsc --watch",
+    "dev-watch": "nodemon --watch src/**/* -e ts,tsx --exec ts-node ./src/main.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "koa": "^2.13.1"
+    "@types/koa": "^2.13.1",
+    "@types/koa-router": "^7.4.2",
+    "koa": "^2.13.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-multer": "^1.0.0",
     "dotenv": "^8.2.0",
     "jimp": "^0.16.1",
     "jsonwebtoken": "^8.5.1",

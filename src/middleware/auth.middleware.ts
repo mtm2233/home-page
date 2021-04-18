@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 22:38:58
- * @LastEditTime: 2021-04-14 23:12:32
+ * @LastEditTime: 2021-04-18 23:11:57
  * @LastEditors: mTm
  */
 const jwt = require('jsonwebtoken');
@@ -15,7 +15,7 @@ const {
 } = require('../constants/error-types')
 const authService = require('../service/auth.service')
 
-const verifyAuth = async (ctx, next) => {
+const verifyAuth = async (ctx: any, next: any) => {
     try {
         const token = ctx.headers?.authorization?.replace('Bearer ', '');
         const user = jwt.verify(token, PUBLIC_KEY, {
@@ -28,7 +28,7 @@ const verifyAuth = async (ctx, next) => {
     }
 }
 
-const verifyPermission = async (ctx, next) => {
+const verifyPermission = async (ctx: any, next: any) => {
     const params = ctx.request.params;
     const [key] = Object.keys(params);
     const tableName = key.replace('Id', '');
@@ -50,7 +50,7 @@ const verifyPermission = async (ctx, next) => {
     await next();
 }
 
-module.exports = {
+export {
     verifyAuth,
     verifyPermission
 }

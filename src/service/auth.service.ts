@@ -2,23 +2,23 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-02 17:06:10
- * @LastEditTime: 2021-04-14 23:14:12
+ * @LastEditTime: 2021-04-18 23:13:36
  * @LastEditors: mTm
  */
-const connection = require('../app/database')
+import connection from '../app/database';
 
 class AuthService {
-    async isExists(tableName, id) {
+    async isExists(tableName: string, id: number) {
         const statement = `SELECT * FROM ${tableName} WHERE id = ?;`;
         const [result] = await connection.execute(statement, [id]);
-        return result.length === 0 ? false : true;
+        return (result as []).length === 0 ? false : true;
     }
 
-    async authPermission(tableName, id, userId) {
+    async authPermission(tableName: string, id: number, userId: number) {
         const statement = `SELECT * FROM ${tableName} WHERE id = ? && user_id = ?;`;
         const [result] = await connection.execute(statement, [id, userId]);
-        return result.length === 0 ? false : true;
+        return (result as []).length === 0 ? false : true;
     }
 }
 
-module.exports = new AuthService();
+export default new AuthService();

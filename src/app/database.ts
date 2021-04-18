@@ -2,23 +2,24 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-13 23:08:16
- * @LastEditTime: 2021-04-14 23:11:33
+ * @LastEditTime: 2021-04-18 23:03:30
  * @LastEditors: mTm
  */
-const mysql = require('mysql2');
+import * as mysql from 'mysql2';
 
-const config = require('./config')
+import * as config from './config';
+// const config = require('./config')
 
 const connections = mysql.createPool({
     host: config.MYSQL_HOST,
-    port: config.MYSQL_PORT,
+    port: Number(config.MYSQL_PORT),
     database: config.MYSQL_DATABASE,
     user: config.MYSQL_USER,
     password: config.MYSQL_PASSWORD
 })
 
-connections.getConnection((err,conn) => {
-    conn.connect(err => {
+connections.getConnection((err:Error | undefined,conn:any) => {
+    conn.connect((err:Error | undefined) => {
         if(err) {
             console.log('数据库连接失败~', err);
         } else {
@@ -28,4 +29,4 @@ connections.getConnection((err,conn) => {
 })
 
 
-module.exports = connections.promise();
+export default connections.promise();

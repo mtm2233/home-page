@@ -2,13 +2,13 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-13 23:11:32
- * @LastEditTime: 2021-04-14 23:14:19
+ * @LastEditTime: 2021-04-18 23:04:34
  * @LastEditors: mTm
  */
-const connection = require('../app/database')
+import connection from '../app/database';
 
 class UserService {
-    async list(name, offset, size) {
+    async list(name: string, offset: string, size: string) {
         const statement = `
             SELECT * FROM coderhub.user WHERE username like '%${name}%' LIMIT ?, ?;
         `;
@@ -17,4 +17,4 @@ class UserService {
     }
 }
 
-module.exports = new UserService()
+export default new UserService();
