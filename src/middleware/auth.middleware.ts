@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 22:38:58
- * @LastEditTime: 2021-04-19 12:09:14
+ * @LastEditTime: 2021-04-20 00:10:38
  * @LastEditors: mTm
  */
 import * as jwt from 'jsonwebtoken';
@@ -31,25 +31,29 @@ const verifyAuth = async (ctx: Context, next: () => Promise<any>) => {
 }
 
 const verifyPermission = async (ctx: VerifyPermissionCtx, next: () => Promise<any>) => {
-    const params = ctx.request.params;
-    const [key] = Object.keys(params);
-    const tableName = key.replace('Id', '');
-    const id = params[key];
-    const userId = ctx.user.id;
+    try {
+        const params = ctx.request.params;
+        const [key] = Object.keys(params);
+        const tableName = key.replace('Id', '');
+        const id = params[key];
+        const userId = ctx.user.id;
 
-    const isExistsResult = await authService.isExists(tableName, id);
-    if (!isExistsResult) {
-        ctx.app.emit('error', new Error(CONTENT_DOES_NOT_EXISTS), ctx);
-        return false;
-    }
-    
-    const result = await authService.authPermission(tableName, id, userId);
-    if (!result) {
-        ctx.app.emit('error', new Error(UN_AUTH_PERMISSION), ctx);
-        return false;
-    }
+        const isExistsResult = await authService.isExists(tableName, id);
+        if (!isExistsResult) {
+            ctx.app.emit('error', new Error(CONTENT_DOES_NOT_EXISTS), ctx);
+            return false;
+        }
+        
+        const result = await authService.authPermission(tableName, id, userId);
+        if (!result) {
+            ctx.app.emit('error', new Error(UN_AUTH_PERMISSION), ctx);
+            return false;
+        }
 
-    await next();
+        await next();
+    } catch (error) {
+        ctx.app.emit('error', error, ctx);
+    }
 }
 
 export {

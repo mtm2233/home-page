@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-17 11:19:17
- * @LastEditTime: 2021-04-19 12:47:13
+ * @LastEditTime: 2021-04-20 00:11:25
  * @LastEditors: mTm
  */
 import * as path from 'path';
@@ -38,29 +38,32 @@ const articleFileStorage = Multer.diskStorage({
   const fileHandler = articleFileUpload.array('files')
   
   const imagesResize = async (ctx: FileCtx, next: () => Promise<any>) => {
-    // 1.获取所有的图像信息
-    let files = ctx.req.files;
-    if (!(Array.isArray(files))) {
-      const error = new Error(File_IS_NOT_ARRAY)
-      ctx.app.emit('error', error);
-      return false
-    }
-    files = files.filter((v: any) => ['image/png', 'image/jpeg'].includes(v.mimetype))
+    try {
+      // 1.获取所有的图像信息
+      let files = ctx.req.files;
+      if (!(Array.isArray(files))) {
+        const error = new Error(File_IS_NOT_ARRAY)
+        ctx.app.emit('error', error, ctx);
+        return false
+      }
+      files = files.filter((v: any) => ['image/png', 'image/jpeg'].includes(v.mimetype))
+      
+      // 2.对图像进行处理(sharp/jimp)
+      for (let file of files) {
+        const extname = path.extname(file.filename)
+        const destPath = path.join(file.destination, file.filename).replace(extname, '');
     
-    // 2.对图像进行处理(sharp/jimp)
-    for (let file of files) {
-      const extname = path.extname(file.filename)
-      const destPath = path.join(file.destination, file.filename).replace(extname, '');
-  
-      Jimp.read(file.path).then(image => {
-        image.resize(1280, Jimp.AUTO).write(`${destPath}-large${extname}`);
-        image.resize(640, Jimp.AUTO).write(`${destPath}-middle${extname}`);
-        image.resize(320, Jimp.AUTO).write(`${destPath}-small${extname}`);
-      });
+        Jimp.read(file.path).then(image => {
+          image.resize(1280, Jimp.AUTO).write(`${destPath}-large${extname}`);
+          image.resize(640, Jimp.AUTO).write(`${destPath}-middle${extname}`);
+          image.resize(320, Jimp.AUTO).write(`${destPath}-small${extname}`);
+        });
+      }
+    
+      await next();
+    } catch (error) {
+      ctx.app.emit('error', error, ctx);
     }
-  
-  
-    await next();
   }
   
 
