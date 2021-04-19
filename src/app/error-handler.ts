@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 13:02:11
- * @LastEditTime: 2021-04-19 12:47:50
+ * @LastEditTime: 2021-04-19 15:04:29
  * @LastEditors: mTm
  */
 import * as errorType from '../constants/error-types';
