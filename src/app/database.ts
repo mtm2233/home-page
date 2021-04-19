@@ -2,13 +2,13 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-13 23:08:16
- * @LastEditTime: 2021-04-18 23:03:30
+ * @LastEditTime: 2021-04-19 12:01:14
  * @LastEditors: mTm
  */
 import * as mysql from 'mysql2';
+import { PoolConnection } from 'mysql2'
 
 import * as config from './config';
-// const config = require('./config')
 
 const connections = mysql.createPool({
     host: config.MYSQL_HOST,
@@ -18,8 +18,8 @@ const connections = mysql.createPool({
     password: config.MYSQL_PASSWORD
 })
 
-connections.getConnection((err:Error | undefined,conn:any) => {
-    conn.connect((err:Error | undefined) => {
+connections.getConnection((err: Error, conn: PoolConnection) => {
+    conn.connect((err: Error) => {
         if(err) {
             console.log('数据库连接失败~', err);
         } else {

@@ -2,16 +2,18 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-13 22:55:27
- * @LastEditTime: 2021-04-18 23:49:50
+ * @LastEditTime: 2021-04-19 11:58:19
  * @LastEditors: mTm
  */
-import { BaseContext } from 'koa';
+import { Context } from 'koa';
 import service from '../service/user.service';
-class UserController {
-    async list(ctx: any, next: Promise<any>) {
+
+import { ControllerUser } from '../interface/class/user.interface.class'
+class UserController implements ControllerUser {
+    async list(ctx: Context, next: () => Promise<any>) {
         const { name = '', offset, size } = ctx.query;
         try {
-            const result = await service.list(name, offset, size);
+            const result = await service.list(name as string, offset as string, size as string);
             ctx.body = {
                 message: '获取用户列表成功',
                 data: result,

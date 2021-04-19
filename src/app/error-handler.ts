@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 13:02:11
- * @LastEditTime: 2021-04-18 23:59:12
+ * @LastEditTime: 2021-04-19 12:47:50
  * @LastEditors: mTm
  */
 import * as errorType from '../constants/error-types';
+import { Context } from 'koa'
 
 const failCodeMap = new Map([
     [errorType.SERVICE_ERROR, {
@@ -24,9 +25,13 @@ const failCodeMap = new Map([
         message: '内容不存在',
         status: 410,
     }],
+    [errorType.File_IS_NOT_ARRAY, {
+        message: '文件读取失败',
+        status: 500,
+    }]
 ]);
 
-const errorHandler = (error:Error | undefined,ctx:any) => {
+const errorHandler = (error:Error, ctx: Context) => {
     const message = error.message;
     const failCode = failCodeMap.get(message) || {
         message,

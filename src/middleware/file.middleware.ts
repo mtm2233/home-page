@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-17 11:19:17
- * @LastEditTime: 2021-04-18 23:11:15
+ * @LastEditTime: 2021-04-19 12:47:13
  * @LastEditors: mTm
  */
 import * as path from 'path';
@@ -10,8 +10,10 @@ import * as path from 'path';
 import * as Jimp from 'jimp';
 import * as Multer from 'koa-multer';
 
+import { FileCtx } from '../interface/file.interface'
 import mkdirsSync from '../units/mkdirsSync';
 import { FILE_PATH } from '../constants/file-path';
+import { File_IS_NOT_ARRAY } from '../constants/error-types'
 
 const articleFileStorage = Multer.diskStorage({
     destination(req: any, file: any, cb: any) {
@@ -35,9 +37,14 @@ const articleFileStorage = Multer.diskStorage({
   
   const fileHandler = articleFileUpload.array('files')
   
-  const imagesResize = async (ctx: any, next: any) => {
+  const imagesResize = async (ctx: FileCtx, next: () => Promise<any>) => {
     // 1.获取所有的图像信息
     let files = ctx.req.files;
+    if (!(Array.isArray(files))) {
+      const error = new Error(File_IS_NOT_ARRAY)
+      ctx.app.emit('error', error);
+      return false
+    }
     files = files.filter((v: any) => ['image/png', 'image/jpeg'].includes(v.mimetype))
     
     // 2.对图像进行处理(sharp/jimp)

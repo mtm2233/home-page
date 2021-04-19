@@ -2,20 +2,22 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 22:38:58
- * @LastEditTime: 2021-04-18 23:11:57
+ * @LastEditTime: 2021-04-19 12:09:14
  * @LastEditors: mTm
  */
-const jwt = require('jsonwebtoken');
+import * as jwt from 'jsonwebtoken';
+import { Context } from 'koa'
+import { VerifyPermissionCtx } from '../interface/auth.interface'
 
-const { PUBLIC_KEY } = require('../app/config')
-const { 
+import { PUBLIC_KEY } from '../app/config'
+import { 
     UN_AUTH_ORIZATION,
     CONTENT_DOES_NOT_EXISTS,
-    UN_AUTH_PERMISSION
-} = require('../constants/error-types')
-const authService = require('../service/auth.service')
+    UN_AUTH_PERMISSION 
+} from '../constants/error-types'
+import authService from '../service/auth.service'
 
-const verifyAuth = async (ctx: any, next: any) => {
+const verifyAuth = async (ctx: Context, next: () => Promise<any>) => {
     try {
         const token = ctx.headers?.authorization?.replace('Bearer ', '');
         const user = jwt.verify(token, PUBLIC_KEY, {
@@ -28,7 +30,7 @@ const verifyAuth = async (ctx: any, next: any) => {
     }
 }
 
-const verifyPermission = async (ctx: any, next: any) => {
+const verifyPermission = async (ctx: VerifyPermissionCtx, next: () => Promise<any>) => {
     const params = ctx.request.params;
     const [key] = Object.keys(params);
     const tableName = key.replace('Id', '');

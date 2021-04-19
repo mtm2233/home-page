@@ -2,36 +2,45 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-17 11:40:11
- * @LastEditTime: 2021-04-18 23:01:29
+ * @LastEditTime: 2021-04-19 13:00:20
  * @LastEditors: mTm
  */
 import * as path from 'path';
 import * as fs from 'fs';
-import { BaseContext } from 'koa';
+import { File as F } from 'koa-multer'
+import { Context } from 'koa'
+import { ControllerFile } from '../interface/class/file.interface.class'
+import { FileCtx, ShowCtx, File } from '../interface/file.interface'
 
-const service = require('../service/file.service')
+import service from '../service/file.service';
 
-class FileController {
-    async upload(ctx:any, next:Promise<any>) {
+class FileController implements ControllerFile {
+    async upload(ctx: FileCtx, next: () => Promise<any>) {
         let files = ctx.req.files;
+        if (!(Array.isArray(files))) {
+            ctx.body = {
+                message: '图片读取失败'
+            }
+            return false;
+        }
         if (ctx.user) {
-            files.map((file:Object) => ({
+            files = files.map((file: F) => ({
                 ...file,
                 user_id: ctx.user.id
             }))
-        }
-        const result = await Promise.all(files.map((file:Object) => service.fileCreate(file)))
-        if (result) {
-            ctx.body = {
-                message: '图片上传成功'
+            const result = await Promise.all(files.map((file: File) => service.fileCreate(file)))
+            if (result) {
+                ctx.body = {
+                    message: '图片上传成功'
+                }
             }
         }
     }
-    async show(ctx:any, next:Promise<any>) {
-        const { filename } = ctx.request.params;
+    async show(ctx: Context, next: () => Promise<any>) {
+        const { filename } = (ctx as ShowCtx).request.params;
         const { type } = ctx.query;
 
-        const fileInfo = await service.getFileByFilename(filename);
+        const fileInfo: any = await service.getFileByFilename(filename);
         if (!fileInfo) {
             ctx.body = {
                 message: '文件不存在'
