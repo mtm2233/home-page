@@ -2,7 +2,7 @@
  * @Description: 自动化添加路由
  * @Author: mTm
  * @Date: 2021-04-10 23:55:38
- * @LastEditTime: 2021-04-18 23:42:29
+ * @LastEditTime: 2021-04-21 16:51:37
  * @LastEditors: mTm
  */
 import * as fs from 'fs';

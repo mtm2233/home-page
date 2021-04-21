@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 13:02:11
- * @LastEditTime: 2021-04-19 15:04:29
+ * @LastEditTime: 2021-04-21 17:31:10
  * @LastEditors: mTm
  */
 import * as errorType from '../constants/error-types';
@@ -28,7 +28,7 @@ const failCodeMap = new Map([
     [errorType.File_IS_NOT_ARRAY, {
         message: '文件读取失败',
         status: 500,
-    }]
+    }],
 ]);
 
 const errorHandler = (error:Error, ctx: Context) => {
