@@ -11,13 +11,16 @@ import { TypeAdd } from '../type.interface'
 interface ControllerType {
     create(ctx: Context, next: () => Promise<any>):Promise<any>;
     list(ctx: Context, next: () => Promise<any>):Promise<any>;
-    // detail(ctx: Context, next: () => Promise<any>):Promise<any>;
+    detail(ctx: Context, next: () => Promise<any>):Promise<any>;
+    update(ctx: Context, next: () => Promise<any>):Promise<any>;
 }
 
 interface ServiceType {
-    create(params: TypeAdd):Promise<any>;
+    create(data: TypeAdd):Promise<any>;
     list(pid: number | null):Promise<any>;
     detail(id: number):Promise<any>;
+    update(typeId: number, data: TypeAdd):Promise<any>;
+    updateVal(key: string, val: any, typeId: number):Promise<any>;
 }
 
 export {

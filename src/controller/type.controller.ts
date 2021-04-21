@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:39:18
- * @LastEditTime: 2021-04-21 22:41:17
+ * @LastEditTime: 2021-04-21 23:17:09
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -52,8 +52,8 @@ class TypeController implements ControllerType {
 
     async detail(ctx: Context, next: () => Promise<any>) {
         try {
-            const { id } = ctx.params;
-            const result = await service.detail(id);
+            const { typeId } = ctx.params;
+            const result = await service.detail(typeId);
             if (result) {
                 ctx.body = {
                     data: result,
@@ -61,6 +61,21 @@ class TypeController implements ControllerType {
                 }
             } else {
                 ctx.app.emit('error', new Error(CONTENT_DOES_NOT_EXISTS), ctx);
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
+    async update(ctx: Context, next: () => Promise<any>) {
+        try {
+            const { typeId } = ctx.params;
+            await service.update(typeId, {
+                ...ctx.request.body,
+                user_id: ctx.user.id
+            })
+            ctx.body = {
+                message: '修改成功'
             }
         } catch (error) {
             ctx.app.emit('error', error, ctx);
