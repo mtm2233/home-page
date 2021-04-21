@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-04-21 21:41:24
+ * @LastEditTime: 2021-04-21 22:31:21
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -31,6 +31,21 @@ class TypeService implements ServiceType {
         `
 
         const [result] = await connection.execute(statement, [name, user_id, description, sort, pid]);
+
+        return result;
+    }
+
+    async list (pid: number | null) {
+        let statement = `
+            SELECT id, name, description FROM type WHERE pid = ? ORDER BY sort ASC, createAt ASC;
+        `
+        if (!pid) {
+            statement = `
+            SELECT id, name, description FROM type WHERE pid IS NULL ORDER BY sort ASC, createAt ASC;
+            `
+        }
+
+        const [result] = await connection.execute(statement, [pid]);
 
         return result;
     }

@@ -2,12 +2,11 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 22:38:58
- * @LastEditTime: 2021-04-20 00:10:38
+ * @LastEditTime: 2021-04-21 22:35:45
  * @LastEditors: mTm
  */
 import * as jwt from 'jsonwebtoken';
 import { Context } from 'koa'
-import { VerifyPermissionCtx } from '../interface/auth.interface'
 
 import { PUBLIC_KEY } from '../app/config'
 import { 
@@ -30,9 +29,9 @@ const verifyAuth = async (ctx: Context, next: () => Promise<any>) => {
     }
 }
 
-const verifyPermission = async (ctx: VerifyPermissionCtx, next: () => Promise<any>) => {
+const verifyPermission = async (ctx: Context, next: () => Promise<any>) => {
     try {
-        const params = ctx.request.params;
+        const params = ctx.params;
         const [key] = Object.keys(params);
         const tableName = key.replace('Id', '');
         const id = params[key];
