@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 13:02:11
- * @LastEditTime: 2021-04-21 17:31:10
+ * @LastEditTime: 2021-04-21 21:38:19
  * @LastEditors: mTm
  */
 import * as errorType from '../constants/error-types';
@@ -29,6 +29,14 @@ const failCodeMap = new Map([
         message: '文件读取失败',
         status: 500,
     }],
+    [errorType.MISSING_PARAMETER, {
+        message: '缺少参数',
+        status: 415,
+    }],
+    [errorType.ERROR_PARAMETER, {
+        message: '参数错误',
+        status: 400,
+    }]
 ]);
 
 const errorHandler = (error:Error, ctx: Context) => {

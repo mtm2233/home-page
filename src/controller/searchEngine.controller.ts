@@ -2,11 +2,11 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 16:42:05
- * @LastEditTime: 2021-04-21 17:30:51
+ * @LastEditTime: 2021-04-21 21:31:46
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
-import { ControllerSearchEngine } from '../interface/class/searchEngine.interface'
+import { ControllerSearchEngine } from '../interface/class/searchEngine.interface.class'
 
 import service from '../service/searchEngine.service'
 
@@ -29,9 +29,9 @@ class SearchEngineController implements ControllerSearchEngine {
         try {
             const { id } = ctx.params;
             const result = await service.detail(id);
-            if (Array.isArray(result) && result.length) {
+            if (result) {
                 ctx.body = {
-                    data: result.pop(),
+                    data: result,
                     message: '获取搜索引擎信息成功'
                 }
             } else {
