@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:22:15
- * @LastEditTime: 2021-04-22 13:03:40
+ * @LastEditTime: 2021-04-22 15:05:15
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -35,7 +35,6 @@ class WebsiteController implements ControllerWebsite {
 
     async list(ctx: Context, next: () => Promise<any>) {
         try {
-            
             const { name = '', url = '', offset, size } = (ctx.query as any);
             const data = await service.list({
                 name,
@@ -78,6 +77,21 @@ class WebsiteController implements ControllerWebsite {
             ctx.body = {
                 data,
                 message: '获取网址详情成功'
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
+    async update(ctx: Context, next: () => Promise<any>) {
+        try {
+            const { websiteId } = ctx.params;
+            await service.update(websiteId, {
+                ...ctx.request.body,
+                user_id: ctx.user.id
+            })
+            ctx.body = {
+                message: '网址编辑成功'
             }
         } catch (error) {
             ctx.app.emit('error', error, ctx);

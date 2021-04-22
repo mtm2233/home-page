@@ -6,18 +6,20 @@
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
-import { WebsiteAdd, WebsiteList } from '../website.interface'
+import { WebsiteAdd, WebsiteList, WebsiteUpdate } from '../website.interface'
 
 interface ControllerWebsite {
     create(ctx: Context, next: () => Promise<any>):Promise<any>;
     list(ctx: Context, next: () => Promise<any>):Promise<any>;
     detail(ctx: Context, next: () => Promise<any>):Promise<any>;
+    update(ctx: Context, next: () => Promise<any>):Promise<any>;
 }
 
 interface ServiceWebsite {
     create(data: WebsiteAdd):Promise<any>;
     list(params: WebsiteList):Promise<any>;
     detail(websiteId: number):Promise<any>;
+    update(websiteId: number, data: WebsiteUpdate):Promise<any>;
 }
 
 export {

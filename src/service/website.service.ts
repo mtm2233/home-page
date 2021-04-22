@@ -2,12 +2,12 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-04-22 13:01:40
+ * @LastEditTime: 2021-04-22 15:06:25
  * @LastEditors: mTm
  */
 import connection from '../app/database'
 import { ServiceWebsite } from '../interface/class/website.interface.class'
-import { WebsiteAdd, WebsiteList } from '../interface/website.interface'
+import { WebsiteAdd, WebsiteList, WebsiteUpdate } from '../interface/website.interface'
 
 class WebsiteService implements ServiceWebsite {
     async create(data: WebsiteAdd) {
@@ -89,6 +89,26 @@ class WebsiteService implements ServiceWebsite {
         return Array.isArray(result) ? result[0] : {
             count: 0
         }
+    }
+    async update(websiteId: number, data: WebsiteUpdate) {
+        const keys = ['name', 'url', 'icon', 'description', 'user_id', 'type_id', 'sort']
+
+        const promiseList = Object.entries(data)
+            .filter(([k]) => keys.includes(k))
+            .map(([k, v]) => this.updateVal(k, v, websiteId));
+        const result = await Promise.all(promiseList)
+
+        return result;
+    }
+
+    async updateVal(key: string, val: any, websiteId: number) {
+        const statement = `
+            UPDATE website SET ${key} = ? WHERE id = ?;
+        `
+        
+        const [result] = await connection.execute(statement, [val, websiteId]);
+
+        return result;
     }
 }
 
