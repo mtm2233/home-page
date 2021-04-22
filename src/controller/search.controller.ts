@@ -6,13 +6,13 @@
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
-import { ControllerSearchEngine } from '../interface/class/searchEngine.interface.class'
+import { ControllerSearch } from '../interface/class/search.interface.class'
 
-import service from '../service/searchEngine.service'
+import service from '../service/search.service'
 
 import { CONTENT_DOES_NOT_EXISTS } from '../constants/error-types'
 
-class SearchEngineController implements ControllerSearchEngine {
+class SearchController implements ControllerSearch {
     async list(ctx: Context, next: () => Promise<any>) {
         try {
             const result = await service.list();
@@ -43,4 +43,4 @@ class SearchEngineController implements ControllerSearchEngine {
     }
 }
 
-export default new SearchEngineController()
+export default new SearchController()

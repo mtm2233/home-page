@@ -7,17 +7,17 @@
  */
 import { Context } from 'koa'
 
-interface ControllerSearchEngine {
+interface ControllerSearch {
     list(ctx: Context, next: () => Promise<any>): Promise<any>;
     detail(ctx: Context, next: () => Promise<any>): Promise<any>;
 }
 
-interface ServiceSearchEngine {
+interface ServiceSearch {
     list(): Promise<any>;
     detail(id: number): Promise<any>;
 }
 
 export {
-    ControllerSearchEngine,
-    ServiceSearchEngine
+    ControllerSearch,
+    ServiceSearch
 }

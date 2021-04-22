@@ -7,12 +7,12 @@
  */
 import connection from '../app/database'
 
-import { ServiceSearchEngine } from '../interface/class/searchEngine.interface.class'
+import { ServiceSearch } from '../interface/class/search.interface.class'
 
-class SearchEngineService implements ServiceSearchEngine {
+class SearchService implements ServiceSearch {
     async list() {
         const statement = `
-            SELECT id, name, website, search_key, icon, description, extra_key FROM search_engine WHERE is_show = '1';
+            SELECT id, name, website, search_key, icon, description, extra_key FROM search WHERE is_show = '1';
         `;
 
         const [result] = await connection.execute(statement);
@@ -22,7 +22,7 @@ class SearchEngineService implements ServiceSearchEngine {
 
     async detail(id: number) {
         const statement = `
-            SELECT * FROM search_engine WHERE is_show = '1' && id = ?;
+            SELECT * FROM search WHERE is_show = '1' && id = ?;
         `;
 
         const [result] = await connection.execute(statement, [id]);
@@ -35,4 +35,4 @@ class SearchEngineService implements ServiceSearchEngine {
     }
 }
 
-export default new SearchEngineService()
+export default new SearchService()
