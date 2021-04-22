@@ -2,12 +2,14 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 15:27:03
- * @LastEditTime: 2021-04-22 16:11:04
+ * @LastEditTime: 2021-04-22 16:16:55
  * @LastEditors: mTm
  */
 import connection from '../app/database'
 
-class UserTypeService {
+import { ServiceUserType } from '../interface/class/user-type.interface.class'
+
+class UserTypeService implements ServiceUserType {
     async update(userId: number, typeIds: number[]) {
         await this.remove(userId);
         const promiseList = typeIds.map(typeId => this.create(userId, typeId))

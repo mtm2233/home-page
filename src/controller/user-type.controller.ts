@@ -2,16 +2,17 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 15:15:05
- * @LastEditTime: 2021-04-22 15:52:28
+ * @LastEditTime: 2021-04-22 16:16:30
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
+import { ControllerUserType } from '../interface/class/user-type.interface.class'
 
 import service from '../service/user-type.service'
 
 import { MISSING_PARAMETER } from '../constants/error-types'
 
-class UserTypeController {
+class UserTypeController implements ControllerUserType {
     async list(ctx: Context, next: () => Promise<any>) {
         try {
             const { id } = ctx.user;
