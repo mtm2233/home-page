@@ -2,18 +2,22 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:24:37
- * @LastEditTime: 2021-04-22 10:24:38
+ * @LastEditTime: 2021-04-22 11:04:57
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
-import { WebsiteAdd } from '../website.interface'
+import { WebsiteAdd, WebsiteList } from '../website.interface'
 
 interface ControllerWebsite {
     create(ctx: Context, next: () => Promise<any>):Promise<any>;
+    list(ctx: Context, next: () => Promise<any>):Promise<any>;
+    detail(ctx: Context, next: () => Promise<any>):Promise<any>;
 }
 
 interface ServiceWebsite {
     create(data: WebsiteAdd):Promise<any>;
+    list(params: WebsiteList):Promise<any>;
+    detail(websiteId: number):Promise<any>;
 }
 
 export {

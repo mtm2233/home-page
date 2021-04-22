@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:30:54
- * @LastEditTime: 2021-04-22 10:58:35
+ * @LastEditTime: 2021-04-22 12:48:46
  * @LastEditors: mTm
  */
 interface WebsiteAdd {
@@ -15,6 +15,14 @@ interface WebsiteAdd {
     sort?: number;
 }
 
+interface WebsiteList {
+    name: string; 
+    url: string; 
+    offset: string; 
+    size: string;
+}
+
 export {
-    WebsiteAdd
+    WebsiteAdd,
+    WebsiteList,
 }

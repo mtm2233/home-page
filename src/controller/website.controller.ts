@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:22:15
- * @LastEditTime: 2021-04-22 10:56:08
+ * @LastEditTime: 2021-04-22 13:03:40
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -27,6 +27,57 @@ class WebsiteController implements ControllerWebsite {
             ctx.status = 201;
             ctx.body = {
                 message: '网址添加成功'
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
+    async list(ctx: Context, next: () => Promise<any>) {
+        try {
+            
+            const { name = '', url = '', offset, size } = (ctx.query as any);
+            const data = await service.list({
+                name,
+                url,
+                offset,
+                size,
+            });
+            const { count } = (await service.count(name, url) as any)
+            ctx.body = {
+                data,
+                message: '获取网址列表成功',
+                meta: {
+                    ...ctx.meta,
+                    count,
+                    maxPage: Math.ceil(count/size),
+                }
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
+    async listByType(ctx: Context, next: () => Promise<any>) {
+        try {
+            const { typeId } = ctx.params;
+            const data = await service.listByType(typeId);
+            ctx.body = {
+                data,
+                message: '根据分类获取网址列表成功'
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
+    async detail(ctx: Context, next: () => Promise<any>) {
+        try {
+            const { websiteId } = ctx.params; 
+            const data = await service.detail(websiteId);
+            ctx.body = {
+                data,
+                message: '获取网址详情成功'
             }
         } catch (error) {
             ctx.app.emit('error', error, ctx);

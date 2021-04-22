@@ -13,6 +13,6 @@ import { verifyAuth } from '../middleware/auth.middleware'
 
 const userRouter = new Router({prefix: '/user'});
 
-userRouter.get('/list', verifyAuth, limit, userController.list);
+userRouter.get('/list', verifyAuth, limit(), userController.list);
 
 export default userRouter;
