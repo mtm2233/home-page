@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-04-21 23:15:28
+ * @LastEditTime: 2021-04-22 17:09:50
  * @LastEditors: mTm
  */
 import connection from '../app/database'
+import { SYSTEM_USER_ID } from '../app/config'
 
 import { ServiceType } from '../interface/class/type.interface.class'
 import { TypeAdd } from '../interface/type.interface'
@@ -35,17 +36,17 @@ class TypeService implements ServiceType {
         return result;
     }
 
-    async list (pid: number | null) {
+    async list (pid: number | null, userId: number) {
         let statement = `
-            SELECT id, name, description FROM type WHERE pid = ? ORDER BY sort ASC, createAt ASC;
+            SELECT id, name, description FROM type WHERE pid = ? && user_id IN (${SYSTEM_USER_ID}, ?) ORDER BY sort ASC, createAt ASC;
         `
         if (!pid) {
             statement = `
-            SELECT id, name, description FROM type WHERE pid IS NULL ORDER BY sort ASC, createAt ASC;
+            SELECT id, name, description FROM type WHERE pid IS NULL && user_id IN (${SYSTEM_USER_ID}, ?) ORDER BY sort ASC, createAt ASC;
             `
         }
 
-        const [result] = await connection.execute(statement, [pid]);
+        const [result] = await connection.execute(statement, pid ? [pid, userId] : [userId]);
 
         return result;
     }

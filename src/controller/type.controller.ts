@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:39:18
- * @LastEditTime: 2021-04-21 23:17:09
+ * @LastEditTime: 2021-04-22 16:49:38
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -39,8 +39,9 @@ class TypeController implements ControllerType {
 
     async list(ctx: Context, next: () => Promise<any>) {
         try {
+            const userId = ctx.user.id;
             const { pid } = ctx.request.query
-            const data = await service.list(pid ? Number(pid) : null)
+            const data = await service.list(pid ? Number(pid) : null, userId)
             ctx.body = {
                 data,
                 message: '获取分类列表成功'

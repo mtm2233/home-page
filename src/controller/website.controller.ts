@@ -36,11 +36,13 @@ class WebsiteController implements ControllerWebsite {
     async list(ctx: Context, next: () => Promise<any>) {
         try {
             const { name = '', url = '', offset, size } = (ctx.query as any);
+            const user_id = ctx.user.id;
             const data = await service.list({
                 name,
                 url,
                 offset,
                 size,
+                user_id,
             });
             const { count } = (await service.count(name, url) as any)
             ctx.body = {
@@ -60,7 +62,8 @@ class WebsiteController implements ControllerWebsite {
     async listByType(ctx: Context, next: () => Promise<any>) {
         try {
             const { typeId } = ctx.params;
-            const data = await service.listByType(typeId);
+            const userId = ctx.user.id;
+            const data = await service.listByType(typeId, userId);
             ctx.body = {
                 data,
                 message: '根据分类获取网址列表成功'

@@ -2,12 +2,15 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-04-22 15:06:25
+ * @LastEditTime: 2021-04-22 17:28:02
  * @LastEditors: mTm
  */
 import connection from '../app/database'
+
 import { ServiceWebsite } from '../interface/class/website.interface.class'
 import { WebsiteAdd, WebsiteList, WebsiteUpdate } from '../interface/website.interface'
+
+import { SYSTEM_USER_ID } from '../app/config'
 
 class WebsiteService implements ServiceWebsite {
     async create(data: WebsiteAdd) {
@@ -35,19 +38,20 @@ class WebsiteService implements ServiceWebsite {
             name,
             url,
             offset,
-            size
+            size,
+            user_id
         } = params;
         const statement = `
-            SELECT name, url FROM website WHERE name LIKE '%${name}%' && url LIKE '%${url}%'
+            SELECT name, url FROM website WHERE name LIKE '%${name}%' && url LIKE '%${url}%' && user_id in (${SYSTEM_USER_ID}, ?)
             ORDER BY sort ASC, createAt ASC
             LIMIT ?, ?;
         `;
-        const [result] = await connection.execute(statement, [offset, size])
+        const [result] = await connection.execute(statement, [user_id, offset, size])
 
         return result;
     }
 
-    async listByType(pid: number) {
+    async listByType(pid: number, userId: number) {
         const statement = `
             SELECT t.id, t.name, t.description,
             IF(COUNT(w.id),
@@ -57,12 +61,12 @@ class WebsiteService implements ServiceWebsite {
             FROM type t
             LEFT JOIN website w
             ON t.id = w.type_id
-            WHERE t.pid = ?
+            WHERE t.pid = ? && t.user_id in (${SYSTEM_USER_ID}, ?) && w.user_id in (${SYSTEM_USER_ID}, ?)
             GROUP BY t.id
             ORDER BY t.sort ASC, t.createAt ASC, w.sort ASC, w.createAt ASC;
         `;
 
-        const [result] = await connection.execute(statement, [pid])
+        const [result] = await connection.execute(statement, [pid, userId, userId])
 
         return result;
     }

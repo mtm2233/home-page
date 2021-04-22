@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-10 23:42:51
- * @LastEditTime: 2021-04-19 12:01:40
+ * @LastEditTime: 2021-04-22 17:07:03
  * @LastEditors: mTm
  */
 // 环境变量 .env
@@ -23,6 +23,8 @@ const {
   MYSQL_DATABASE,
   MYSQL_USER,
   MYSQL_PASSWORD,
+  SYSTEM_USER_ID,
+  SYSTEM_USER_NAME,
 } = process.env;
 
 export {
@@ -33,4 +35,6 @@ export {
   MYSQL_USER,
   MYSQL_PASSWORD,
   PUBLIC_KEY,
+  SYSTEM_USER_ID,
+  SYSTEM_USER_NAME,
 };

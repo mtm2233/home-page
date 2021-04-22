@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:50:45
- * @LastEditTime: 2021-04-21 22:22:38
+ * @LastEditTime: 2021-04-22 16:47:15
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -17,7 +17,7 @@ interface ControllerType {
 
 interface ServiceType {
     create(data: TypeAdd):Promise<any>;
-    list(pid: number | null):Promise<any>;
+    list(pid: number | null, userId: number):Promise<any>;
     detail(id: number):Promise<any>;
     update(typeId: number, data: TypeAdd):Promise<any>;
     updateVal(key: string, val: any, typeId: number):Promise<any>;
