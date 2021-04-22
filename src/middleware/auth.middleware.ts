@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 22:38:58
- * @LastEditTime: 2021-04-21 23:15:01
+ * @LastEditTime: 2021-04-22 16:05:15
  * @LastEditors: mTm
  */
 import * as jwt from 'jsonwebtoken';
@@ -26,6 +26,23 @@ const verifyAuth = async (ctx: Context, next: () => Promise<any>) => {
         await next()
     } catch(error) {
         ctx.app.emit('error', new Error(UN_AUTH_ORIZATION), ctx);
+    }
+}
+
+const parsingToken = async (ctx: Context, next: () => Promise<any>) => {
+    try {
+        const token = ctx.headers?.authorization?.replace('Bearer ', '');
+        const user = jwt.verify(token, PUBLIC_KEY, {
+            algorithms: ['RS256']
+        })
+        ctx.user = user;
+        await next()
+    } catch(error) {
+        ctx.user = {
+            id: 1,
+            name: 'system'
+        };
+        await next();
     }
 }
 
@@ -57,5 +74,6 @@ const verifyPermission = async (ctx: Context, next: () => Promise<any>) => {
 
 export {
     verifyAuth,
-    verifyPermission
+    verifyPermission,
+    parsingToken,
 }
