@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-23 16:48:25
- * @LastEditTime: 2021-04-23 20:10:32
+ * @LastEditTime: 2021-04-23 22:08:41
  * @LastEditors: mTm
 -->
 <template>
@@ -10,10 +10,10 @@
     <h2>Home</h2>
     store: {{ count }}
     <p>
-      <button @click="handleClick">count++</button>
+      <AButton type="primary" @click="handleClick">count++</AButton>
     </p>
     <p>
-      <button @click="goDetail">跳转Details</button>
+      <AButton type="primary" @click="goDetail">跳转Details</AButton>
     </p>
   </div>
 </template>
@@ -22,6 +22,8 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+
+import { list } from '@/api/home'
 export default {
   setup(): any {
     const router = useRouter()
@@ -36,6 +38,17 @@ export default {
         name: 'Details',
       })
     }
+
+    list({
+      pagenum: 1,
+      pagesize: 6,
+      search: '',
+      tags: '',
+      typeId: '',
+    }).then(res => {
+      console.log(res)
+    })
+
     return {
       goDetail,
       count,

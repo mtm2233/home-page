@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-23 16:10:15
+ * @LastEditTime: 2021-04-23 22:32:51
  * @LastEditors: mTm
  */
 import { defineConfig } from 'vite'
@@ -19,6 +19,18 @@ export default defineConfig({
         replacement: resolve(__dirname, 'src'),
       },
     ],
+  },
+  server: {
+    proxy: {
+      '^/api/.*': {
+        target: 'https://api.isdream.cn',
+        changeOrigin: true, // 将主机标头的来源更改为目标URL,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
+  },
+  optimizeDeps: {
+    include: ['axios'],
   },
   plugins: [vue()],
 })
