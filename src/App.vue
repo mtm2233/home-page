@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Author: mTm
+ * @Date: 2021-04-23 15:17:49
+ * @LastEditTime: 2021-04-23 16:15:48
+ * @LastEditors: mTm
+-->
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
@@ -5,13 +12,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from '@/components/HelloWorld.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
-  }
+    HelloWorld,
+  },
 })
 </script>
 
