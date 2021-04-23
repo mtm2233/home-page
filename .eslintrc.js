@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:29:15
- * @LastEditTime: 2021-04-23 15:34:42
+ * @LastEditTime: 2021-04-23 17:12:36
  * @LastEditors: mTm
  */
 // .eslintrc.js
@@ -24,5 +24,7 @@ module.exports = {
     ecmaVersion: 2021,
   },
   plugins: [],
-  rules: {},
+  rules: {
+    '@typescript-eslint/no-explicit-any': ['off'], // 关闭any类型的警告
+  },
 }
