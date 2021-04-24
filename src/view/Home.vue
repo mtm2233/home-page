@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-23 16:48:25
- * @LastEditTime: 2021-04-23 22:08:41
+ * @LastEditTime: 2021-04-24 23:04:12
  * @LastEditors: mTm
 -->
 <template>
@@ -46,7 +46,8 @@ export default {
       tags: '',
       typeId: '',
     }).then(res => {
-      console.log(res)
+      const { data } = res
+      console.log(data)
     })
 
     return {

@@ -139,6 +139,11 @@
   resolved "https://registry.nlark.com/@types/node/download/@types/node-14.14.41.tgz#d0b939d94c1d7bd53d04824af45f1139b8c45615"
   integrity sha1-0Lk52Uwde9U9BIJK9F8RObjEVhU=
 
+"@types/nprogress@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npm.taobao.org/@types/nprogress/download/@types/nprogress-0.2.0.tgz#86c593682d4199212a0509cc3c4d562bbbd6e45f"
+  integrity sha1-hsWTaC1BmSEqBQnMPE1WK7vW5F8=
+
 "@types/qs@^6.9.6":
   version "6.9.6"
   resolved "https://registry.npm.taobao.org/@types/qs/download/@types/qs-6.9.6.tgz#df9c3c8b31a247ec315e6996566be3171df4b3b1"
@@ -1377,6 +1382,11 @@ needle@^2.5.2:
     debug "^3.2.6"
     iconv-lite "^0.4.4"
     sax "^1.2.4"
+
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.nlark.com/nprogress/download/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha1-y480xTIT2JVyP8urkH6UIq28r7E=
 
 object-inspect@^1.9.0:
   version "1.10.2"

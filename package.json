@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "less": "^4.1.1",
     "less-loader": "^8.1.1",
+    "nprogress": "^0.2.0",
     "qs": "^6.10.1",
     "vue": "^3.0.5",
     "vue-router": "4",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.41",
+    "@types/nprogress": "^0.2.0",
     "@types/qs": "^6.9.6",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
