@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 16:19:20
- * @LastEditTime: 2021-04-25 20:54:21
+ * @LastEditTime: 2021-04-25 21:16:16
  * @LastEditors: mTm
 -->
 <template>
@@ -14,18 +14,20 @@
     <ALayoutContent>
       <RouterView />
     </ALayoutContent>
-    <ALayoutFooter>Footer</ALayoutFooter>
+    <ALayoutFooter><Footer /></ALayoutFooter>
   </ALayout>
 </template>
 <script lang="ts">
 import Refresh from './components/Refresh.vue'
 import Edit from './components/Edit.vue'
+import Footer from './components/Footer.vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Home',
   components: {
     Refresh,
     Edit,
+    Footer,
   },
 })
 </script>
@@ -35,18 +37,18 @@ export default defineComponent({
   height: 100%;
   margin: 0 auto;
   background-color: #fff;
-  padding: 50px 65px;
+  padding: 0 65px;
   &-header {
     display: flex;
     justify-content: space-between;
     background-color: #fff;
+    padding: 50px 0;
   }
   &-content {
     box-sizing: border-box;
     padding: 50px;
   }
   &-footer {
-    height: 60px;
     background-color: #fff;
   }
 }
