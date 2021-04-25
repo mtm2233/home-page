@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 18:23:15
- * @LastEditTime: 2021-04-25 20:53:51
+ * @LastEditTime: 2021-04-25 21:52:20
  * @LastEditors: mTm
 -->
 <template>
@@ -16,9 +16,13 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const reload = () => {
-      router.push({
-        name: 'Home',
-      })
+      if (router?.currentRoute?.value?.name === 'Home') {
+        router.go(0)
+      } else {
+        router.push({
+          name: 'Home',
+        })
+      }
     }
     return {
       reload,

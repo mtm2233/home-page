@@ -1,55 +1,62 @@
 <!--
  * @Description: 
  * @Author: mTm
- * @Date: 2021-04-25 16:19:20
- * @LastEditTime: 2021-04-25 21:16:16
+ * @Date: 2021-04-23 16:48:25
+ * @LastEditTime: 2021-04-25 21:19:14
  * @LastEditors: mTm
 -->
 <template>
-  <ALayout>
-    <ALayoutHeader>
-      <Refresh />
-      <Edit />
-    </ALayoutHeader>
-    <ALayoutContent>
-      <RouterView />
-    </ALayoutContent>
-    <ALayoutFooter><Footer /></ALayoutFooter>
-  </ALayout>
+  <div>
+    <h2>Home</h2>
+    store: {{ count }}
+    <p>
+      <AButton type="primary" @click="handleClick">count++</AButton>
+    </p>
+    <p>
+      <AButton type="primary" @click="goDetail">跳转Details</AButton>
+    </p>
+  </div>
 </template>
+
 <script lang="ts">
-import Refresh from './components/Refresh.vue'
-import Edit from './components/Edit.vue'
-import Footer from './components/Footer.vue'
-import { defineComponent } from 'vue'
-export default defineComponent({
-  name: 'Home',
-  components: {
-    Refresh,
-    Edit,
-    Footer,
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+
+import { list } from '@/api/home'
+export default {
+  setup(): any {
+    const router = useRouter()
+    const store = useStore()
+
+    const count = computed(() => store.state.count)
+    const handleClick = () => {
+      store.commit('add')
+    }
+    const goDetail = () => {
+      router.push({
+        name: 'Details',
+      })
+    }
+
+    list({
+      pagenum: 1,
+      pagesize: 6,
+      search: '',
+      tags: '',
+      typeId: '',
+    }).then(res => {
+      const { data } = res
+      console.log(data)
+    })
+
+    return {
+      goDetail,
+      count,
+      handleClick,
+    }
   },
-})
-</script>
-<style lang="less">
-.ant-layout {
-  width: 1200px;
-  height: 100%;
-  margin: 0 auto;
-  background-color: #fff;
-  padding: 0 65px;
-  &-header {
-    display: flex;
-    justify-content: space-between;
-    background-color: #fff;
-    padding: 50px 0;
-  }
-  &-content {
-    box-sizing: border-box;
-    padding: 50px;
-  }
-  &-footer {
-    background-color: #fff;
-  }
 }
-</style>
+</script>
+
+<style></style>
