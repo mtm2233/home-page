@@ -8,6 +8,7 @@
     "lint": "eslint --fix --ext .ts,vue src/ --no-error-on-unmatched-pattern && prettier -w -u ."
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.1.2",
     "axios": "^0.21.1",
     "less": "^4.1.1",
