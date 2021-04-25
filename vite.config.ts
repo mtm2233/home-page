@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-24 15:28:36
+ * @LastEditTime: 2021-04-25 16:45:38
  * @LastEditors: mTm
  */
 import { defineConfig } from 'vite'
@@ -18,6 +18,7 @@ export default defineConfig({
         find: '@',
         replacement: resolve(__dirname, 'src'),
       },
+      { find: /^~/, replacement: '' },
     ],
   },
   server: {

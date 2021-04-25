@@ -2,34 +2,36 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-23 16:57:23
+ * @LastEditTime: 2021-04-25 18:04:50
  * @LastEditors: mTm
 -->
 <template>
-  <div>
-    <HelloWorld />
-    <router-view></router-view>
-  </div>
+  <AConfigProvider :locale="locale" :auto-insert-space-in-button="false">
+    <RouterView />
+  </AConfigProvider>
 </template>
 
 <script lang="ts">
+import zh_CN from 'ant-design-vue/es/locale/zh_CN'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
+moment.locale('zh-cn')
+
 import { defineComponent } from 'vue'
-import HelloWorld from '@/components/HelloWorld.vue'
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld,
+  setup() {
+    return {
+      locale: zh_CN,
+    }
   },
 })
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="less">
+@import './assets/style/index.less';
+
+body {
+  overflow-y: auto;
 }
 </style>

@@ -2,10 +2,10 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:34:54
- * @LastEditTime: 2021-04-24 23:10:54
+ * @LastEditTime: 2021-04-24 23:38:42
  * @LastEditors: mTm
  */
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import qs from 'qs'
 import Nprogress from 'nprogress'
 
@@ -40,30 +40,19 @@ axios.interceptors.response.use(
     alert(`异常请求：${JSON.stringify(error.message)}`)
   },
 )
-
 class MyRequest {
-  post(url: string, data: any[string]): Promise<any> {
+  request(config: AxiosRequestConfig): Promise<any> {
+    const { method = 'GET', data = {}, params = {} } = config
+    let { url } = config
+    console.log()
+    if (method === 'GET') {
+      url += '?' + qs.stringify(params)
+    }
     return new Promise((resolve, reject) => {
       axios({
-        method: 'post',
+        method,
         url,
-        data: qs.stringify(data),
-      })
-        .then(res => {
-          resolve(res.data)
-        })
-        .catch(err => {
-          reject(err)
-        })
-    })
-  }
-
-  get(url: string, data: any[string]): Promise<any> {
-    return new Promise((resolve, reject) => {
-      axios({
-        method: 'get',
-        url,
-        params: data,
+        data,
       })
         .then(res => {
           resolve(res.data)
@@ -74,4 +63,5 @@ class MyRequest {
     })
   }
 }
+
 export default new MyRequest()
