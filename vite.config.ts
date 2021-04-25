@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-25 16:45:38
+ * @LastEditTime: 2021-04-25 21:55:54
  * @LastEditors: mTm
  */
 import { defineConfig } from 'vite'
@@ -24,7 +24,8 @@ export default defineConfig({
   server: {
     proxy: {
       '^/api/.*': {
-        target: 'https://api.isdream.cn',
+        // target: 'https://api.isdream.cn',
+        target: 'http://localhost:8099',
         changeOrigin: true, // 将主机标头的来源更改为目标URL,
         rewrite: path => path.replace(/^\/api/, ''),
       },
