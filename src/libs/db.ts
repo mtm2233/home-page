@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-26 22:00:13
- * @LastEditTime: 2021-04-26 23:06:20
+ * @LastEditTime: 2021-04-26 23:08:03
  * @LastEditors: mTm
  */
 import config from '@/config'
@@ -56,7 +56,7 @@ class DB {
             //何时将值取出减去刚存入的时间，与item.expires比较，如果大于就是过期了，如果小于或等于就还没过期
             if (date - item.startTime > item.expires) {
                 //缓存过期，清除缓存，返回false
-                this.storage.removeItem(item.key)
+                this.remove(key)
                 return false
             } else {
                 //缓存未过期，返回值
