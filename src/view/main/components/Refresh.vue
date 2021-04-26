@@ -6,33 +6,33 @@
  * @LastEditors: mTm
 -->
 <template>
-  <ATypographyTitle @click="reload">R</ATypographyTitle>
+    <ATypographyTitle @click="reload">R</ATypographyTitle>
 </template>
 <script>
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
-  setup() {
-    const router = useRouter()
-    const reload = () => {
-      if (router?.currentRoute?.value?.name === 'Home') {
-        router.go(0)
-      } else {
-        router.push({
-          name: 'Home',
-        })
-      }
-    }
-    return {
-      reload,
-    }
-  },
+    setup() {
+        const router = useRouter()
+        const reload = () => {
+            if (router?.currentRoute?.value?.name === 'Home') {
+                router.go(0)
+            } else {
+                router.push({
+                    name: 'Home',
+                })
+            }
+        }
+        return {
+            reload,
+        }
+    },
 })
 </script>
 
 <style scoped>
 .ant-typography {
-  cursor: pointer;
+    cursor: pointer;
 }
 </style>

@@ -6,9 +6,9 @@
  * @LastEditors: mTm
 -->
 <template>
-  <AConfigProvider :locale="locale" :auto-insert-space-in-button="false">
-    <RouterView />
-  </AConfigProvider>
+    <AConfigProvider :locale="locale" :auto-insert-space-in-button="false">
+        <RouterView />
+    </AConfigProvider>
 </template>
 
 <script lang="ts">
@@ -19,12 +19,12 @@ moment.locale('zh-cn')
 
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: 'App',
-  setup() {
-    return {
-      locale: zh_CN,
-    }
-  },
+    name: 'App',
+    setup() {
+        return {
+            locale: zh_CN,
+        }
+    },
 })
 </script>
 
@@ -32,6 +32,6 @@ export default defineComponent({
 @import './assets/style/index.less';
 
 body {
-  overflow-y: auto;
+    overflow-y: auto;
 }
 </style>

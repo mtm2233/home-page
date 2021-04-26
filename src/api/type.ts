@@ -8,9 +8,9 @@
 import service from '@/libs/service'
 
 export function list(params = {}): Promise<any> {
-  return service.request({
-    url: '/api/type',
-    method: 'GET',
-    params,
-  })
+    return service.request({
+        url: '/api/type',
+        method: 'GET',
+        params,
+    })
 }

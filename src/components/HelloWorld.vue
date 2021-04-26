@@ -6,13 +6,13 @@
  * @LastEditors: mTm
 -->
 <template>
-  <h2>HelloWorld</h2>
+    <h2>HelloWorld</h2>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: 'HelloWorld',
+    name: 'HelloWorld',
 })
 </script>
 

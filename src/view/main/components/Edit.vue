@@ -6,48 +6,48 @@
  * @LastEditors: mTm
 -->
 <template>
-  <AlignRightOutlined :style="iconStyle" @click="showEdit" />
-  <ADrawer
-    title="设置"
-    placement="right"
-    :visible="visible"
-    :width="500"
-    @close="onClose"
-  >
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-  </ADrawer>
+    <AlignRightOutlined :style="iconStyle" @click="showEdit" />
+    <ADrawer
+        title="设置"
+        placement="right"
+        :visible="visible"
+        :width="500"
+        @close="onClose"
+    >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+    </ADrawer>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { AlignRightOutlined } from '@ant-design/icons-vue'
 
 export default defineComponent({
-  name: 'Edit',
-  components: {
-    AlignRightOutlined,
-  },
-  setup() {
-    const iconStyle = {
-      fontSize: '30px',
-    }
+    name: 'Edit',
+    components: {
+        AlignRightOutlined,
+    },
+    setup() {
+        const iconStyle = {
+            fontSize: '30px',
+        }
 
-    // 控制抽屉
-    const visible = ref(false)
-    const onClose = () => {
-      visible.value = false
-    }
-    const showEdit = () => {
-      visible.value = true
-    }
-    return {
-      iconStyle,
-      visible,
-      onClose,
-      showEdit,
-    }
-  },
+        // 控制抽屉
+        const visible = ref(false)
+        const onClose = () => {
+            visible.value = false
+        }
+        const showEdit = () => {
+            visible.value = true
+        }
+        return {
+            iconStyle,
+            visible,
+            onClose,
+            showEdit,
+        }
+    },
 })
 </script>
 
