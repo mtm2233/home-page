@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 22:02:34
- * @LastEditTime: 2021-04-25 23:47:44
+ * @LastEditTime: 2021-04-26 16:50:44
  * @LastEditors: mTm
 -->
 <template>
@@ -12,6 +12,7 @@
     </ATabs>
     <AInputSearch
       v-model:value="value"
+      autofocus="autofocus"
       :placeholder="currentSearch.placeholder || currentSearch.name || '搜索'"
       enter-button="搜索"
       size="large"
@@ -21,20 +22,27 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue'
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  computed,
+  Ref,
+  ComputedRef,
+} from 'vue'
 import { list } from '@/api/search'
 
 export default defineComponent({
   name: 'Search',
   setup() {
     // 初始化
-    const activeKey = ref()
-    const searchs = ref([])
+    const activeKey: Ref<number | null> = ref(null)
+    const searchs: Ref<any[]> = ref([])
 
     const getList = () => {
       list().then(({ data }) => {
-        searchs.value = data || []
         if (Array.isArray(data) && data.length) {
+          searchs.value = data
           activeKey.value = data[0].id
         }
       })
@@ -44,7 +52,7 @@ export default defineComponent({
     })
 
     // 搜索
-    const value = ref()
+    const value: Ref<string | null> = ref(null)
     const onSearch = () => {
       if (value.value && currentSearch.value.website) {
         let { website, search_key, extra_key } = currentSearch.value
@@ -57,13 +65,8 @@ export default defineComponent({
     }
 
     // 当前的搜索引擎
-    const currentSearch = computed(
-      () =>
-        searchs.value.find((v: any) => v.id === activeKey.value) || {
-          website: '',
-          search_key: '',
-          extra_key: '',
-        },
+    const currentSearch: ComputedRef = computed(
+      () => searchs.value.find((v: any) => v.id === activeKey.value) || {},
     )
 
     return {
@@ -79,7 +82,8 @@ export default defineComponent({
 </script>
 <style scoped>
 .search {
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
+  padding: 0 20px 80px 20px;
 }
 </style>
