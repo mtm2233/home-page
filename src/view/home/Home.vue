@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 22:02:34
- * @LastEditTime: 2021-04-26 23:04:23
+ * @LastEditTime: 2021-04-26 23:21:07
  * @LastEditors: mTm
 -->
 <template>
@@ -24,14 +24,14 @@ export default defineComponent({
     },
     setup() {
         onMounted(() => {
-            db.set({
-                key: 'a',
-                value: {
-                    name: '张三123',
-                },
-                expires: 2 * 60 * 1000,
-            })
-            console.log(db.get('a'))
+            // db.set({
+            //     key: 'a',
+            //     value: {
+            //         name: '张三123',
+            //     },
+            //     expires: 2 * 60 * 1000,
+            // })
+            // console.log(db.get('a'))
         })
         return {}
     },

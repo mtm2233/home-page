@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:20:03
- * @LastEditTime: 2021-04-26 18:32:10
+ * @LastEditTime: 2021-04-27 00:10:29
  * @LastEditors: mTm
 -->
 <template>
@@ -69,30 +69,30 @@ export default defineComponent({
 </script>
 <style scoped lang="less">
 .type {
-    padding: 30px 20px;
+    padding: 40px 20px;
     background: #f7f7f7;
     &-box {
         max-width: 900px;
         margin: 0 auto;
         text-align: center;
         &-list {
-            padding-bottom: 30px;
-            /deep/ .ant-tabs-tab {
+            padding-bottom: 20px;
+            :deep(.ant-tabs-tab) {
                 transition: all 0.2s ease-in;
                 &:hover {
                     background: #e5e5e5;
                     color: #333;
                 }
             }
-            /deep/ .ant-tabs-tab-active {
+            :deep(.ant-tabs-tab-active) {
                 background: #e5e5e5;
                 color: #333;
             }
         }
-        /deep/ .ant-tabs-bar {
+        :deep(.ant-tabs-bar) {
             border: none;
         }
-        /deep/ .ant-tabs-ink-bar {
+        :deep(.ant-tabs-ink-bar) {
             display: none !important;
         }
     }

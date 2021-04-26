@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:16:09
- * @LastEditTime: 2021-04-26 21:42:06
+ * @LastEditTime: 2021-04-26 23:23:56
  * @LastEditors: mTm
 -->
 <template>
@@ -12,7 +12,7 @@
             :key="item.id"
             align="middle"
             class="website"
-            :gutter="[0, 15]"
+            :gutter="[15, 50]"
         >
             <ACol span="4" class="website-type">{{ item.name }}</ACol>
             <ACol span="20">
