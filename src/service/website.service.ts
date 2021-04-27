@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-04-28 00:01:39
+ * @LastEditTime: 2021-04-28 00:13:26
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -162,7 +162,7 @@ class WebsiteService implements ServiceWebsite {
         if (id) {
             statement = 'SELECT * From website WHERE name = ? && user_id = ? && id != ?';
         }
-        const [result] = await connection.execute(statement, [name, user_id, id]);
+        const [result] = await connection.execute(statement, id ? [name, user_id, id] : [name, user_id]);
 
         if (Array.isArray(result) && result.length) {
             return true;

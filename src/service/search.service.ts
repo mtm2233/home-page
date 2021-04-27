@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 17:02:09
- * @LastEditTime: 2021-04-27 23:55:45
+ * @LastEditTime: 2021-04-28 00:14:47
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -102,7 +102,7 @@ class SearchService implements ServiceSearch {
         if (id) {
             statement = 'SELECT * From search WHERE name = ? && user_id = ? && id != ?'
         }
-        const [result] = await connection.execute(statement, [name, user_id, id]);
+        const [result] = await connection.execute(statement, id ? [name, user_id, id] : [name, user_id]);
 
         if (Array.isArray(result) && result.length) {
             return true;

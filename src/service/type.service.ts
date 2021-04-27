@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-04-28 00:01:23
+ * @LastEditTime: 2021-04-28 00:14:40
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -122,7 +122,7 @@ class TypeService implements ServiceType {
         if (id) {
             statement = 'SELECT * From type WHERE name = ? && user_id = ? && id != ?'
         }
-        const [result] = await connection.execute(statement, [name, user_id, id]);
+        const [result] = await connection.execute(statement, id ? [name, user_id, id] : [name, user_id]);
 
         if (Array.isArray(result) && result.length) {
             return true;
