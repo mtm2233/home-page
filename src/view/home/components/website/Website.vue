@@ -2,41 +2,47 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:16:09
- * @LastEditTime: 2021-04-26 23:23:56
+ * @LastEditTime: 2021-04-27 23:03:13
  * @LastEditors: mTm
 -->
 <template>
     <div>
-        <ARow
-            v-for="item in website"
-            :key="item.id"
-            align="middle"
-            class="website"
-            :gutter="[15, 50]"
-        >
-            <ACol span="4" class="website-type">{{ item.name }}</ACol>
-            <ACol span="20">
-                <ARow class="website-list" :gutter="[15, 15]">
-                    <ACol
-                        v-for="v in item.children"
-                        :key="v.id"
-                        :xs="8"
-                        :sm="6"
-                        :lg="4"
-                        :xl="4"
-                        class="website-list-item"
-                        @click="goWebsite(v)"
-                    >
-                        {{ v.name }}
-                    </ACol>
-                </ARow>
-            </ACol>
-        </ARow>
+        <template v-for="item in website">
+            <ARow
+                v-if="verifyHide(`t${item.id}`)"
+                :key="item.id"
+                align="middle"
+                class="website"
+                :gutter="[15, 50]"
+            >
+                <ACol span="4" class="website-type">{{ item.name }}</ACol>
+                <ACol span="20">
+                    <ARow class="website-list" :gutter="[15, 15]">
+                        <template v-for="v in item.children">
+                            <ACol
+                                v-if="verifyHide(`w${v.id}`)"
+                                :key="v.id"
+                                :xs="8"
+                                :sm="6"
+                                :lg="4"
+                                :xl="4"
+                                class="website-list-item"
+                                @click="goWebsite(v)"
+                            >
+                                {{ v.name }}
+                            </ACol>
+                        </template>
+                    </ARow>
+                </ACol>
+            </ARow>
+        </template>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, Ref, ref } from 'vue'
+
 import { websiteByType } from '@/api/website'
+import { verifyHide } from '@/libs/methods'
 
 export default defineComponent({
     props: {
@@ -68,6 +74,7 @@ export default defineComponent({
         return {
             website,
             goWebsite,
+            verifyHide,
         }
     },
 })

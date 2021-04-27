@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-27 17:05:24
- * @LastEditTime: 2021-04-27 21:55:58
+ * @LastEditTime: 2021-04-27 22:36:26
  * @LastEditors: mTm
 -->
 <template>
@@ -37,8 +37,9 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
 import { TreeDataItem } from 'ant-design-vue/es/tree/Tree'
+import { useStore } from 'vuex'
 
 import { websiteByTypeAll } from '@/api/website'
 import { changeKey, generateList, getParentKey } from './useWebsite'
@@ -46,6 +47,7 @@ import { changeKey, generateList, getParentKey } from './useWebsite'
 export default defineComponent({
     name: 'WebsitePreset',
     setup() {
+        const store = useStore()
         const expandedKeys = ref<string[]>([])
         const checkedKeys = ref<string[]>([])
         const searchValue = ref<string>('')
@@ -55,6 +57,10 @@ export default defineComponent({
         const getData = () => {
             websiteByTypeAll().then(({ data }) => {
                 gData.value = changeKey(data)
+                nextTick(() => {
+                    const { typeWebsite } = store.state
+                    checkedKeys.value = typeWebsite
+                })
             })
         }
 
@@ -83,6 +89,16 @@ export default defineComponent({
             searchValue.value = value
             autoExpandParent.value = true
         })
+
+        // 保存
+        const save = () => {
+            store.commit('chageState', {
+                key: 'typeWebsite',
+                value: checkedKeys.value,
+                dbSet: true,
+            })
+        }
+
         return {
             expandedKeys,
             checkedKeys,
@@ -90,6 +106,7 @@ export default defineComponent({
             autoExpandParent,
             gData,
             onExpand,
+            save,
         }
     },
 })

@@ -2,21 +2,31 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:01:17
- * @LastEditTime: 2021-04-27 21:51:45
+ * @LastEditTime: 2021-04-27 22:35:35
  * @LastEditors: mTm
  */
 import { createStore } from 'vuex'
+import db from '@/libs/db'
 
 export const store = createStore({
     state: {
-        type: [],
-        website: [],
-        primary: '',
-        bg: '',
+        typeWebsite: db.get('typeWebsite') || [],
+        primary: db.get('primary') || '',
+        bg: db.get('bg') || '',
     },
     mutations: {
-        chageState(state: any, kv: { key: string; val: any }): void {
-            state[kv.key] = kv.val
+        chageState(
+            state: any,
+            kv: { key: string; value: any; dbSet?: boolean },
+        ): void {
+            const { key, value, dbSet } = kv
+            state[key] = value
+            if (dbSet) {
+                db.set({
+                    key,
+                    value,
+                })
+            }
         },
     },
     actions: {},

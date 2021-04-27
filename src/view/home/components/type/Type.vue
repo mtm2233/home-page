@@ -2,14 +2,20 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:20:03
- * @LastEditTime: 2021-04-27 00:10:29
+ * @LastEditTime: 2021-04-27 22:59:33
  * @LastEditors: mTm
 -->
 <template>
     <div class="type">
         <div class="type-box">
             <ATabs v-model:activeKey="activeKey" class="type-box-list">
-                <ATabsPane v-for="v in typeList" :key="v.id" :tab="v.name" />
+                <template v-for="v in typeList">
+                    <ATabsPane
+                        v-if="verifyHide(`t${v.id}`)"
+                        :key="v.id"
+                        :tab="v.name"
+                    />
+                </template>
             </ATabs>
             <template v-for="v in typeList">
                 <Website
@@ -25,6 +31,8 @@
 
 <script lang="ts">
 import { defineComponent, Ref, ref, onMounted, watch } from 'vue'
+
+import { verifyHide } from '@/libs/methods'
 import { list } from '@/api/type'
 import Website from '../website/Website.vue'
 
@@ -63,6 +71,7 @@ export default defineComponent({
             typeList,
             activeKey,
             activateList,
+            verifyHide,
         }
     },
 })

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 20:38:02
- * @LastEditTime: 2021-04-27 21:37:24
+ * @LastEditTime: 2021-04-27 22:31:58
  * @LastEditors: mTm
 -->
 <template>
@@ -17,7 +17,7 @@
         <ACollapse v-model:activeKey="activeKey" accordion>
             <ACollapsePanel key="1" header="常规设置"> 1232 </ACollapsePanel>
             <ACollapsePanel key="2" header="隐藏导航预设">
-                <WebsitePreset />
+                <WebsitePreset :ref="setItemRef" />
             </ACollapsePanel>
         </ACollapse>
     </ADrawer>
@@ -39,10 +39,19 @@ export default defineComponent({
             fontSize: '30px',
         }
 
+        let itemRefs: any[] = []
+
+        const setItemRef = (el: any) => {
+            itemRefs = [...new Set([...itemRefs, el])]
+        }
+
         // 控制抽屉
         const visible: Ref<boolean> = ref(false)
         const onClose = () => {
             visible.value = false
+            itemRefs.forEach((el: any) => {
+                el.save && el.save()
+            })
         }
         const showEdit = () => {
             visible.value = true
@@ -55,6 +64,7 @@ export default defineComponent({
             onClose,
             showEdit,
             activeKey,
+            setItemRef,
         }
     },
 })
