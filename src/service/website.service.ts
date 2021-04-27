@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-04-27 17:28:40
+ * @LastEditTime: 2021-04-27 23:15:04
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -23,6 +23,10 @@ class WebsiteService implements ServiceWebsite {
             type_id = null,
             sort = null,
         } = data
+
+        if (await this.isExist(name, user_id)) {
+            return false;
+        }
 
         const statement = `
             INSERT INTO website (name, url, icon, description, user_id, type_id, sort) VALUES (?, ?, ?, ?, ?, ?, ?);
@@ -142,6 +146,19 @@ class WebsiteService implements ServiceWebsite {
         const [result] = await connection.execute(statement, [val, websiteId]);
 
         return result;
+    }
+
+    async isExist(name: string, user_id: number) {
+        const statement = `
+            SELECT * From website WHERE name = ? && user_id = ?;
+        `
+        const [result] = await connection.execute(statement, [name, user_id]);
+
+        if (Array.isArray(result) && result.length) {
+            return true;
+        } {
+            return false;
+        }
     }
 }
 

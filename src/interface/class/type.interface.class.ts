@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:50:45
- * @LastEditTime: 2021-04-22 16:47:15
+ * @LastEditTime: 2021-04-27 23:15:45
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -21,6 +21,7 @@ interface ServiceType {
     detail(id: number):Promise<any>;
     update(typeId: number, data: TypeAdd):Promise<any>;
     updateVal(key: string, val: any, typeId: number):Promise<any>;
+    isExist(name: string, user_id: number): Promise<boolean>
 }
 
 export {

@@ -24,6 +24,7 @@ interface ServiceWebsite {
     update(websiteId: number, data: WebsiteUpdate):Promise<any>;
     listByType(pid: number, userId: number):Promise<any>;
     listByTypeAll(userId: number):Promise<any>;
+    isExist(name: string, user_id: number): Promise<boolean>
 }
 
 export {
