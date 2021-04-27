@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-04-22 20:41:58
+ * @LastEditTime: 2021-04-27 17:28:40
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -47,6 +47,34 @@ class WebsiteService implements ServiceWebsite {
             LIMIT ?, ?;
         `;
         const [result] = await connection.execute(statement, [user_id, user_id, offset, size])
+
+        return result;
+    }
+
+    async listByTypeAll(userId: number) {
+        const statement = `
+            SELECT mt.id, mt.name, 
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'id', t.id, 
+                    'name', t.name,
+                    'children', 
+                    (
+                        SELECT JSON_ARRAYAGG(JSON_OBJECT('id', w.id, 'name', w.name, 'url', w.url)) 
+                        FROM website w WHERE w.type_id = t.id && w.user_id in (${SYSTEM_USER_ID}, ?)
+                        ORDER BY w.sort ASC
+                    )
+                )
+            ) children
+            FROM type mt
+            LEFT JOIN type t
+            ON t.pid = mt.id
+            WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && t.user_id in (${SYSTEM_USER_ID}, ?)
+            GROUP BY mt.id
+            ORDER BY mt.sort ASC
+        `;
+
+        const [result] = await connection.execute(statement, [userId, userId, userId])
 
         return result;
     }

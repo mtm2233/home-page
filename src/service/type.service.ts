@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-04-22 20:36:09
+ * @LastEditTime: 2021-04-27 23:10:42
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -27,6 +27,11 @@ class TypeService implements ServiceType {
                 return false;
             }
         }
+
+        if (await this.isExist(name, user_id)) {
+            return false;
+        }
+        
         const statement = `
             INSERT INTO type (name, user_id, description, sort, pid) VALUES (?,?,?,?,?)
         `
@@ -95,6 +100,19 @@ class TypeService implements ServiceType {
         const [result] = await connection.execute(statement, [val, typeId]);
 
         return result;
+    }
+
+    async isExist(name: string, user_id: number) {
+        const statement = `
+            SELECT * From type WHERE name = ? && user_id = ?;
+        `
+        const [result] = await connection.execute(statement, [name, user_id]);
+
+        if (Array.isArray(result) && result.length) {
+            return true;
+        } {
+            return false;
+        }
     }
 }
 

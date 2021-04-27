@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:20:10
- * @LastEditTime: 2021-04-22 17:34:53
+ * @LastEditTime: 2021-04-27 17:28:47
  * @LastEditors: mTm
  */
 import * as Router from 'koa-router'
@@ -16,6 +16,7 @@ const websiteRouter = new Router({prefix: '/website'})
 
 websiteRouter.post('/', verifyAuth, verifyTypeId, websiteController.create);
 websiteRouter.get('/', limit(), parsingToken, websiteController.list);
+websiteRouter.get('/type', parsingToken, websiteController.listByTypeAll);
 websiteRouter.get('/type/:typeId', parsingToken, verifyShowPermission, websiteController.listByType);
 websiteRouter.get('/:websiteId', websiteController.detail);
 websiteRouter.patch('/:websiteId', verifyAuth, verifyPermission, verifyTypeId, websiteController.update);

@@ -59,6 +59,19 @@ class WebsiteController implements ControllerWebsite {
         }
     }
 
+    async listByTypeAll(ctx: Context, next: () => Promise<any>) {
+        try {
+            const userId = ctx.user.id;
+            const data = await service.listByTypeAll(userId);
+            ctx.body = {
+                data,
+                message: '根据分类获取所以网址列表成功'
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
     async listByType(ctx: Context, next: () => Promise<any>) {
         try {
             const { typeId } = ctx.params;
