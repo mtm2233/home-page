@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 13:02:11
- * @LastEditTime: 2021-04-21 21:38:19
+ * @LastEditTime: 2021-04-27 23:19:42
  * @LastEditors: mTm
  */
 import * as errorType from '../constants/error-types';
@@ -35,6 +35,10 @@ const failCodeMap = new Map([
     }],
     [errorType.ERROR_PARAMETER, {
         message: '参数错误',
+        status: 400,
+    }],
+    [errorType.CONTENT_IS_EXIST, {
+        message: '内容已存在',
         status: 400,
     }]
 ]);

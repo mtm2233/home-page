@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-04-27 23:15:04
+ * @LastEditTime: 2021-04-28 00:01:39
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -25,6 +25,7 @@ class WebsiteService implements ServiceWebsite {
         } = data
 
         if (await this.isExist(name, user_id)) {
+            throw new Error(`${name} 已存在`)
             return false;
         }
 
@@ -128,7 +129,13 @@ class WebsiteService implements ServiceWebsite {
         }
     }
     async update(websiteId: number, data: WebsiteUpdate) {
-        const keys = ['name', 'url', 'icon', 'description', 'user_id', 'type_id', 'sort']
+        // 'user_id', 
+        const keys = ['name', 'url', 'icon', 'description', 'type_id', 'sort']
+
+        if (data.name && data.user_id && await this.isExist(data.name, data.user_id, websiteId)) {
+            throw new Error(`${data.name} 已存在`)
+            return false
+        }
 
         const promiseList = Object.entries(data)
             .filter(([k]) => keys.includes(k))
@@ -148,11 +155,14 @@ class WebsiteService implements ServiceWebsite {
         return result;
     }
 
-    async isExist(name: string, user_id: number) {
-        const statement = `
+    async isExist(name: string, user_id: number, id?: number) {
+        let statement = `
             SELECT * From website WHERE name = ? && user_id = ?;
         `
-        const [result] = await connection.execute(statement, [name, user_id]);
+        if (id) {
+            statement = 'SELECT * From website WHERE name = ? && user_id = ? && id != ?';
+        }
+        const [result] = await connection.execute(statement, [name, user_id, id]);
 
         if (Array.isArray(result) && result.length) {
             return true;

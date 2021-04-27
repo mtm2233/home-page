@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 16:59:43
- * @LastEditTime: 2021-04-22 20:19:30
+ * @LastEditTime: 2021-04-27 23:45:23
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -21,6 +21,7 @@ interface ServiceSearch {
     create(userId: number, data: SearchAdd): Promise<any>;
     update(searchId: number, data: SearchEdit): Promise<any>;
     updateVal(key: string, val: any, searchId: number): Promise<any>;
+    isExist(name: string, user_id: number, id?: number): Promise<boolean>
 }
 
 export {

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-04-27 23:10:42
+ * @LastEditTime: 2021-04-28 00:01:23
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -23,12 +23,16 @@ class TypeService implements ServiceType {
 
         if (pid) {
             const pidInfo: any = await this.detail(pid)
-            if (!pidInfo || pidInfo.pid) {
+            if (!pidInfo) {
+                throw new Error(`${pid} 不存在`)
                 return false;
+            } else if (pidInfo.pid) {
+                throw new Error(`${pidInfo.pid} 只能为一级分类`)
             }
         }
 
         if (await this.isExist(name, user_id)) {
+            throw new Error(`${name} 已存在`)
             return false;
         }
         
@@ -75,13 +79,22 @@ class TypeService implements ServiceType {
             pid = null
         } = data;
 
-        const keys = ['name', 'user_id', 'description', 'sort', 'pid']
+        // 'user_id' 
+        const keys = ['name', 'description', 'sort', 'pid']
 
         if (pid) {
             const pidInfo: any = await this.detail(pid)
             if (!pidInfo) {
+                throw new Error(`${pid} 不存在`)
                 return false;
+            } else if (pidInfo.pid) {
+                throw new Error(`${pidInfo.pid} 只能为一级分类`)
             }
+        }
+
+        if (data.name && data.user_id && await this.isExist(data.name, data.user_id, typeId)) {
+            throw new Error(`${data.name} 已存在`)
+            return false
         }
 
         const promiseList = Object.entries(data)
@@ -102,11 +115,14 @@ class TypeService implements ServiceType {
         return result;
     }
 
-    async isExist(name: string, user_id: number) {
-        const statement = `
+    async isExist(name: string, user_id: number, id?: number) {
+        let statement = `
             SELECT * From type WHERE name = ? && user_id = ?;
         `
-        const [result] = await connection.execute(statement, [name, user_id]);
+        if (id) {
+            statement = 'SELECT * From type WHERE name = ? && user_id = ? && id != ?'
+        }
+        const [result] = await connection.execute(statement, [name, user_id, id]);
 
         if (Array.isArray(result) && result.length) {
             return true;

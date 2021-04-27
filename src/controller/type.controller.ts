@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:39:18
- * @LastEditTime: 2021-04-22 16:49:38
+ * @LastEditTime: 2021-04-27 23:40:48
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -71,10 +71,14 @@ class TypeController implements ControllerType {
     async update(ctx: Context, next: () => Promise<any>) {
         try {
             const { typeId } = ctx.params;
-            await service.update(typeId, {
+            const result = await service.update(typeId, {
                 ...ctx.request.body,
                 user_id: ctx.user.id
             })
+            if (!result) {
+                ctx.app.emit('error', new Error(ERROR_PARAMETER), ctx);
+                return false
+            }
             ctx.body = {
                 message: '修改成功'
             }

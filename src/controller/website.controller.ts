@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:22:15
- * @LastEditTime: 2021-04-22 15:05:15
+ * @LastEditTime: 2021-04-27 23:40:37
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -10,7 +10,7 @@ import { ControllerWebsite } from '../interface/class/website.interface.class'
 
 import service from '../service/website.service'
 
-import { MISSING_PARAMETER } from '../constants/error-types'
+import { MISSING_PARAMETER, CONTENT_IS_EXIST, ERROR_PARAMETER } from '../constants/error-types'
 
 class WebsiteController implements ControllerWebsite {
     async create(ctx: Context, next: () => Promise<any>) {
@@ -20,10 +20,15 @@ class WebsiteController implements ControllerWebsite {
                 ctx.app.emit('error', new Error(MISSING_PARAMETER), ctx);
                 return false
             }
-            await service.create({
+            const result = await service.create({
                 ...ctx.request.body,
                 user_id: ctx.user.id,
             });
+            if (!result) {
+                ctx.app.emit('error', new Error(CONTENT_IS_EXIST), ctx);
+                return false;
+            }
+
             ctx.status = 201;
             ctx.body = {
                 message: '网址添加成功'
@@ -102,10 +107,14 @@ class WebsiteController implements ControllerWebsite {
     async update(ctx: Context, next: () => Promise<any>) {
         try {
             const { websiteId } = ctx.params;
-            await service.update(websiteId, {
+            const result = await service.update(websiteId, {
                 ...ctx.request.body,
                 user_id: ctx.user.id
             })
+            if (!result) {
+                ctx.app.emit('error', new Error(ERROR_PARAMETER), ctx);
+                return false
+            }
             ctx.body = {
                 message: '网址编辑成功'
             }

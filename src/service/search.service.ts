@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 17:02:09
- * @LastEditTime: 2021-04-25 23:11:16
+ * @LastEditTime: 2021-04-27 23:55:45
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -50,6 +50,12 @@ class SearchService implements ServiceSearch {
             extra_key = null,
             placeholder = null,
         } = data;
+
+        if (await this.isExist(name, userId)) {
+            throw new Error(`${name} 已存在`)
+            return false;
+        }
+
         const statement = `
             INSERT INTO search 
                 (name, website, search_key, icon, description, user_id, extra_key, placeholder) 
@@ -63,7 +69,13 @@ class SearchService implements ServiceSearch {
     }
 
     async update(searchId: number, data: SearchEdit) {
-        const keys = ['name', 'website', 'search_key', 'icon', 'description', 'user_id', 'extra_key', 'placeholder']
+        // 'user_id', 
+        const keys = ['name', 'website', 'search_key', 'icon', 'description', 'extra_key', 'placeholder']
+
+        if (data.name && data.user_id && await this.isExist(data.name, data.user_id, searchId)) {
+            throw new Error(`${data.name} 已存在`)
+            return false
+        }
 
         const promiseList = Object.entries(data)
             .filter(([k]) => keys.includes(k))
@@ -81,6 +93,22 @@ class SearchService implements ServiceSearch {
         const [result] = await connection.execute(statement, [val, searchId]);
 
         return result;
+    }
+
+    async isExist(name: string, user_id: number, id?: number) {
+        let statement = `
+            SELECT * From search WHERE name = ? && user_id = ?;
+        `
+        if (id) {
+            statement = 'SELECT * From search WHERE name = ? && user_id = ? && id != ?'
+        }
+        const [result] = await connection.execute(statement, [name, user_id, id]);
+
+        if (Array.isArray(result) && result.length) {
+            return true;
+        } {
+            return false;
+        }
     }
 }
 
