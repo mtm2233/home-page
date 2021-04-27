@@ -2,14 +2,14 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 16:19:20
- * @LastEditTime: 2021-04-26 20:48:06
+ * @LastEditTime: 2021-04-27 18:12:39
  * @LastEditors: mTm
 -->
 <template>
     <ALayout>
         <ALayoutHeader>
             <Refresh />
-            <Edit />
+            <Setting />
         </ALayoutHeader>
         <ALayoutContent>
             <RouterView />
@@ -19,14 +19,14 @@
 </template>
 <script lang="ts">
 import Refresh from './components/Refresh.vue'
-import Edit from './components/Edit.vue'
+import Setting from './components/setting/Setting.vue'
 import Footer from './components/Footer.vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
     name: 'Main',
     components: {
         Refresh,
-        Edit,
+        Setting,
         Footer,
     },
 })
