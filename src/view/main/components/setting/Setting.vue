@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 20:38:02
- * @LastEditTime: 2021-04-27 17:06:40
+ * @LastEditTime: 2021-04-27 21:37:24
  * @LastEditors: mTm
 -->
 <template>
@@ -16,7 +16,7 @@
     >
         <ACollapse v-model:activeKey="activeKey" accordion>
             <ACollapsePanel key="1" header="常规设置"> 1232 </ACollapsePanel>
-            <ACollapsePanel key="2" header="导航预设">
+            <ACollapsePanel key="2" header="隐藏导航预设">
                 <WebsitePreset />
             </ACollapsePanel>
         </ACollapse>

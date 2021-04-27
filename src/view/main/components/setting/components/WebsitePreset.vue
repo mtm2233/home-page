@@ -1,11 +1,21 @@
+<!--
+ * @Description: 
+ * @Author: mTm
+ * @Date: 2021-04-27 17:05:24
+ * @LastEditTime: 2021-04-27 21:55:58
+ * @LastEditors: mTm
+-->
 <template>
     <div>
         <a-input-search
             v-model:value="searchValue"
+            allow-clear
             style="margin-bottom: 8px"
             placeholder="搜索"
         />
         <a-tree
+            v-model:checkedKeys="checkedKeys"
+            checkable
             :expanded-keys="expandedKeys"
             :auto-expand-parent="autoExpandParent"
             :tree-data="gData"
@@ -27,18 +37,30 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import { TreeDataItem } from 'ant-design-vue/es/tree/Tree'
 
-import { genData, dataList, getParentKey } from './units'
+import { websiteByTypeAll } from '@/api/website'
+import { changeKey, generateList, getParentKey } from './useWebsite'
 
 export default defineComponent({
     name: 'WebsitePreset',
     setup() {
         const expandedKeys = ref<string[]>([])
+        const checkedKeys = ref<string[]>([])
         const searchValue = ref<string>('')
         const autoExpandParent = ref<boolean>(true)
-        const gData = ref<TreeDataItem[]>(genData)
+        const gData = ref<TreeDataItem[]>([])
+
+        const getData = () => {
+            websiteByTypeAll().then(({ data }) => {
+                gData.value = changeKey(data)
+            })
+        }
+
+        onMounted(() => {
+            getData()
+        })
 
         const onExpand = (keys: string[]) => {
             expandedKeys.value = keys
@@ -46,22 +68,24 @@ export default defineComponent({
         }
 
         watch(searchValue, value => {
-            const expanded = dataList
+            const expanded = generateList(gData.value)
                 .map((item: TreeDataItem) => {
                     if ((item.title as string).indexOf(value) > -1) {
                         return getParentKey(item.key as string, gData.value)
                     }
                     return null
                 })
-                .filter((item, i, self) => item && self.indexOf(item) === i)
+                .filter(
+                    (item: any, i: any, self: any) =>
+                        item && self.indexOf(item) === i,
+                )
             expandedKeys.value = expanded as string[]
             searchValue.value = value
             autoExpandParent.value = true
         })
-        console.log('dataList', dataList)
-        console.log('gData', gData.value)
         return {
             expandedKeys,
+            checkedKeys,
             searchValue,
             autoExpandParent,
             gData,
