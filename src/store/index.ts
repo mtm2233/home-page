@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:01:17
- * @LastEditTime: 2021-04-27 22:35:35
+ * @LastEditTime: 2021-04-28 19:08:10
  * @LastEditors: mTm
  */
 import { createStore } from 'vuex'
@@ -11,7 +11,7 @@ import db from '@/libs/db'
 export const store = createStore({
     state: {
         typeWebsite: db.get('typeWebsite') || [],
-        primary: db.get('primary') || '',
+        primary: db.get('primary') || {},
         bg: db.get('bg') || '',
     },
     mutations: {

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:20:03
- * @LastEditTime: 2021-04-27 22:59:33
+ * @LastEditTime: 2021-04-28 19:48:23
  * @LastEditors: mTm
 -->
 <template>
@@ -30,9 +30,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref, onMounted, watch } from 'vue'
+import { defineComponent, Ref, ref, onMounted, watch, inject } from 'vue'
 
-import { verifyHide } from '@/libs/methods'
 import { list } from '@/api/type'
 import Website from '../website/Website.vue'
 
@@ -44,6 +43,7 @@ export default defineComponent({
     setup() {
         const typeList: Ref<any[]> = ref([])
         const activeKey: Ref<number | null> = ref(null)
+        const verifyHide = inject('verifyHide')
 
         const getTypeList = () => {
             list().then(({ data }) => {

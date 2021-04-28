@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-28 17:51:16
+ * @LastEditTime: 2021-04-28 19:47:06
  * @LastEditors: mTm
 -->
 <template>
@@ -12,6 +12,7 @@
 </template>
 
 <script lang="ts">
+import UseProvides from '@/libs/provides'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
@@ -21,6 +22,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
     name: 'App',
     setup() {
+        UseProvides()
         return {
             locale: zh_CN,
         }

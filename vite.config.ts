@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-28 16:52:25
+ * @LastEditTime: 2021-04-28 20:00:58
  * @LastEditors: mTm
  */
 import { defineConfig } from 'vite'
@@ -51,12 +51,6 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             less: {
-                modifyVars: {
-                    // 更改主题在这里
-                    'primary-color': '#52c41a',
-                    'link-color': '#1DA57A',
-                    'border-radius-base': '2px',
-                },
                 javascriptEnabled: true,
             },
         },

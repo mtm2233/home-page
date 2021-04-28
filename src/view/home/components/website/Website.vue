@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:16:09
- * @LastEditTime: 2021-04-27 23:03:13
+ * @LastEditTime: 2021-04-28 19:48:40
  * @LastEditors: mTm
 -->
 <template>
@@ -39,10 +39,9 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, Ref, ref } from 'vue'
+import { defineComponent, onMounted, Ref, ref, inject } from 'vue'
 
 import { websiteByType } from '@/api/website'
-import { verifyHide } from '@/libs/methods'
 
 export default defineComponent({
     props: {
@@ -50,6 +49,7 @@ export default defineComponent({
     },
     setup(props) {
         const website: Ref<any[]> = ref([])
+        const verifyHide = inject('verifyHide')
 
         const getWebsiteByType = () => {
             if (props.type) {
