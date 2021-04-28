@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 16:46:17
- * @LastEditTime: 2021-04-25 21:19:59
+ * @LastEditTime: 2021-04-28 16:51:45
  * @LastEditors: mTm
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/',
         name: 'Main',
         redirect: {
-            name: 'Main',
+            name: 'Home',
         },
         component: () => import('@/view/main/Main.vue'),
         children: [

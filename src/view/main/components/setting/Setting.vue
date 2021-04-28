@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 20:38:02
- * @LastEditTime: 2021-04-27 22:31:58
+ * @LastEditTime: 2021-04-28 15:48:18
  * @LastEditors: mTm
 -->
 <template>
@@ -15,7 +15,9 @@
         @close="onClose"
     >
         <ACollapse v-model:activeKey="activeKey" accordion>
-            <ACollapsePanel key="1" header="常规设置"> 1232 </ACollapsePanel>
+            <ACollapsePanel key="1" header="定制主题">
+                <Theme :ref="setItemRef" />
+            </ACollapsePanel>
             <ACollapsePanel key="2" header="隐藏导航预设">
                 <WebsitePreset :ref="setItemRef" />
             </ACollapsePanel>
@@ -26,13 +28,15 @@
 import { defineComponent, Ref, ref } from 'vue'
 import { AlignRightOutlined } from '@ant-design/icons-vue'
 
-import WebsitePreset from './components/WebsitePreset.vue'
+import WebsitePreset from './components/websitePreset/WebsitePreset.vue'
+import Theme from './components/theme/Theme.vue'
 
 export default defineComponent({
     name: 'Edit',
     components: {
         AlignRightOutlined,
         WebsitePreset,
+        Theme,
     },
     setup() {
         const iconStyle = {
