@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-28 09:27:58
- * @LastEditTime: 2021-04-28 17:06:39
+ * @LastEditTime: 2021-04-28 18:34:13
  * @LastEditors: mTm
 -->
 <template>
@@ -17,23 +17,16 @@ export default defineComponent({
         const save = () => {
             console.log('save')
         }
-        // (window as any).less
-        //     .modifyVars({
-        //         '@primary-color': '#faad14',
-        //     })
-        //     .then(() => {
-        //         // this.$_theme_updateClass(newTheme);
-        //         console.log(123)
-        //     })
-        //     .catch(() => {
-        //         // this.$message.error('主题更换失败！')
-        //         console.log(1233)
-        //     })
-        // console.log(less)
-        // less.modifyVars({
-        //         '@primary-color': '#faad14',
-        //     })
-        // console.log(modifyVars);
+        ;(window as any).less
+            .modifyVars({
+                'primary-color': 'blue',
+            })
+            .then(() => {
+                console.log('成功')
+            })
+            .catch(() => {
+                console.log('错误')
+            })
         return {
             save,
         }

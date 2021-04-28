@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-25 18:04:50
+ * @LastEditTime: 2021-04-28 17:51:16
  * @LastEditors: mTm
 -->
 <template>
@@ -29,7 +29,7 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-@import './assets/style/index.less';
+@import './assets/styles/index.less';
 
 body {
     overflow-y: auto;
