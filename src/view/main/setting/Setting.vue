@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 20:38:02
- * @LastEditTime: 2021-04-28 22:55:34
+ * @LastEditTime: 2021-04-28 23:17:20
  * @LastEditors: mTm
 -->
 <template>
@@ -60,9 +60,7 @@ export default defineComponent({
         const onClose = () => {
             visible.value = false
             itemRefs.forEach((el: any) => {
-                if (el.save) {
-                    el.save()
-                }
+                el && el.save && el.save()
             })
         }
         const showEdit = () => {
