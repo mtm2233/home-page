@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-28 17:47:09
- * @LastEditTime: 2021-04-28 18:33:30
+ * @LastEditTime: 2021-04-28 22:03:25
  * @LastEditors: mTm
  */
 const path = require('path')
@@ -17,6 +17,7 @@ const options = [
     '@layout-header-background',
     '@layout-body-background',
     '@layout-footer-background',
+    '@primary-bg',
     // '@secondary-color',
     // '@text-color-secondary',
     // '@heading-color',

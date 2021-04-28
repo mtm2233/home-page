@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:01:17
- * @LastEditTime: 2021-04-28 19:08:10
+ * @LastEditTime: 2021-04-28 22:24:48
  * @LastEditors: mTm
  */
 import { createStore } from 'vuex'
@@ -11,8 +11,8 @@ import db from '@/libs/db'
 export const store = createStore({
     state: {
         typeWebsite: db.get('typeWebsite') || [],
-        primary: db.get('primary') || {},
-        bg: db.get('bg') || '',
+        '@primary-color': db.get('@primary-color') || null,
+        '@primary-bg': db.get('@primary-bg') || null,
     },
     mutations: {
         chageState(

@@ -2,10 +2,17 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-28 18:53:45
- * @LastEditTime: 2021-04-28 21:34:29
+ * @LastEditTime: 2021-04-28 23:07:42
  * @LastEditors: mTm
  */
 const themeList = [
+    {
+        text: '山雾',
+        name: 'mountain-fog',
+        variables: {
+            '@primary-color': '#ededed',
+        },
+    },
     {
         text: '薄暮',
         name: 'dust-red',
@@ -82,7 +89,14 @@ const themeList = [
         variables: {
             '@primary-color': '#34495e',
         },
-    }
+    },
+    {
+        text: '粉红魅力',
+        name: 'PINK GLAMOUR',
+        variables: {
+            '@primary-color': '#ff7979',
+        },
+    },
 ]
 
 export { themeList }

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-28 09:27:58
- * @LastEditTime: 2021-04-28 21:35:43
+ * @LastEditTime: 2021-04-28 22:50:01
  * @LastEditors: mTm
 -->
 <template>
@@ -10,7 +10,7 @@
         <ATooltip v-for="item of themeList" :key="item.name" :title="item.text">
             <li
                 :style="{
-                    backgroundColor: item.variables['@primary-color'],
+                    backgroundColor: item.variables['@primary-bg'],
                 }"
                 @click="changeTheme(item)"
             >
@@ -36,14 +36,25 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
-        const theme: Ref<any> = ref(store.state.primary)
+        const theme: Ref<any> = ref(store.state['@primary-bg'])
         const $message: any = inject('$message')
 
         const changeTheme = (item: any) => {
+            let variables = {
+                ...item.variables,
+            }
+            const primary = store.state['@primary-color']
+            if (primary && primary.variables) {
+                variables = Object.assign(variables, primary.variables)
+            }
             ;(window as any).less
-                .modifyVars(item.variables)
+                .modifyVars(variables)
                 .then(() => {
                     theme.value = item
+                    store.commit('chageState', {
+                        key: '@primary-bg',
+                        value: item,
+                    })
                 })
                 .catch(() => {
                     $message.warning('定制主题失败~')
@@ -52,7 +63,7 @@ export default defineComponent({
 
         const save = () => {
             store.commit('chageState', {
-                key: 'primary',
+                key: '@primary-bg',
                 value: theme.value,
                 dbSet: true,
             })

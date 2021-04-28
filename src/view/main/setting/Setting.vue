@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 20:38:02
- * @LastEditTime: 2021-04-28 18:52:51
+ * @LastEditTime: 2021-04-28 22:55:34
  * @LastEditors: mTm
 -->
 <template>
@@ -14,11 +14,15 @@
         :width="500"
         @close="onClose"
     >
-        <ACollapse v-model:activeKey="activeKey" accordion>
+        <!-- accordion 最多只能展开一个 -->
+        <ACollapse v-model:activeKey="activeKey">
             <ACollapsePanel key="1" header="定制主题">
                 <Theme :ref="setItemRef" />
             </ACollapsePanel>
-            <ACollapsePanel key="2" header="隐藏导航预设">
+            <ACollapsePanel key="2" header="背景偏好">
+                <BgTheme :ref="setItemRef" />
+            </ACollapsePanel>
+            <ACollapsePanel key="3" header="隐藏导航预设">
                 <WebsitePreset :ref="setItemRef" />
             </ACollapsePanel>
         </ACollapse>
@@ -30,6 +34,7 @@ import { AlignRightOutlined } from '@ant-design/icons-vue'
 
 import WebsitePreset from './components/websitePreset/WebsitePreset.vue'
 import Theme from './components/theme/Theme.vue'
+import BgTheme from './components/bgTheme/BgTheme.vue'
 
 export default defineComponent({
     name: 'Edit',
@@ -37,6 +42,7 @@ export default defineComponent({
         AlignRightOutlined,
         WebsitePreset,
         Theme,
+        BgTheme,
     },
     setup() {
         const iconStyle = {
@@ -54,14 +60,16 @@ export default defineComponent({
         const onClose = () => {
             visible.value = false
             itemRefs.forEach((el: any) => {
-                el.save && el.save()
+                if (el.save) {
+                    el.save()
+                }
             })
         }
         const showEdit = () => {
             visible.value = true
         }
 
-        const activeKey: Ref<number | null> = ref(null)
+        const activeKey = ref(['1'])
         return {
             iconStyle,
             visible,
