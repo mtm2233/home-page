@@ -7,36 +7,36 @@
  */
 import { App, Plugin } from 'vue'
 import {
-    Layout,
-    Input,
-    Tree,
-    Typography,
-    Tabs,
-    Row,
-    Col,
-    Dropdown,
-    Collapse,
-    Drawer,
-    Tooltip,
+  Layout,
+  Input,
+  Tree,
+  Typography,
+  Tabs,
+  Row,
+  Col,
+  Dropdown,
+  Collapse,
+  Drawer,
+  Tooltip,
 } from 'ant-design-vue'
 
 const plugins: Plugin[] = [
-    Layout,
-    Input,
-    Tree,
-    Typography,
-    Tabs,
-    Row,
-    Col,
-    Dropdown,
-    Collapse,
-    Drawer,
-    Tooltip,
+  Layout,
+  Input,
+  Tree,
+  Typography,
+  Tabs,
+  Row,
+  Col,
+  Dropdown,
+  Collapse,
+  Drawer,
+  Tooltip,
 ]
 
 export const setupAntd = (app: App, options: any = {}): void => {
-    // app.config.globalProperties.$message = message
-    plugins.forEach(plugin => {
-        app.use(plugin)
-    })
+  // app.config.globalProperties.$message = message
+  plugins.forEach(plugin => {
+    app.use(plugin)
+  })
 }

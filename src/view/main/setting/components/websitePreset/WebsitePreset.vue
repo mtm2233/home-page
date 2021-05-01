@@ -6,35 +6,31 @@
  * @LastEditors: mTm
 -->
 <template>
-    <div>
-        <a-input-search
-            v-model:value="searchValue"
-            allow-clear
-            style="margin-bottom: 8px"
-            placeholder="搜索"
-        />
-        <a-tree
-            v-model:checkedKeys="checkedKeys"
-            checkable
-            :expanded-keys="expandedKeys"
-            :auto-expand-parent="autoExpandParent"
-            :tree-data="gData"
-            @expand="onExpand"
-        >
-            <template #title="{ title }">
-                <span v-if="title.indexOf(searchValue) > -1">
-                    {{ title.substr(0, title.indexOf(searchValue)) }}
-                    <span style="color: #f50">{{ searchValue }}</span>
-                    {{
-                        title.substr(
-                            title.indexOf(searchValue) + searchValue.length,
-                        )
-                    }}
-                </span>
-                <span v-else>{{ title }}</span>
-            </template>
-        </a-tree>
-    </div>
+  <div>
+    <a-input-search
+      v-model:value="searchValue"
+      allow-clear
+      style="margin-bottom: 8px"
+      placeholder="搜索"
+    />
+    <a-tree
+      v-model:checkedKeys="checkedKeys"
+      checkable
+      :expanded-keys="expandedKeys"
+      :auto-expand-parent="autoExpandParent"
+      :tree-data="gData"
+      @expand="onExpand"
+    >
+      <template #title="{ title }">
+        <span v-if="title.indexOf(searchValue) > -1">
+          {{ title.substr(0, title.indexOf(searchValue)) }}
+          <span style="color: #f50">{{ searchValue }}</span>
+          {{ title.substr(title.indexOf(searchValue) + searchValue.length) }}
+        </span>
+        <span v-else>{{ title }}</span>
+      </template>
+    </a-tree>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
@@ -45,69 +41,68 @@ import { websiteByTypeAll } from '@/api/website'
 import { changeKey, generateList, getParentKey } from './useWebsite'
 
 export default defineComponent({
-    name: 'WebsitePreset',
-    setup() {
-        const store = useStore()
-        const expandedKeys = ref<string[]>([])
-        const checkedKeys = ref<string[]>([])
-        const searchValue = ref<string>('')
-        const autoExpandParent = ref<boolean>(true)
-        const gData = ref<TreeDataItem[]>([])
+  name: 'WebsitePreset',
+  setup() {
+    const store = useStore()
+    const expandedKeys = ref<string[]>([])
+    const checkedKeys = ref<string[]>([])
+    const searchValue = ref<string>('')
+    const autoExpandParent = ref<boolean>(true)
+    const gData = ref<TreeDataItem[]>([])
 
-        const getData = () => {
-            websiteByTypeAll().then(({ data }) => {
-                gData.value = changeKey(data)
-                nextTick(() => {
-                    const { typeWebsite } = store.state
-                    checkedKeys.value = typeWebsite
-                })
-            })
-        }
-
-        onMounted(() => {
-            getData()
+    const getData = () => {
+      websiteByTypeAll().then(({ data }) => {
+        gData.value = changeKey(data)
+        nextTick(() => {
+          const { typeWebsite } = store.state
+          checkedKeys.value = typeWebsite
         })
+      })
+    }
 
-        const onExpand = (keys: string[]) => {
-            expandedKeys.value = keys
-            autoExpandParent.value = false
-        }
+    onMounted(() => {
+      getData()
+    })
 
-        watch(searchValue, value => {
-            const expanded = generateList(gData.value)
-                .map((item: TreeDataItem) => {
-                    if ((item.title as string).indexOf(value) > -1) {
-                        return getParentKey(item.key as string, gData.value)
-                    }
-                    return null
-                })
-                .filter(
-                    (item: any, i: any, self: any) =>
-                        item && self.indexOf(item) === i,
-                )
-            expandedKeys.value = expanded as string[]
-            searchValue.value = value
-            autoExpandParent.value = true
+    const onExpand = (keys: string[]) => {
+      expandedKeys.value = keys
+      autoExpandParent.value = false
+    }
+
+    watch(searchValue, value => {
+      const expanded = generateList(gData.value)
+        .map((item: TreeDataItem) => {
+          if ((item.title as string).indexOf(value) > -1) {
+            return getParentKey(item.key as string, gData.value)
+          }
+          return null
         })
+        .filter(
+          (item: any, i: any, self: any) => item && self.indexOf(item) === i,
+        )
+      expandedKeys.value = expanded as string[]
+      searchValue.value = value
+      autoExpandParent.value = true
+    })
 
-        // 保存
-        const save = () => {
-            store.commit('chageState', {
-                key: 'typeWebsite',
-                value: checkedKeys.value,
-                dbSet: true,
-            })
-        }
+    // 保存
+    const save = () => {
+      store.commit('chageState', {
+        key: 'typeWebsite',
+        value: checkedKeys.value,
+        dbSet: true,
+      })
+    }
 
-        return {
-            expandedKeys,
-            checkedKeys,
-            searchValue,
-            autoExpandParent,
-            gData,
-            onExpand,
-            save,
-        }
-    },
+    return {
+      expandedKeys,
+      checkedKeys,
+      searchValue,
+      autoExpandParent,
+      gData,
+      onExpand,
+      save,
+    }
+  },
 })
 </script>

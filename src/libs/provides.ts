@@ -10,21 +10,21 @@ import { useStore } from 'vuex'
 import { message } from 'ant-design-vue'
 
 function verifyHide(name: string): boolean {
-    if (!name) return false
-    const store = useStore()
-    const typeWebsite = store.state.typeWebsite
-    return !typeWebsite.includes(name)
+  if (!name) return false
+  const store = useStore()
+  const typeWebsite = store.state.typeWebsite
+  return !typeWebsite.includes(name)
 }
 
 const provides = {
-    verifyHide,
-    $message: message,
+  verifyHide,
+  $message: message,
 }
 
 const UseProvides = (): void => {
-    Object.entries(provides).forEach(([k, v]) => {
-        provide(k, v)
-    })
+  Object.entries(provides).forEach(([k, v]) => {
+    provide(k, v)
+  })
 }
 
 export default UseProvides

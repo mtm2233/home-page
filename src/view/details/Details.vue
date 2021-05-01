@@ -6,22 +6,22 @@
  * @LastEditors: mTm
 -->
 <template>
-    <h2>details</h2>
-    <button @click="goBack">上一页</button>
+  <h2>details</h2>
+  <button @click="goBack">上一页</button>
 </template>
 
 <script lang="ts">
 import { useRouter } from 'vue-router'
 export default {
-    setup(): any {
-        const router = useRouter()
-        const goBack = () => {
-            router.go(-1)
-        }
-        return {
-            goBack,
-        }
-    },
+  setup(): any {
+    const router = useRouter()
+    const goBack = () => {
+      router.go(-1)
+    }
+    return {
+      goBack,
+    }
+  },
 }
 </script>
 

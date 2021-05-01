@@ -8,15 +8,15 @@
 import service from '@/libs/service'
 
 export function websiteByType(typeId: number | null): Promise<any> {
-    return service.request({
-        url: `/api/website/type/${typeId}`,
-        method: 'GET',
-    })
+  return service.request({
+    url: `/api/website/type/${typeId}`,
+    method: 'GET',
+  })
 }
 
 export function websiteByTypeAll(): Promise<any> {
-    return service.request({
-        url: `/api/website/type`,
-        method: 'GET',
-    })
+  return service.request({
+    url: `/api/website/type`,
+    method: 'GET',
+  })
 }
