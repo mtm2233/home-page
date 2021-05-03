@@ -7,6 +7,7 @@
  */
 import { App, Plugin } from 'vue'
 import {
+  ConfigProvider,
   Layout,
   Input,
   Tree,
@@ -21,6 +22,7 @@ import {
 } from 'ant-design-vue'
 
 const plugins: Plugin[] = [
+  ConfigProvider,
   Layout,
   Input,
   Tree,
