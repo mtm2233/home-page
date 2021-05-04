@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-05-01 18:32:36
- * @LastEditTime: 2021-05-04 17:45:11
+ * @LastEditTime: 2021-05-04 18:39:46
  * @LastEditors: mTm
  */
 import { store } from '@/store'
@@ -13,10 +13,11 @@ export default function (): void {
   if (token) {
     store.commit('setToken', token)
     const newPath = location.origin + location.pathname
-    if (history.replaceState) {
-      history.replaceState(newPath, '', newPath)
-    } else {
-      location.href = newPath
-    }
+    // if (history.replaceState) {
+    //   history.replaceState(newPath, '', newPath)
+    // } else {
+    //   location.href = newPath
+    // }
+    location.href = newPath
   }
 }
