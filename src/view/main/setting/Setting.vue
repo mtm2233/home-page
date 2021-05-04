@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 20:38:02
- * @LastEditTime: 2021-04-28 23:17:20
+ * @LastEditTime: 2021-05-03 22:35:23
  * @LastEditors: mTm
 -->
 <template>
@@ -25,6 +25,9 @@
       <ACollapsePanel key="3" header="隐藏导航预设">
         <WebsitePreset :ref="setItemRef" />
       </ACollapsePanel>
+      <ACollapsePanel key="4" header="云端保存">
+        <Login :ref="setItemRef" />
+      </ACollapsePanel>
     </ACollapse>
   </ADrawer>
 </template>
@@ -35,6 +38,7 @@ import { AlignRightOutlined } from '@ant-design/icons-vue'
 import WebsitePreset from './components/websitePreset/WebsitePreset.vue'
 import Theme from './components/theme/Theme.vue'
 import BgTheme from './components/bgTheme/BgTheme.vue'
+import Login from './components/login/Login.vue'
 
 export default defineComponent({
   name: 'Edit',
@@ -43,6 +47,7 @@ export default defineComponent({
     WebsitePreset,
     Theme,
     BgTheme,
+    Login,
   },
   setup() {
     const iconStyle = {

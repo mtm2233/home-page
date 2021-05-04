@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-28 20:00:58
+ * @LastEditTime: 2021-05-03 22:27:09
  * @LastEditors: mTm
  */
 import { defineConfig } from 'vite'
@@ -65,8 +65,8 @@ export default defineConfig({
     // 设置代理
     proxy: {
       '^/api/.*': {
-        // target: 'https://api.isdream.cn',
-        target: 'http://localhost:8099',
+        target: 'https://api.isdream.cn/homepage',
+        // target: 'http://localhost:8099',
         changeOrigin: true, // 将主机标头的来源更改为目标URL,
         rewrite: path => path.replace(/^\/api/, ''),
       },

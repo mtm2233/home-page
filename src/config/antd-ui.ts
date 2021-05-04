@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-28 16:15:02
- * @LastEditTime: 2021-04-28 19:32:48
+ * @LastEditTime: 2021-05-03 22:33:19
  * @LastEditors: mTm
  */
 import { App, Plugin } from 'vue'
@@ -19,6 +19,7 @@ import {
   Collapse,
   Drawer,
   Tooltip,
+  Button,
 } from 'ant-design-vue'
 
 const plugins: Plugin[] = [
@@ -34,6 +35,7 @@ const plugins: Plugin[] = [
   Collapse,
   Drawer,
   Tooltip,
+  Button,
 ]
 
 export const setupAntd = (app: App, options: any = {}): void => {
