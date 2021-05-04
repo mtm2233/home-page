@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:34:54
- * @LastEditTime: 2021-05-04 11:53:38
+ * @LastEditTime: 2021-05-04 18:33:33
  * @LastEditors: mTm
  */
 import axios, { AxiosRequestConfig } from 'axios'
@@ -14,7 +14,7 @@ import config from '@/config'
 import handlerError from './common/handlerError'
 
 if (import.meta.env.PROD) {
-  axios.defaults.baseURL = 'https://api.isdream.cn/sso'
+  axios.defaults.baseURL = 'https://api.isdream.cn/homepage'
 }
 
 //post请求头
