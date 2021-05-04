@@ -6,6 +6,11 @@
  * @LastEditors: mTm
  */
 import * as fs from 'fs';
+import * as Router from 'koa-router'
+
+import { NGINX_PREFIX } from '../app/config'
+
+const koaRouter = new Router()
 
 const useRoutes = function(app: any) {
   fs.readdirSync(__dirname)
@@ -13,9 +18,22 @@ const useRoutes = function(app: any) {
   .forEach((file: string) => {
     if (file === 'index.js') return;
     const router = require(`./${file}`);
-    app.use(router.default.routes());
-    app.use(router.default.allowedMethods());
+    // 统一添加prefix
+    // 用于nginx: 同一域名配置多个api
+    if (NGINX_PREFIX) {
+      koaRouter.use(NGINX_PREFIX, router.default.routes());
+      koaRouter.use(NGINX_PREFIX, router.default.allowedMethods());
+    } else {
+      app.use(router.default.routes());
+      app.use(router.default.allowedMethods());
+    }  
   })
+  // 统一添加prefix
+  // 用于nginx: 同一域名配置多个api
+  if (NGINX_PREFIX) {
+    app.use(koaRouter.routes())
+    app.use(koaRouter.allowedMethods())
+  }
 }
 
 export default useRoutes;
