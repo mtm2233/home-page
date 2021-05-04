@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:20:03
- * @LastEditTime: 2021-04-28 19:48:23
+ * @LastEditTime: 2021-05-04 18:07:49
  * @LastEditors: mTm
 -->
 <template>
@@ -39,7 +39,7 @@ export default defineComponent({
   setup() {
     const typeList: Ref<any[]> = ref([])
     const activeKey: Ref<number | null> = ref(null)
-    const verifyHide = inject('verifyHide')
+    const verifyHide = inject<any>('verifyHide')
 
     const getTypeList = () => {
       list().then(({ data }) => {

@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-26 22:02:12
- * @LastEditTime: 2021-04-26 22:50:31
+ * @LastEditTime: 2021-05-04 17:58:30
  * @LastEditors: mTm
  */
 const config = {
@@ -18,6 +18,8 @@ const config = {
   expires: 30 * 24 * 3600,
   // 本地存储前缀标识
   dbPrefix: 'homePage',
+
+  loginName: 'Login',
 }
 
 export default config

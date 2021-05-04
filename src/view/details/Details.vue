@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-23 16:47:57
- * @LastEditTime: 2021-04-23 17:13:00
+ * @LastEditTime: 2021-05-04 18:00:53
  * @LastEditors: mTm
 -->
 <template>
@@ -11,9 +11,10 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-export default {
-  setup(): any {
+export default defineComponent({
+  setup() {
     const router = useRouter()
     const goBack = () => {
       router.go(-1)
@@ -22,7 +23,7 @@ export default {
       goBack,
     }
   },
-}
+})
 </script>
 
 <style></style>

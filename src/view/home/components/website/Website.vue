@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:16:09
- * @LastEditTime: 2021-04-28 19:48:40
+ * @LastEditTime: 2021-05-04 18:06:47
  * @LastEditors: mTm
 -->
 <template>
@@ -45,11 +45,14 @@ import { websiteByType } from '@/api/website'
 
 export default defineComponent({
   props: {
-    type: Number,
+    type: {
+      type: Number,
+      default: 0,
+    },
   },
   setup(props) {
     const website: Ref<any[]> = ref([])
-    const verifyHide = inject('verifyHide')
+    const verifyHide = inject<any>('verifyHide')
 
     const getWebsiteByType = () => {
       if (props.type) {
