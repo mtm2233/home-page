@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-04-28 17:56:01
+ * @LastEditTime: 2021-05-04 23:48:36
  * @LastEditors: mTm
 -->
 <!DOCTYPE html>
@@ -24,9 +24,15 @@
         env: 'production',
       }
     </script>
-    <script
+    <!-- <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"
-    ></script>
+    ></script> -->
+
+    <script>
+      !window.less.modifyVars &&
+        document.write(unescape('%3Cscript src="/less.min.js"%3E%3C/script%3E'))
+    </script>
+    
   </body>
 </html>
