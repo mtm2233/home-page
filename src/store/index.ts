@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:01:17
- * @LastEditTime: 2021-05-03 22:31:57
+ * @LastEditTime: 2021-05-07 17:26:03
  * @LastEditors: mTm
  */
 import { createStore } from 'vuex'
@@ -13,6 +13,7 @@ import config from '@/config'
 export const store = createStore({
   state: {
     typeWebsite: db.get('typeWebsite') || [],
+    token: '',
     '@primary-color': db.get('@primary-color') || null,
     '@primary-bg': db.get('@primary-bg') || null,
   },
