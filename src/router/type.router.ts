@@ -16,5 +16,6 @@ typeRouter.post('/', verifyAuth, typeController.create)
 typeRouter.get('/', parsingToken, typeController.list)
 typeRouter.get('/:typeId', parsingToken, verifyShowPermission, typeController.detail)
 typeRouter.patch('/:typeId', verifyAuth, verifyPermission, typeController.update)
+typeRouter.delete('/:typeId', verifyAuth, verifyPermission, typeController.remove)
 
 export default typeRouter;

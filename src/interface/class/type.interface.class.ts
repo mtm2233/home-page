@@ -13,6 +13,7 @@ interface ControllerType {
     list(ctx: Context, next: () => Promise<any>):Promise<any>;
     detail(ctx: Context, next: () => Promise<any>):Promise<any>;
     update(ctx: Context, next: () => Promise<any>):Promise<any>;
+    remove(ctx: Context, next: () => Promise<any>):Promise<any>;
 }
 
 interface ServiceType {
@@ -21,7 +22,8 @@ interface ServiceType {
     detail(id: number):Promise<any>;
     update(typeId: number, data: TypeAdd):Promise<any>;
     updateVal(key: string, val: any, typeId: number):Promise<any>;
-    isExist(name: string, user_id: number, id?: number): Promise<boolean>
+    isExist(name: string, user_id: number, id?: number): Promise<boolean>;
+    remove(typeId: number):Promise<any>;
 }
 
 export {

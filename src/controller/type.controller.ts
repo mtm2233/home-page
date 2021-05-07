@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:39:18
- * @LastEditTime: 2021-04-27 23:40:48
+ * @LastEditTime: 2021-05-07 23:11:25
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -81,6 +81,22 @@ class TypeController implements ControllerType {
             }
             ctx.body = {
                 message: '修改成功'
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
+    async remove(ctx: Context, next: () => Promise<any>) {
+        try {
+            const { typeId } = ctx.params;
+            const result: any = await service.remove(typeId)
+            if (Array.isArray(result) && result.length) {
+                throw new Error('网址分类删除失败')
+                return false
+            }
+            ctx.body = {
+                message: '网址分类删除成功'
             }
         } catch (error) {
             ctx.app.emit('error', error, ctx);

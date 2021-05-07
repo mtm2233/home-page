@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-04-28 00:14:40
+ * @LastEditTime: 2021-05-07 23:10:10
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -19,7 +19,7 @@ class TypeService implements ServiceType {
             description = null,
             sort = null,
             pid = null
-        } = data;
+        } = data; 
 
         if (pid) {
             const pidInfo: any = await this.detail(pid)
@@ -129,6 +129,16 @@ class TypeService implements ServiceType {
         } {
             return false;
         }
+    }
+
+    async remove(typeId: number) {
+        const statement = `
+            DELETE FROM type WHERE id = ?;
+        `
+
+        const [result] = await connection.execute(statement, [typeId])
+
+        return result
     }
 }
 
