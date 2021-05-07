@@ -38,10 +38,10 @@ const parsingToken = async (ctx: Context, next: () => Promise<any>) => {
         ctx.user = user;
         await next()
     } catch(error) {
-        // ctx.user = {
-        //     id: SYSTEM_USER_ID,
-        //     name: SYSTEM_USER_NAME
-        // };
+        ctx.user = {
+            id: SYSTEM_USER_ID,
+            name: SYSTEM_USER_NAME
+        };
         await next();
     }
 }
@@ -86,7 +86,7 @@ const verifyShowPermission = async (ctx: Context, next: () => Promise<any>) => {
             return false;
         }
         
-        const result = await authService.authPermission(tableName, id, userId);
+        const result = await authService.authShowPermission(tableName, id, userId);
         if (!result) {
             ctx.app.emit('error', new Error(UN_AUTH_PERMISSION), ctx);
             return false;
