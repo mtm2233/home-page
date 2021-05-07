@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:22:15
- * @LastEditTime: 2021-04-28 00:06:20
+ * @LastEditTime: 2021-05-07 22:53:29
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -117,6 +117,22 @@ class WebsiteController implements ControllerWebsite {
             }
             ctx.body = {
                 message: '网址编辑成功'
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
+    async remove(ctx: Context, next: () => Promise<any>) {
+        try {
+            const { websiteId } = ctx.params;
+            const result: any = await service.remove(websiteId)
+            if (Array.isArray(result) && result.length) {
+                throw new Error('删除失败')
+                return false
+            }
+            ctx.body = {
+                message: '网址删除成功'
             }
         } catch (error) {
             ctx.app.emit('error', error, ctx);

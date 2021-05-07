@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 22:38:58
- * @LastEditTime: 2021-04-22 17:34:22
+ * @LastEditTime: 2021-05-07 22:48:24
  * @LastEditors: mTm
  */
 import * as jwt from 'jsonwebtoken';
@@ -38,10 +38,10 @@ const parsingToken = async (ctx: Context, next: () => Promise<any>) => {
         ctx.user = user;
         await next()
     } catch(error) {
-        ctx.user = {
-            id: SYSTEM_USER_ID,
-            name: SYSTEM_USER_NAME
-        };
+        // ctx.user = {
+        //     id: SYSTEM_USER_ID,
+        //     name: SYSTEM_USER_NAME
+        // };
         await next();
     }
 }
