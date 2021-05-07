@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 20:38:02
- * @LastEditTime: 2021-05-03 22:35:23
+ * @LastEditTime: 2021-05-07 14:47:02
  * @LastEditors: mTm
 -->
 <template>
@@ -11,7 +11,7 @@
     title="设置"
     placement="right"
     :visible="visible"
-    :width="500"
+    width="auto"
     @close="onClose"
   >
     <!-- accordion 最多只能展开一个 -->
