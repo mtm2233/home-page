@@ -2,11 +2,12 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-27 17:05:24
- * @LastEditTime: 2021-04-28 09:32:15
+ * @LastEditTime: 2021-05-08 10:36:58
  * @LastEditors: mTm
 -->
 <template>
   <div>
+    <Actions :id="selectedKeys[0]" v-model:editing="editing" />
     <a-input-search
       v-model:value="searchValue"
       allow-clear
@@ -15,10 +16,11 @@
     />
     <a-tree
       v-model:checkedKeys="checkedKeys"
-      checkable
+      v-model:selectedKeys="selectedKeys"
+      :checkable="!editing"
       :expanded-keys="expandedKeys"
       :auto-expand-parent="autoExpandParent"
-      :tree-data="gData"
+      :tree-data="editing ? gDataEditing : gData"
       @expand="onExpand"
     >
       <template #title="{ title }">
@@ -38,21 +40,30 @@ import { TreeDataItem } from 'ant-design-vue/es/tree/Tree'
 import { useStore } from 'vuex'
 
 import { websiteByTypeAll } from '@/api/website'
-import { changeKey, generateList, getParentKey } from './useWebsite'
+import { changeKey, generateList, getParentKey } from './useData'
+
+import Actions from './components/Actions.vue'
 
 export default defineComponent({
   name: 'WebsitePreset',
+  components: {
+    Actions,
+  },
   setup() {
     const store = useStore()
     const expandedKeys = ref<string[]>([])
+    // 选中的项
+    const selectedKeys = ref<string[]>([])
     const checkedKeys = ref<string[]>([])
     const searchValue = ref<string>('')
     const autoExpandParent = ref<boolean>(true)
     const gData = ref<TreeDataItem[]>([])
+    const gDataEditing = ref<TreeDataItem[]>([])
 
     const getData = () => {
       websiteByTypeAll().then(({ data }) => {
         gData.value = changeKey(data)
+        gDataEditing.value = changeKey(data, true)
         nextTick(() => {
           const { typeWebsite } = store.state
           checkedKeys.value = typeWebsite
@@ -85,6 +96,9 @@ export default defineComponent({
       autoExpandParent.value = true
     })
 
+    // 正在编辑
+    const editing = ref(false)
+
     // 保存
     const save = () => {
       store.commit('chageState', {
@@ -96,12 +110,15 @@ export default defineComponent({
 
     return {
       expandedKeys,
+      selectedKeys,
       checkedKeys,
       searchValue,
       autoExpandParent,
       gData,
+      gDataEditing,
       onExpand,
       save,
+      editing,
     }
   },
 })

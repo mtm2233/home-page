@@ -2,12 +2,12 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-26 22:02:12
- * @LastEditTime: 2021-05-07 17:32:49
+ * @LastEditTime: 2021-05-07 17:54:28
  * @LastEditors: mTm
  */
 const config = {
   title: {
-    main: 'dream起始页',
+    main: '起始页',
   },
 
   token: {
