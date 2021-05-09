@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-08 09:30:54
+ * @LastEditTime: 2021-05-09 23:28:09
  * @LastEditors: mTm
 -->
 <template>
@@ -12,17 +12,26 @@
     @ok="handleOk"
     @cancel="cancel"
   >
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
+    <a-tabs v-model:activeKey="activeKey">
+      <a-tab-pane key="1" tab="分类"><TypeEdit /></a-tab-pane>
+      <a-tab-pane key="2" tab="网址"><WebsiteEdit /></a-tab-pane>
+    </a-tabs>
   </a-modal>
 </template>
 <script lang="ts">
 import { defineComponent, Ref, ref } from 'vue'
 
+import TypeEdit from './TypeEdit.vue'
+import WebsiteEdit from './WebsiteEdit.vue'
+
 export default defineComponent({
+  components: {
+    TypeEdit,
+    WebsiteEdit,
+  },
   setup() {
     const visible = ref(false)
+    const activeKey = ref('1')
     const id: Ref<number | null> = ref(null)
 
     const show = () => {
@@ -38,6 +47,7 @@ export default defineComponent({
 
     return {
       visible,
+      activeKey,
       id,
       show,
       handleOk,

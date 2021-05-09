@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-08 10:23:23
+ * @LastEditTime: 2021-05-09 23:25:15
  * @LastEditors: mTm
 -->
 <template>
@@ -21,7 +21,7 @@
     class="actions"
   >
     <a-space>
-      <a-button>新增</a-button>
+      <a-button @click="show">新增</a-button>
       <a-button type="primary">编辑</a-button>
       <a-button type="danger">删除</a-button>
       <a-button type="link" @click="changeAction(false)">取消编辑</a-button>
@@ -36,7 +36,7 @@
 import { defineComponent, ref, computed, Ref } from 'vue'
 import { useStore } from 'vuex'
 
-import Edit from './Edit.vue'
+import Edit from './edit/Edit.vue'
 
 export default defineComponent({
   components: {
@@ -61,11 +61,16 @@ export default defineComponent({
       context.emit('update:editing', openAction)
     }
 
+    const show = (id: number | undefined) => {
+      editRef.value.show(id)
+    }
+
     return {
       verifyLogin,
       is_action,
       editRef,
       changeAction,
+      show,
     }
   },
 })
