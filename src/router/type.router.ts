@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:37:23
- * @LastEditTime: 2021-05-10 23:17:05
+ * @LastEditTime: 2021-05-10 23:28:02
  * @LastEditors: mTm
  */
 import * as Router from 'koa-router';
@@ -14,7 +14,7 @@ const typeRouter = new Router({prefix: '/type'})
 
 typeRouter.post('/', verifyAuth, typeController.create)
 typeRouter.get('/', parsingToken, typeController.list)
-typeRouter.get('/tree', parsingToken, typeController.listTree)
+typeRouter.get('/tree', parsingToken, typeController.tree)
 typeRouter.get('/:typeId', parsingToken, verifyShowPermission, typeController.detail)
 typeRouter.patch('/:typeId', verifyAuth, verifyPermission, typeController.update)
 typeRouter.delete('/:typeId', verifyAuth, verifyPermission, typeController.remove)

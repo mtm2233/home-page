@@ -103,10 +103,10 @@ class TypeController implements ControllerType {
         }
     }
 
-    async listTree(ctx: Context, next: () => Promise<any>) {
+    async tree(ctx: Context, next: () => Promise<any>) {
         try {
             const userId = ctx.user.id;
-            const data = await service.listTree(userId)
+            const data = await service.tree(userId)
             ctx.body = {
                 data,
                 message: '获取分类树成功'

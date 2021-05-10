@@ -150,7 +150,7 @@ class TypeService implements ServiceType {
     return result;
   }
 
-  async listTree(userId: number) {
+  async tree(userId: number) {
     let statement = `
         SELECT mt.id, mt.name,
         IF(
