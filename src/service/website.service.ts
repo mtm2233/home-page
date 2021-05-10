@@ -77,7 +77,7 @@ class WebsiteService implements ServiceWebsite {
             ON t.pid = mt.id
             WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && t.user_id in (${SYSTEM_USER_ID}, ?)
             GROUP BY mt.id
-            ORDER BY mt.sort ASC
+            ORDER BY mt.sort ASC;
         `;
 
         const [result] = await connection.execute(statement, [userId, userId, userId, userId, userId, userId])

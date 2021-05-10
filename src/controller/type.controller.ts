@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:39:18
- * @LastEditTime: 2021-05-07 23:11:25
+ * @LastEditTime: 2021-05-10 23:24:18
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -97,6 +97,19 @@ class TypeController implements ControllerType {
             }
             ctx.body = {
                 message: '网址分类删除成功'
+            }
+        } catch (error) {
+            ctx.app.emit('error', error, ctx);
+        }
+    }
+
+    async listTree(ctx: Context, next: () => Promise<any>) {
+        try {
+            const userId = ctx.user.id;
+            const data = await service.listTree(userId)
+            ctx.body = {
+                data,
+                message: '获取分类树成功'
             }
         } catch (error) {
             ctx.app.emit('error', error, ctx);

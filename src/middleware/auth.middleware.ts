@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-03-28 22:38:58
- * @LastEditTime: 2021-05-07 23:23:35
+ * @LastEditTime: 2021-05-07 23:43:04
  * @LastEditors: mTm
  */
 import * as jwt from 'jsonwebtoken';
@@ -86,7 +86,7 @@ const verifyShowPermission = async (ctx: Context, next: () => Promise<any>) => {
             return false;
         }
         
-        const result = await authService.authPermission(tableName, id, userId);
+        const result = await authService.authShowPermission(tableName, id, userId);
         if (!result) {
             ctx.app.emit('error', new Error(UN_AUTH_PERMISSION), ctx);
             return false;
