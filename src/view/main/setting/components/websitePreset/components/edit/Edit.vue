@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-09 23:28:09
+ * @LastEditTime: 2021-05-09 23:31:44
  * @LastEditors: mTm
 -->
 <template>
@@ -12,7 +12,7 @@
     @ok="handleOk"
     @cancel="cancel"
   >
-    <a-tabs v-model:activeKey="activeKey">
+    <a-tabs v-model:activeKey="activeKey" type="card">
       <a-tab-pane key="1" tab="分类"><TypeEdit /></a-tab-pane>
       <a-tab-pane key="2" tab="网址"><WebsiteEdit /></a-tab-pane>
     </a-tabs>

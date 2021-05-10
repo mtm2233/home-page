@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-28 16:15:02
- * @LastEditTime: 2021-05-08 09:37:09
+ * @LastEditTime: 2021-05-10 23:30:37
  * @LastEditors: mTm
  */
 import { App, Plugin } from 'vue'
@@ -22,6 +22,9 @@ import {
   Button,
   Space,
   Modal,
+  Form,
+  Select,
+  TreeSelect,
 } from 'ant-design-vue'
 
 const plugins: Plugin[] = [
@@ -40,6 +43,9 @@ const plugins: Plugin[] = [
   Button,
   Space,
   Modal,
+  Form,
+  Select,
+  TreeSelect,
 ]
 
 export const setupAntd = (app: App, options: any = {}): void => {
