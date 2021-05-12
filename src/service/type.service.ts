@@ -25,7 +25,7 @@ class TypeService implements ServiceType {
       }
     }
 
-    if (await this.isExist(name, user_id)) {
+    if (await this.isExist(name, user_id, pid)) {
       throw new Error(`${name} 已存在`);
       return false;
     }
@@ -93,11 +93,7 @@ class TypeService implements ServiceType {
       }
     }
 
-    if (
-      data.name &&
-      data.user_id &&
-      (await this.isExist(data.name, data.user_id, typeId))
-    ) {
+    if (data.name && (await this.isExist(data.name, data.user_id, pid))) {
       throw new Error(`${data.name} 已存在`);
       return false;
     }
@@ -120,16 +116,16 @@ class TypeService implements ServiceType {
     return result;
   }
 
-  async isExist(name: string, user_id: number, id?: number) {
+  async isExist(name: string, user_id: number, pid?: number | null) {
     let statement = `
             SELECT * From type WHERE name = ? && user_id = ?;
         `;
-    if (id) {
-      statement = "SELECT * From type WHERE name = ? && user_id = ? && id != ?";
+    if (pid) {
+      statement = "SELECT * From type WHERE name = ? && user_id = ? && pid = ?";
     }
     const [result] = await connection.execute(
       statement,
-      id ? [name, user_id, id] : [name, user_id]
+      pid ? [name, user_id, pid] : [name, user_id]
     );
 
     if (Array.isArray(result) && result.length) {
