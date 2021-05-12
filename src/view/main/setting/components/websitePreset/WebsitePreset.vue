@@ -2,12 +2,12 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-27 17:05:24
- * @LastEditTime: 2021-05-08 10:36:58
+ * @LastEditTime: 2021-05-13 00:04:49
  * @LastEditors: mTm
 -->
 <template>
   <div>
-    <Actions :id="selectedKeys[0]" v-model:editing="editing" />
+    <Actions :id="selectedKeys[0]" v-model:editing="editing" :websitePresetCancel="websitePresetCancel" />
     <a-input-search
       v-model:value="searchValue"
       allow-clear
@@ -108,6 +108,10 @@ export default defineComponent({
       })
     }
 
+    const websitePresetCancel = () => {
+      getData()
+    }
+
     return {
       expandedKeys,
       selectedKeys,
@@ -119,6 +123,7 @@ export default defineComponent({
       onExpand,
       save,
       editing,
+      websitePresetCancel,
     }
   },
 })

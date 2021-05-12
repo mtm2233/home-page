@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-10 23:45:45
+ * @LastEditTime: 2021-05-12 23:45:24
  * @LastEditors: mTm
 -->
 <template>
@@ -38,18 +38,22 @@
   </a-form>
 </template>
 <script lang="ts">
-import { defineComponent, Ref, ref, reactive, UnwrapRef } from 'vue'
+import { defineComponent, Ref, ref, reactive, UnwrapRef, inject } from 'vue'
 
 import { tree } from '@/api/type'
+import { websitAdd } from '@/api/website'
 
 import { WebsiteForm, websiteRules, Type, Option } from './config'
 
 export default defineComponent({
-  setup() {
+  emits: ['cancel'],
+  setup(props, context) {
+    const message: any = inject('$message')
+
     const formRef: Ref<any> = ref()
     const websiteType = ref('Https://')
     const formState: UnwrapRef<WebsiteForm> = reactive({
-      pid: undefined,
+      pid: null,
       name: '',
       website: '',
     })
@@ -61,10 +65,12 @@ export default defineComponent({
 
     const getType = () => {
       tree().then(({ data }) => {
+        data = data.map((v: Type) => ({ ...v, disabled: true }))
         selectTreeData.value = (function changeKey(data: Type[]): Option[] {
-          return data.map(({ id, name, children }: Type) => ({
+          return data.map(({ id, name, children, disabled = false }: Type) => ({
             label: name,
             value: id,
+            disabled,
             children: children ? changeKey(children) : [],
           }))
         })(data)
@@ -72,6 +78,25 @@ export default defineComponent({
     }
 
     getType()
+
+    const handleOk = () => {
+      formRef.value.validate().then(() => {
+        console.log(formState)
+        websitAdd({
+          ...formState,
+          website: websiteType.value + formState.website,
+        }).then(res => {
+          message.success(res.message)
+          cancel()
+          getType()
+          context.emit('cancel')
+        })
+      })
+    }
+
+    const cancel = () => {
+      formRef.value.resetFields()
+    }
 
     return {
       formRef,
@@ -82,6 +107,8 @@ export default defineComponent({
       websiteRules,
       selectTreeData,
       filterTreeNode,
+      handleOk,
+      cancel,
     }
   },
 })

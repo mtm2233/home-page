@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-09 23:31:44
+ * @LastEditTime: 2021-05-13 00:06:32
  * @LastEditors: mTm
 -->
 <template>
@@ -13,8 +13,12 @@
     @cancel="cancel"
   >
     <a-tabs v-model:activeKey="activeKey" type="card">
-      <a-tab-pane key="1" tab="分类"><TypeEdit /></a-tab-pane>
-      <a-tab-pane key="2" tab="网址"><WebsiteEdit /></a-tab-pane>
+      <a-tab-pane key="1" tab="分类">
+        <TypeEdit :id="id" ref="typeEdit" @cancel="typeCancel" />
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="网址"
+        ><WebsiteEdit :id="id" ref="websiteEdit" @cancel="websiteCancel"
+      /></a-tab-pane>
     </a-tabs>
   </a-modal>
 </template>
@@ -29,20 +33,50 @@ export default defineComponent({
     TypeEdit,
     WebsiteEdit,
   },
-  setup() {
+  props: {
+    websitePresetCancel: {
+      type: Function || undefined,
+      default: undefined,
+    },
+  },
+  emits: ['websiteCancel'],
+
+  setup(props) {
     const visible = ref(false)
     const activeKey = ref('1')
-    const id: Ref<number | null> = ref(null)
+    const id: Ref<number | undefined> = ref()
 
-    const show = () => {
-      visible.value = true
-    }
-    const handleOk = (editId: number | null) => {
-      id.value = editId
-      console.log(id)
+    // refs
+    const typeEdit = ref()
+    const websiteEdit = ref()
+    const handleOk = () => {
+      const key = activeKey.value
+      if (key === '1') {
+        typeEdit.value.handleOk()
+      } else {
+        websiteEdit.value.handleOk()
+      }
     }
     const cancel = () => {
-      console.log('cancel')
+      const key = activeKey.value
+      if (key === '1') {
+        typeEdit.value.cancel()
+      } else {
+        websiteEdit.value.cancel()
+      }
+    }
+
+    const typeCancel = () => {
+      websiteEdit.value.cancel()
+    }
+
+    const websiteCancel = () => {
+      props.websitePresetCancel && props.websitePresetCancel()
+    }
+
+    const show = (editId: number | undefined) => {
+      id.value = editId
+      visible.value = true
     }
 
     return {
@@ -52,6 +86,10 @@ export default defineComponent({
       show,
       handleOk,
       cancel,
+      typeEdit,
+      websiteEdit,
+      typeCancel,
+      websiteCancel,
     }
   },
 })

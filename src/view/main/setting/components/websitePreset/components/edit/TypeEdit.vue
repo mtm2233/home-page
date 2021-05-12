@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-10 22:58:57
+ * @LastEditTime: 2021-05-12 17:09:12
  * @LastEditors: mTm
 -->
 <template>
@@ -28,17 +28,26 @@
   </a-form>
 </template>
 <script lang="ts">
-import { defineComponent, Ref, ref, reactive, UnwrapRef } from 'vue'
+import { defineComponent, Ref, ref, reactive, UnwrapRef, inject } from 'vue'
 
-import { list } from '@/api/type'
+import { list, typeAdd } from '@/api/type'
 
 import { TypeForm, typeRules, Type, Option } from './config'
 
 export default defineComponent({
-  setup() {
+  props: {
+    id: {
+      type: Number || undefined,
+      default: undefined,
+    },
+  },
+  emits: ['cancel'],
+  setup(props, context) {
+    const message: any = inject('$message')
+
     const formRef: Ref<any> = ref()
     const formState: UnwrapRef<TypeForm> = reactive({
-      pid: undefined,
+      pid: null,
       name: '',
     })
     const selectOptions = ref([])
@@ -58,6 +67,25 @@ export default defineComponent({
 
     getType()
 
+    const handleOk = () => {
+      formRef.value.validate().then(() => {
+        if (props.id) {
+          console.log(1123)
+        } else {
+          typeAdd(formState).then(res => {
+            message.success(res.message)
+            getType()
+            context.emit('cancel')
+            cancel()
+          })
+        }
+      })
+    }
+
+    const cancel = () => {
+      formRef.value.resetFields()
+    }
+
     return {
       formRef,
       labelCol: { span: 6 },
@@ -66,6 +94,8 @@ export default defineComponent({
       typeRules,
       selectOptions,
       filterOption,
+      handleOk,
+      cancel,
     }
   },
 })

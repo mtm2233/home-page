@@ -2,11 +2,11 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-05-08 09:11:58
- * @LastEditTime: 2021-05-10 23:33:30
+ * @LastEditTime: 2021-05-12 23:45:10
  * @LastEditors: mTm
  */
 export interface TypeForm {
-  pid: number | undefined
+  pid: number | null
   name: string
 }
 
@@ -15,6 +15,7 @@ export interface Type {
   name: string
   is_edit?: boolean | number
   children?: Type[]
+  disabled?: boolean
 }
 export interface Option {
   label: string
@@ -30,7 +31,7 @@ export const typeRules = {
 }
 
 export interface WebsiteForm {
-  pid: number | undefined
+  pid: number | null
   name: string
   website: string
 }

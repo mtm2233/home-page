@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-09 23:25:15
+ * @LastEditTime: 2021-05-13 00:02:35
  * @LastEditors: mTm
 -->
 <template>
@@ -30,7 +30,7 @@
       >注意：进行编辑、删除操作时,请先选择一项</a-typography-text
     >
   </a-space>
-  <Edit v-if="verifyLogin" ref="editRef" />
+  <Edit v-if="verifyLogin" ref="editRef" v-bind="$attrs" />
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed, Ref } from 'vue'
@@ -44,8 +44,8 @@ export default defineComponent({
   },
   props: {
     id: {
-      type: Number,
-      default: 0,
+      type: Number || undefined,
+      default: undefined,
     },
   },
   emits: ['update:editing'],
@@ -61,8 +61,8 @@ export default defineComponent({
       context.emit('update:editing', openAction)
     }
 
-    const show = (id: number | undefined) => {
-      editRef.value.show(id)
+    const show = () => {
+      editRef.value.show(props.id)
     }
 
     return {
