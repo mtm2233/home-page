@@ -2,12 +2,16 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-27 17:05:24
- * @LastEditTime: 2021-05-13 00:04:49
+ * @LastEditTime: 2021-05-13 16:23:39
  * @LastEditors: mTm
 -->
 <template>
   <div>
-    <Actions :id="selectedKeys[0]" v-model:editing="editing" :websitePresetCancel="websitePresetCancel" />
+    <Actions
+      :id="selectedKeys[0]"
+      v-model:editing="editing"
+      :website-preset-cancel="websitePresetCancel"
+    />
     <a-input-search
       v-model:value="searchValue"
       allow-clear

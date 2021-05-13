@@ -8,7 +8,7 @@
 <template>
   <div class="search">
     <ATabs v-model:activeKey="activeKey">
-      <ATabsPane v-for="v in searchs" :key="v.id" :tab="v.name" />
+      <a-tabs-pane v-for="v in searchs" :key="v.id" :tab="v.name" />
     </ATabs>
     <AInputSearch
       ref="searchRef"

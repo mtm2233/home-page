@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-13 00:02:35
+ * @LastEditTime: 2021-05-13 16:21:08
  * @LastEditors: mTm
 -->
 <template>
@@ -21,8 +21,8 @@
     class="actions"
   >
     <a-space>
-      <a-button @click="show">新增</a-button>
-      <a-button type="primary">编辑</a-button>
+      <a-button @click="show(false)">新增</a-button>
+      <a-button type="primary" @click="show(true)">编辑</a-button>
       <a-button type="danger">删除</a-button>
       <a-button type="link" @click="changeAction(false)">取消编辑</a-button>
     </a-space>
@@ -42,12 +42,6 @@ export default defineComponent({
   components: {
     Edit,
   },
-  props: {
-    id: {
-      type: Number || undefined,
-      default: undefined,
-    },
-  },
   emits: ['update:editing'],
   setup(props, context) {
     const store = useStore()
@@ -61,8 +55,8 @@ export default defineComponent({
       context.emit('update:editing', openAction)
     }
 
-    const show = () => {
-      editRef.value.show(props.id)
+    const show = (is_edit: boolean) => {
+      editRef.value.show(is_edit)
     }
 
     return {

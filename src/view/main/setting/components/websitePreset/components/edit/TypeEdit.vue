@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-12 17:09:12
+ * @LastEditTime: 2021-05-13 23:10:19
  * @LastEditors: mTm
 -->
 <template>
@@ -28,7 +28,15 @@
   </a-form>
 </template>
 <script lang="ts">
-import { defineComponent, Ref, ref, reactive, UnwrapRef, inject } from 'vue'
+import {
+  defineComponent,
+  Ref,
+  ref,
+  reactive,
+  UnwrapRef,
+  inject,
+  watch,
+} from 'vue'
 
 import { list, typeAdd } from '@/api/type'
 
@@ -37,8 +45,12 @@ import { TypeForm, typeRules, Type, Option } from './config'
 export default defineComponent({
   props: {
     id: {
-      type: Number || undefined,
+      type: String || undefined,
       default: undefined,
+    },
+    isEdit: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['cancel'],
@@ -62,8 +74,39 @@ export default defineComponent({
           label: name,
           value: id,
         }))
+        setPid()
       })
     }
+
+    const getTypeInfo = () => {
+      console.log(getTypeInfo)
+    }
+
+    const setPid = () => {
+      const { id, isEdit } = props
+      if (!isEdit && id && id.search('t') !== -1) {
+        const numId = Number(id.replace('t', ''))
+        formState.pid = selectOptions.value.find(
+          (v: Option) => v.value === numId,
+        )
+          ? numId
+          : null
+      } else {
+        formState.pid = null
+      }
+    }
+
+    watch(
+      () => props.id,
+      () => {
+        if (props.isEdit) {
+          getTypeInfo()
+        } else {
+          setPid()
+        }
+      },
+      { deep: true },
+    )
 
     getType()
 
@@ -72,18 +115,28 @@ export default defineComponent({
         if (props.id) {
           console.log(1123)
         } else {
-          typeAdd(formState).then(res => {
+          typeAdd({
+            ...formState,
+            pid: formState.pid || null,
+          }).then(res => {
             message.success(res.message)
-            getType()
             context.emit('cancel')
             cancel()
+            getType()
           })
         }
       })
     }
 
+    // const show = () => {
+    //   if (props.id) {
+
+    //   }
+    // }
+
     const cancel = () => {
       formRef.value.resetFields()
+      // setPid()
     }
 
     return {
@@ -95,7 +148,8 @@ export default defineComponent({
       selectOptions,
       filterOption,
       handleOk,
-      cancel,
+      // cancel,
+      // show,
     }
   },
 })

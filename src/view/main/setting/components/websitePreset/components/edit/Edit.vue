@@ -2,28 +2,37 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-13 00:06:32
+ * @LastEditTime: 2021-05-13 16:26:13
  * @LastEditors: mTm
 -->
 <template>
   <a-modal
     v-model:visible="visible"
-    :title="id ? '编辑' : '添加'"
+    :title="isEdit ? '编辑' : '添加'"
     @ok="handleOk"
     @cancel="cancel"
   >
     <a-tabs v-model:activeKey="activeKey" type="card">
-      <a-tab-pane key="1" tab="分类">
-        <TypeEdit :id="id" ref="typeEdit" @cancel="typeCancel" />
+      <a-tab-pane v-show="!isEdit || idIsType" key="1" tab="分类">
+        <TypeEdit
+          :id="id"
+          ref="typeEdit"
+          :is-edit="isEdit"
+          @cancel="typeCancel"
+        />
       </a-tab-pane>
-      <a-tab-pane key="2" tab="网址"
-        ><WebsiteEdit :id="id" ref="websiteEdit" @cancel="websiteCancel"
+      <a-tab-pane v-show="!isEdit || !idIsType" key="2" tab="网址">
+        <WebsiteEdit
+          :id="id"
+          ref="websiteEdit"
+          :is-edit="isEdit"
+          @cancel="websiteCancel"
       /></a-tab-pane>
     </a-tabs>
   </a-modal>
 </template>
 <script lang="ts">
-import { defineComponent, Ref, ref } from 'vue'
+import { defineComponent, Ref, ref, computed } from 'vue'
 
 import TypeEdit from './TypeEdit.vue'
 import WebsiteEdit from './WebsiteEdit.vue'
@@ -38,13 +47,16 @@ export default defineComponent({
       type: Function || undefined,
       default: undefined,
     },
+    id: {
+      type: String || undefined,
+      default: undefined,
+    },
   },
   emits: ['websiteCancel'],
 
   setup(props) {
     const visible = ref(false)
     const activeKey = ref('1')
-    const id: Ref<number | undefined> = ref()
 
     // refs
     const typeEdit = ref()
@@ -58,12 +70,12 @@ export default defineComponent({
       }
     }
     const cancel = () => {
-      const key = activeKey.value
-      if (key === '1') {
-        typeEdit.value.cancel()
-      } else {
-        websiteEdit.value.cancel()
-      }
+      // const key = activeKey.value
+      // if (key === 1) {
+      //   typeEdit.value.cancel()
+      // } else {
+      //   websiteEdit.value.cancel()
+      // }
     }
 
     const typeCancel = () => {
@@ -74,15 +86,26 @@ export default defineComponent({
       props.websitePresetCancel && props.websitePresetCancel()
     }
 
-    const show = (editId: number | undefined) => {
-      id.value = editId
+    const _isEdit: Ref<boolean> = ref(false)
+    const isEdit = computed(() => props.id && _isEdit.value)
+    const idIsType = computed(() => props.id?.search('t') !== -1)
+
+    const show = (is_edit: boolean) => {
+      _isEdit.value = is_edit
+      if (is_edit && props.id?.search('t') !== -1) {
+        activeKey.value = '1'
+      } else if (is_edit) {
+        activeKey.value = '2'
+      }
+
       visible.value = true
     }
 
     return {
       visible,
       activeKey,
-      id,
+      isEdit,
+      idIsType,
       show,
       handleOk,
       cancel,

@@ -10,7 +10,7 @@
     <div class="type-box">
       <ATabs v-model:activeKey="activeKey" class="type-box-list">
         <template v-for="v in typeList">
-          <ATabsPane v-if="verifyHide(`t${v.id}`)" :key="v.id" :tab="v.name" />
+          <a-tabs-pane v-if="verifyHide(`t${v.id}`)" :key="v.id" :tab="v.name" />
         </template>
       </ATabs>
       <template v-for="v in typeList">

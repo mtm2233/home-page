@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-05-08 09:11:58
- * @LastEditTime: 2021-05-12 23:45:10
+ * @LastEditTime: 2021-05-13 15:12:51
  * @LastEditors: mTm
  */
 export interface TypeForm {
@@ -26,20 +26,21 @@ export interface Option {
 export const typeRules = {
   name: [
     { required: true, message: '请输入分类名', trigger: 'blur' },
-    { min: 2, max: 5, message: '分类名应该在2~5直接', trigger: 'blur' },
+    { min: 1, max: 20, message: '分类名应该在1~20直接', trigger: 'blur' },
   ],
 }
 
 export interface WebsiteForm {
-  pid: number | null
+  type_id: number | null
   name: string
-  website: string
+  url: string
 }
 
 export const websiteRules = {
+  type_id: [{ required: true, message: '请选择分类', trigger: 'blur' }],
   name: [
-    { required: true, message: '请输入分类名', trigger: 'blur' },
-    { min: 2, max: 5, message: '分类名应该在2~5直接', trigger: 'blur' },
+    { required: true, message: '请输入网址名', trigger: 'blur' },
+    { min: 1, max: 20, message: '分类名应该在1~20直接', trigger: 'blur' },
   ],
-  website: [{ required: true, message: '请输入网址', trigger: 'blur' }],
+  url: [{ required: true, message: '请输入网址', trigger: 'blur' }],
 }
