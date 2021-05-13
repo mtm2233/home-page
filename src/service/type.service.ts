@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-05-10 23:23:11
+ * @LastEditTime: 2021-05-14 00:25:13
  * @LastEditors: mTm
  */
 import connection from "../app/database";
@@ -80,8 +80,8 @@ class TypeService implements ServiceType {
   async update(typeId: number, data: TypeAdd) {
     const { pid = null } = data;
 
-    // 'user_id'
-    const keys = ["name", "description", "sort", "pid"];
+    // 'user_id' "pid"
+    const keys = ["name", "description", "sort"];
 
     if (pid) {
       const pidInfo: any = await this.detail(pid);
