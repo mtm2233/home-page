@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-05-07 23:00:54
+ * @LastEditTime: 2021-05-14 11:58:50
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -59,23 +59,27 @@ class WebsiteService implements ServiceWebsite {
     async listByTypeAll(userId: number) {
         const statement = `
             SELECT mt.id, mt.name, IF(mt.user_id = ?, TRUE, FALSE) is_edit,
-            JSON_ARRAYAGG(
-                JSON_OBJECT(
-                    'id', t.id, 
-                    'name', t.name,
-                    'is_edit', IF(t.user_id = ?, TRUE, FALSE),
-                    'children', 
-                    (
-                        SELECT JSON_ARRAYAGG(JSON_OBJECT('id', w.id, 'name', w.name, 'url', w.url, 'is_edit', IF(w.user_id = ?, TRUE, FALSE))) 
-                        FROM website w WHERE w.type_id = t.id && w.user_id in (${SYSTEM_USER_ID}, ?)
-                        ORDER BY w.sort ASC
+            IF(
+                COUNT(t.id),
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', t.id,
+                        'name', t.name,
+                        'is_edit', IF(t.user_id = ?, TRUE, FALSE),
+                        'children', 
+                        (
+                            SELECT JSON_ARRAYAGG(JSON_OBJECT('id', w.id, 'name', w.name, 'url', w.url, 'is_edit', IF(w.user_id = ?, TRUE, FALSE))) 
+                            FROM website w WHERE w.type_id = t.id && w.user_id in (${SYSTEM_USER_ID}, ?)
+                            ORDER BY w.sort ASC
+                        )
                     )
-                )
+                ),
+                NULL
             ) children
             FROM type mt
             LEFT JOIN type t
             ON t.pid = mt.id
-            WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && t.user_id in (${SYSTEM_USER_ID}, ?)
+            WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && (t.user_id IS NULL || t.user_id in (${SYSTEM_USER_ID}, ?))
             GROUP BY mt.id
             ORDER BY mt.sort ASC;
         `;

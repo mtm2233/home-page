@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-05-14 00:25:13
+ * @LastEditTime: 2021-05-14 11:56:46
  * @LastEditors: mTm
  */
 import connection from "../app/database";
@@ -157,7 +157,7 @@ class TypeService implements ServiceType {
         FROM type mt
         LEFT JOIN type t
         ON t.pid = mt.id
-        WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && t.user_id in (${SYSTEM_USER_ID}, ?)
+        WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && (t.user_id IS NULL || t.user_id in (${SYSTEM_USER_ID}, ?))
         GROUP BY mt.id
         ORDER BY mt.sort ASC;
     `;
