@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-13 16:21:08
+ * @LastEditTime: 2021-05-14 10:59:50
  * @LastEditors: mTm
 -->
 <template>
@@ -23,27 +23,58 @@
     <a-space>
       <a-button @click="show(false)">新增</a-button>
       <a-button type="primary" @click="show(true)">编辑</a-button>
-      <a-button type="danger">删除</a-button>
+
+      <a-popconfirm
+        title="确认要删除、数据不可恢复？"
+        :disabled="!id"
+        @confirm="remove"
+      >
+        <template #icon
+          ><question-circle-outlined style="color: red"
+        /></template>
+        <a-button type="danger" @click="verifyId">删除</a-button>
+      </a-popconfirm>
       <a-button type="link" @click="changeAction(false)">取消编辑</a-button>
     </a-space>
     <a-typography-text strong
       >注意：进行编辑、删除操作时,请先选择一项</a-typography-text
     >
   </a-space>
-  <Edit v-if="verifyLogin" ref="editRef" v-bind="$attrs" />
+  <Edit
+    v-if="verifyLogin"
+    :id="id"
+    ref="editRef"
+    :website-preset-cancel="websitePresetCancel"
+  />
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed, Ref } from 'vue'
+import { defineComponent, ref, computed, Ref, inject } from 'vue'
 import { useStore } from 'vuex'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+
+import { typeDelete } from '@/api/type'
 
 import Edit from './edit/Edit.vue'
 
 export default defineComponent({
   components: {
     Edit,
+    QuestionCircleOutlined,
+  },
+  props: {
+    id: {
+      type: String || undefined,
+      default: undefined,
+    },
+    websitePresetCancel: {
+      type: Function || undefined,
+      default: undefined,
+    },
   },
   emits: ['update:editing'],
   setup(props, context) {
+    const message: any = inject('$message')
+
     const store = useStore()
     // 是否登录
     const verifyLogin = computed(() => Boolean(store.state.token))
@@ -59,12 +90,32 @@ export default defineComponent({
       editRef.value.show(is_edit)
     }
 
+    const remove = () => {
+      const numId = Number(props.id.replace(/[tw]/g, ''))
+      if (props.id.search('t') !== -1) {
+        typeDelete(numId).then(() => {
+          props.websitePresetCancel && props.websitePresetCancel()
+        })
+      } else {
+        console.log('remove')
+      }
+    }
+
+    const verifyId = () => {
+      if (!props.id) {
+        message.warning('请先选择要删除的数据')
+      }
+    }
+
     return {
       verifyLogin,
       is_action,
       editRef,
       changeAction,
       show,
+
+      remove,
+      verifyId,
     }
   },
 })

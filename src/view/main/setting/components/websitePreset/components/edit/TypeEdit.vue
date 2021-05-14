@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-13 23:10:19
+ * @LastEditTime: 2021-05-14 00:27:25
  * @LastEditors: mTm
 -->
 <template>
@@ -18,6 +18,7 @@
         v-model:value="formState.pid"
         allow-clear
         show-search
+        :disabled="isEdit"
         :filter-option="filterOption"
         :options="selectOptions"
       />
@@ -35,10 +36,11 @@ import {
   reactive,
   UnwrapRef,
   inject,
-  watch,
+  nextTick,
+  computed,
 } from 'vue'
 
-import { list, typeAdd } from '@/api/type'
+import { list, typeAdd, typeInfo, typeEdit } from '@/api/type'
 
 import { TypeForm, typeRules, Type, Option } from './config'
 
@@ -68,24 +70,37 @@ export default defineComponent({
       return option.label.includes(inputValue)
     }
 
-    const getType = () => {
-      list().then(({ data }) => {
+    const getType = (): Promise<any> => {
+      return list().then(({ data }) => {
         selectOptions.value = data.map(({ id, name }: Type) => ({
           label: name,
           value: id,
         }))
-        setPid()
       })
     }
 
+    // t70 => 70
+    const getNumId = computed(() => {
+      const id = props.id
+      return id ? Number(id.replace('t', '')) : null
+    })
+
+    // 编辑 init
     const getTypeInfo = () => {
-      console.log(getTypeInfo)
+      const numId = getNumId.value
+      numId &&
+        typeInfo(numId).then((res: any) => {
+          const { pid, name } = res.data
+          formState.pid = pid
+          formState.name = name
+        })
     }
 
+    // 添加 init
     const setPid = () => {
       const { id, isEdit } = props
       if (!isEdit && id && id.search('t') !== -1) {
-        const numId = Number(id.replace('t', ''))
+        const numId = getNumId.value
         formState.pid = selectOptions.value.find(
           (v: Option) => v.value === numId,
         )
@@ -96,33 +111,43 @@ export default defineComponent({
       }
     }
 
-    watch(
-      () => props.id,
-      () => {
-        if (props.isEdit) {
-          getTypeInfo()
-        } else {
-          setPid()
-        }
-      },
-      { deep: true },
-    )
+    const init = () => {
+      if (props.isEdit) {
+        getTypeInfo()
+      } else {
+        formState.name = ''
+        setPid()
+      }
+    }
 
-    getType()
+    getType().then(() => {
+      nextTick(() => {
+        init()
+      })
+    })
 
     const handleOk = () => {
       formRef.value.validate().then(() => {
+        const data = {
+          ...formState,
+          pid: formState.pid || null,
+        }
         if (props.id) {
-          console.log(1123)
+          const numId = getNumId.value
+          numId &&
+            typeEdit(numId, data).then(res => {
+              message.success(res.message)
+              context.emit('cancel')
+              cancel()
+              getType()
+            })
         } else {
-          typeAdd({
-            ...formState,
-            pid: formState.pid || null,
-          }).then(res => {
+          typeAdd(data).then(res => {
             message.success(res.message)
             context.emit('cancel')
             cancel()
             getType()
+            setPid()
           })
         }
       })
@@ -150,6 +175,7 @@ export default defineComponent({
       handleOk,
       // cancel,
       // show,
+      init,
     }
   },
 })

@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-28 16:15:02
- * @LastEditTime: 2021-05-13 14:00:13
+ * @LastEditTime: 2021-05-14 00:37:17
  * @LastEditors: mTm
  */
 import { App, Plugin } from 'vue'
@@ -25,6 +25,7 @@ import {
   Form,
   Select,
   TreeSelect,
+  Popconfirm,
 } from 'ant-design-vue'
 
 const plugins: Plugin[] = [
@@ -46,6 +47,7 @@ const plugins: Plugin[] = [
   Form,
   Select,
   TreeSelect,
+  Popconfirm,
 ]
 
 export const setupAntd = (app: App, options: any = {}): void => {

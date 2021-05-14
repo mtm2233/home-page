@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-13 16:26:13
+ * @LastEditTime: 2021-05-14 11:10:05
  * @LastEditors: mTm
 -->
 <template>
@@ -16,7 +16,7 @@
       <a-tab-pane v-show="!isEdit || idIsType" key="1" tab="分类">
         <TypeEdit
           :id="id"
-          ref="typeEdit"
+          ref="typeEditRef"
           :is-edit="isEdit"
           @cancel="typeCancel"
         />
@@ -24,7 +24,7 @@
       <a-tab-pane v-show="!isEdit || !idIsType" key="2" tab="网址">
         <WebsiteEdit
           :id="id"
-          ref="websiteEdit"
+          ref="websiteEditRef"
           :is-edit="isEdit"
           @cancel="websiteCancel"
       /></a-tab-pane>
@@ -32,7 +32,7 @@
   </a-modal>
 </template>
 <script lang="ts">
-import { defineComponent, Ref, ref, computed } from 'vue'
+import { defineComponent, Ref, ref, computed, nextTick } from 'vue'
 
 import TypeEdit from './TypeEdit.vue'
 import WebsiteEdit from './WebsiteEdit.vue'
@@ -59,31 +59,35 @@ export default defineComponent({
     const activeKey = ref('1')
 
     // refs
-    const typeEdit = ref()
-    const websiteEdit = ref()
+    const typeEditRef = ref()
+    const websiteEditRef = ref()
     const handleOk = () => {
       const key = activeKey.value
       if (key === '1') {
-        typeEdit.value.handleOk()
+        typeEditRef.value.handleOk()
       } else {
-        websiteEdit.value.handleOk()
+        websiteEditRef.value.handleOk()
       }
     }
     const cancel = () => {
+      visible.value = false
       // const key = activeKey.value
       // if (key === 1) {
-      //   typeEdit.value.cancel()
+      //   typeEditRef.value.cancel()
       // } else {
-      //   websiteEdit.value.cancel()
+      //   websiteEditRef.value.cancel()
       // }
     }
 
     const typeCancel = () => {
-      websiteEdit.value.cancel()
+      props.websitePresetCancel && props.websitePresetCancel()
+      websiteEditRef.value?.cancel()
+      cancel()
     }
 
     const websiteCancel = () => {
       props.websitePresetCancel && props.websitePresetCancel()
+      cancel()
     }
 
     const _isEdit: Ref<boolean> = ref(false)
@@ -98,6 +102,7 @@ export default defineComponent({
         activeKey.value = '2'
       }
 
+      nextTick(() => typeEditRef.value?.init())
       visible.value = true
     }
 
@@ -109,8 +114,8 @@ export default defineComponent({
       show,
       handleOk,
       cancel,
-      typeEdit,
-      websiteEdit,
+      typeEditRef,
+      websiteEditRef,
       typeCancel,
       websiteCancel,
     }

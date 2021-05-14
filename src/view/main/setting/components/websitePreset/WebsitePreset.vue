@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-27 17:05:24
- * @LastEditTime: 2021-05-13 16:23:39
+ * @LastEditTime: 2021-05-14 13:48:31
  * @LastEditors: mTm
 -->
 <template>
@@ -114,6 +114,8 @@ export default defineComponent({
 
     const websitePresetCancel = () => {
       getData()
+      selectedKeys.value = []
+      checkedKeys.value = []
     }
 
     return {
