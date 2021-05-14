@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-14 11:10:05
+ * @LastEditTime: 2021-05-14 15:26:48
  * @LastEditors: mTm
 -->
 <template>
@@ -102,7 +102,10 @@ export default defineComponent({
         activeKey.value = '2'
       }
 
-      nextTick(() => typeEditRef.value?.init())
+      nextTick(() => {
+        typeEditRef.value?.init()
+        websiteEditRef.value?.init()
+      })
       visible.value = true
     }
 

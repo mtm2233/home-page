@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-13 23:09:50
+ * @LastEditTime: 2021-05-14 16:06:42
  * @LastEditors: mTm
 -->
 <template>
@@ -45,11 +45,11 @@ import {
   reactive,
   UnwrapRef,
   inject,
-  watch,
+  computed,
 } from 'vue'
 
 import { tree } from '@/api/type'
-import { websitAdd } from '@/api/website'
+import { websitAdd, websitInfo, websitEdit } from '@/api/website'
 
 import { WebsiteForm, websiteRules, Type, Option } from './config'
 
@@ -71,7 +71,7 @@ export default defineComponent({
     const formRef: Ref<any> = ref()
     const urlType = ref('https://')
     const formState: UnwrapRef<WebsiteForm> = reactive({
-      type_id: null,
+      type_id: undefined,
       name: '',
       url: '',
     })
@@ -81,8 +81,8 @@ export default defineComponent({
       return treeNode.props.label.includes(inputValue)
     }
 
-    const getType = () => {
-      tree().then(({ data }) => {
+    const getType = (): Promise<any> => {
+      return tree().then(({ data }) => {
         data = data.map((v: Type) => ({ ...v, disabled: true }))
         selectTreeData.value = (function changeKey(data: Type[]): Option[] {
           return data.map(({ id, name, children, disabled = false }: Type) => ({
@@ -92,13 +92,20 @@ export default defineComponent({
             children: children ? changeKey(children) : [],
           }))
         })(data)
-        setTypeId()
       })
     }
 
-    getType()
+    getType().then(() => {
+      init()
+    })
 
-    // 初始化type_id
+    // t70 => 70
+    const getNumId = computed(() => {
+      const id = props.id
+      return id ? Number(id.replace(/[tw]/g, '')) : null
+    })
+
+    // init type_id
     const setTypeId = () => {
       const { id, isEdit } = props
       if (!isEdit && id && id.search('t') !== -1) {
@@ -107,46 +114,64 @@ export default defineComponent({
         formState.type_id = selectTreeData.value.find(
           (option: Option) => option.value === numId,
         )
-          ? null
+          ? undefined
           : numId
       } else {
-        formState.type_id = null
+        formState.type_id = undefined
       }
     }
 
     // 编辑前，获取详细信息
     const getWebsiteInfo = () => {
-      console.log('getWebsiteInfo')
+      const { id, isEdit } = props
+      const numId = getNumId.value
+      if (isEdit && numId && id.search('w') !== -1) {
+        websitInfo(numId).then(res => {
+          const { url, type_id, name } = res.data
+          formState.url = url
+          formState.type_id = type_id
+          formState.name = name
+        })
+      }
     }
 
-    watch(
-      () => props.id,
-      () => {
-        if (props.isEdit) {
-          getWebsiteInfo()
-        } else {
-          setTypeId()
-        }
-      },
-      { deep: true },
-    )
+    const init = () => {
+      if (props.isEdit) {
+        getWebsiteInfo()
+      } else {
+        formState.url = ''
+        formState.name = ''
+        setTypeId()
+      }
+    }
 
     const handleOk = () => {
+      console.log(formState)
       formRef.value.validate().then(() => {
-        websitAdd({
+        const data = {
           ...formState,
           url: urlType.value + formState.url,
-        }).then(res => {
-          message.success(res.message)
-          cancel()
-          getType()
-          context.emit('cancel')
-        })
+        }
+        const numId = getNumId.value
+        if (props.isEdit && numId) {
+          websitEdit(numId, data).then(res => {
+            context.emit('cancel')
+            message.success(res.message)
+            formRef.value.resetFields()
+          })
+        } else {
+          websitAdd(data).then(res => {
+            context.emit('cancel')
+            message.success(res.message)
+            formRef.value.resetFields()
+          })
+        }
       })
     }
 
     const cancel = () => {
       formRef.value.resetFields()
+      getType()
     }
 
     return {
@@ -160,6 +185,7 @@ export default defineComponent({
       filterTreeNode,
       handleOk,
       cancel,
+      init,
     }
   },
 })

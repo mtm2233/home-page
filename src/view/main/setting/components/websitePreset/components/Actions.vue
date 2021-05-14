@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-14 10:59:50
+ * @LastEditTime: 2021-05-14 15:22:19
  * @LastEditors: mTm
 -->
 <template>
@@ -53,6 +53,7 @@ import { useStore } from 'vuex'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 
 import { typeDelete } from '@/api/type'
+import { websitDelete } from '@/api/website'
 
 import Edit from './edit/Edit.vue'
 
@@ -97,7 +98,9 @@ export default defineComponent({
           props.websitePresetCancel && props.websitePresetCancel()
         })
       } else {
-        console.log('remove')
+        websitDelete(numId).then(() => {
+          props.websitePresetCancel && props.websitePresetCancel()
+        })
       }
     }
 

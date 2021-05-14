@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-14 00:27:25
+ * @LastEditTime: 2021-05-14 15:36:28
  * @LastEditors: mTm
 -->
 <template>
@@ -132,15 +132,14 @@ export default defineComponent({
           ...formState,
           pid: formState.pid || null,
         }
-        if (props.id) {
-          const numId = getNumId.value
-          numId &&
-            typeEdit(numId, data).then(res => {
-              message.success(res.message)
-              context.emit('cancel')
-              cancel()
-              getType()
-            })
+        const numId = getNumId.value
+        if (props.isEdit && numId) {
+          typeEdit(numId, data).then(res => {
+            message.success(res.message)
+            context.emit('cancel')
+            cancel()
+            getType()
+          })
         } else {
           typeAdd(data).then(res => {
             message.success(res.message)
