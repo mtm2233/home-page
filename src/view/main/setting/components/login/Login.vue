@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-03 22:32:37
- * @LastEditTime: 2021-05-07 22:13:07
+ * @LastEditTime: 2021-05-15 21:12:14
  * @LastEditors: mTm
 -->
 <template>
@@ -10,12 +10,18 @@
     <a-button @click="login">登录</a-button>
   </div>
   <div v-else>
-    <a-button @click="logout">退出登录</a-button>
+    <a-space>
+      <a-button @click="logout">退出登录</a-button>
+      <a-button type="primary" @click="savePreset">保存预设</a-button>
+      <a-button type="primary" @click="syncPreset">同步预设</a-button>
+    </a-space>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
+
+import preset from './usePreset'
 
 export default defineComponent({
   setup() {
@@ -40,11 +46,17 @@ export default defineComponent({
     const save = () => {
       console.log(save)
     }
+
+    // 预设
+    const { savePreset, syncPreset } = preset.values()
+
     return {
       login,
       save,
       token,
       logout,
+      savePreset,
+      syncPreset,
     }
   },
 })

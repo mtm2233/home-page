@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 20:38:02
- * @LastEditTime: 2021-05-07 14:47:02
+ * @LastEditTime: 2021-05-15 21:01:58
  * @LastEditors: mTm
 -->
 <template>
@@ -62,6 +62,8 @@ export default defineComponent({
 
     // 控制抽屉
     const visible: Ref<boolean> = ref(false)
+
+    // 关闭时保存预设
     const onClose = () => {
       visible.value = false
       itemRefs.forEach((el: any) => {
