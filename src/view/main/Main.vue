@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 16:19:20
- * @LastEditTime: 2021-04-28 22:53:29
+ * @LastEditTime: 2021-05-14 17:43:05
  * @LastEditors: mTm
 -->
 <template>
@@ -18,7 +18,7 @@
   </ALayout>
 </template>
 <script lang="ts">
-import Setting from './setting/Setting.vue'
+import Setting from './components/Setting.vue'
 import Refresh from './components/Refresh.vue'
 import Footer from './components/Footer.vue'
 import { defineComponent } from 'vue'

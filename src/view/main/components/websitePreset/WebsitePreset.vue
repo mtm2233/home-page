@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-27 17:05:24
- * @LastEditTime: 2021-05-14 13:48:31
+ * @LastEditTime: 2021-05-16 22:55:12
  * @LastEditors: mTm
 -->
 <template>
@@ -46,7 +46,7 @@ import { useStore } from 'vuex'
 import { websiteByTypeAll } from '@/api/website'
 import { changeKey, generateList, getParentKey } from './useData'
 
-import Actions from './components/Actions.vue'
+import Actions from '../actions/Actions.vue'
 
 export default defineComponent({
   name: 'WebsitePreset',

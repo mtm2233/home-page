@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-14 15:22:19
+ * @LastEditTime: 2021-05-14 17:42:55
  * @LastEditors: mTm
 -->
 <template>
@@ -55,7 +55,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { typeDelete } from '@/api/type'
 import { websitDelete } from '@/api/website'
 
-import Edit from './edit/Edit.vue'
+import Edit from './Edit.vue'
 
 export default defineComponent({
   components: {
