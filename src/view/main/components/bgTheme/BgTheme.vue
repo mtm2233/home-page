@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-28 09:27:58
- * @LastEditTime: 2021-04-28 22:50:01
+ * @LastEditTime: 2021-05-16 23:35:15
  * @LastEditors: mTm
 -->
 <template>
@@ -23,7 +23,7 @@
   </ul>
 </template>
 <script lang="ts">
-import { defineComponent, Ref, ref, inject } from 'vue'
+import { defineComponent, inject, computed } from 'vue'
 import { CheckOutlined } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
 
@@ -36,7 +36,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    const theme: Ref<any> = ref(store.state['@primary-bg'])
+    const theme = computed(() => store.state['@primary-bg'])
     const $message: any = inject('$message')
 
     const changeTheme = (item: any) => {
@@ -50,7 +50,6 @@ export default defineComponent({
       ;(window as any).less
         .modifyVars(variables)
         .then(() => {
-          theme.value = item
           store.commit('chageState', {
             key: '@primary-bg',
             value: item,
