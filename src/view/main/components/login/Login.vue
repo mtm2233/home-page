@@ -48,7 +48,7 @@ export default defineComponent({
     }
 
     // 预设
-    const { savePreset, syncPreset } = preset.values()
+    const { savePreset, syncPreset } = preset.values
 
     return {
       login,

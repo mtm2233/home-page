@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-05-15 21:06:44
- * @LastEditTime: 2021-05-16 23:30:58
+ * @LastEditTime: 2021-05-17 10:04:22
  * @LastEditors: mTm
  */
 // import db from '@/libs/db'
@@ -33,32 +33,32 @@ class Preset {
   //   this.init()
   // }
 
-  setType() {
+  private setType() {
     return typeSet({ typeIds: this.type })
   }
-  setWebsite() {
+  private setWebsite() {
     return websiteSet({ websiteIds: this.website })
   }
-  setTheme() {
+  private setTheme() {
     return themeSet({
       primary_color: this.primaryColor,
       primary_bg: this.primaryBg,
     })
   }
 
-  getType() {
+  private getType() {
     return typeGet().then(res => res.data.map((typeId: number) => `t${typeId}`))
   }
-  getWebsite() {
+  private getWebsite() {
     return websiteGet().then(res =>
       res.data.map((typeId: number) => `w${typeId}`),
     )
   }
-  getTheme() {
+  private getTheme() {
     return themeGet().then(res => res.data)
   }
 
-  removeWT(val: string) {
+  private removeWT(val: string) {
     return Number(val.replace(/[tw]/g, ''))
   }
 
@@ -134,7 +134,7 @@ class Preset {
         message.error('同步预设失败~')
       })
   }
-  public values = () => {
+  public get values() {
     const { savePreset, syncPreset } = this
     return {
       savePreset,

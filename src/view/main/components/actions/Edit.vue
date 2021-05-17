@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-14 15:26:48
+ * @LastEditTime: 2021-05-17 10:00:17
  * @LastEditors: mTm
 -->
 <template>
@@ -32,7 +32,7 @@
   </a-modal>
 </template>
 <script lang="ts">
-import { defineComponent, Ref, ref, computed, nextTick } from 'vue'
+import { defineComponent, Ref, ref, computed, nextTick, ComputedRef } from 'vue'
 
 import TypeEdit from './TypeEdit.vue'
 import WebsiteEdit from './WebsiteEdit.vue'
@@ -91,7 +91,9 @@ export default defineComponent({
     }
 
     const _isEdit: Ref<boolean> = ref(false)
-    const isEdit = computed(() => props.id && _isEdit.value)
+    const isEdit: ComputedRef<boolean> = computed(() =>
+      Boolean(props.id && _isEdit.value),
+    )
     const idIsType = computed(() => props.id?.search('t') !== -1)
 
     const show = (is_edit: boolean) => {
