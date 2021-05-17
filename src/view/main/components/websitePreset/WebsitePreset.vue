@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-27 17:05:24
- * @LastEditTime: 2021-05-16 22:55:12
+ * @LastEditTime: 2021-05-17 13:45:28
  * @LastEditors: mTm
 -->
 <template>
@@ -85,17 +85,21 @@ export default defineComponent({
     }
 
     watch(searchValue, value => {
-      const expanded = generateList(gData.value)
-        .map((item: TreeDataItem) => {
-          if ((item.title as string).indexOf(value) > -1) {
-            return getParentKey(item.key as string, gData.value)
-          }
-          return null
-        })
-        .filter(
-          (item: any, i: any, self: any) => item && self.indexOf(item) === i,
-        )
-      expandedKeys.value = expanded as string[]
+      if (value) {
+        const expanded = generateList(gData.value)
+          .map((item: TreeDataItem) => {
+            if ((item.title as string).indexOf(value) > -1) {
+              return getParentKey(item.key as string, gData.value)
+            }
+            return null
+          })
+          .filter(
+            (item: any, i: any, self: any) => item && self.indexOf(item) === i,
+          )
+        expandedKeys.value = expanded as string[]
+      } else {
+        expandedKeys.value = []
+      }
       searchValue.value = value
       autoExpandParent.value = true
     })
