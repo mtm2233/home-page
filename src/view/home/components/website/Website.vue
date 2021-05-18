@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:16:09
- * @LastEditTime: 2021-05-04 18:06:47
+ * @LastEditTime: 2021-05-18 10:02:27
  * @LastEditors: mTm
 -->
 <template>
@@ -19,18 +19,24 @@
         <ACol span="20">
           <ARow class="website-list" :gutter="[15, 15]">
             <template v-for="v in item.children">
-              <ACol
+              <a-tooltip
                 v-if="verifyHide(`w${v.id}`)"
                 :key="v.id"
-                :xs="8"
-                :sm="6"
-                :lg="4"
-                :xl="4"
-                class="website-list-item"
-                @click="goWebsite(v)"
+                :title="v.description"
+                :mouse-enter-delay="0.5"
+                :color="color"
               >
-                {{ v.name }}
-              </ACol>
+                <ACol
+                  :xs="8"
+                  :sm="6"
+                  :lg="4"
+                  :xl="4"
+                  class="website-list-item"
+                  @click="goWebsite(v)"
+                >
+                  {{ v.name }}
+                </ACol>
+              </a-tooltip>
             </template>
           </ARow>
         </ACol>
@@ -39,7 +45,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, Ref, ref, inject } from 'vue'
+import { defineComponent, onMounted, Ref, ref, inject, computed } from 'vue'
+import { useStore } from 'vuex'
 
 import { websiteByType } from '@/api/website'
 
@@ -51,8 +58,15 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const store = useStore()
     const website: Ref<any[]> = ref([])
     const verifyHide = inject<any>('verifyHide')
+
+    const color = computed(
+      () =>
+        store.state['@primary-color']?.variables?.['@primary-color'] ||
+        '#000000bf',
+    )
 
     const getWebsiteByType = () => {
       if (props.type) {
@@ -75,6 +89,7 @@ export default defineComponent({
     }
 
     return {
+      color,
       website,
       goWebsite,
       verifyHide,
