@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-05-17 09:47:52
+ * @LastEditTime: 2021-05-18 10:26:53
  * @LastEditors: mTm
  */
 import { defineConfig, ConfigEnv } from 'vite'
@@ -56,7 +56,7 @@ export default ({ command }: ConfigEnv): any => {
         },
       },
     },
-    base: command === 'serve' ? './' : 'https://s.isdream.cn', // 开发或生产环境服务的公共基础路径
+    base: command === 'serve' ? './' : 'https://s.isdream.cn/', // 开发或生产环境服务的公共基础路径
     server: {
       host: '0.0.0.0',
       port: 3000, // 设置服务启动端口号
