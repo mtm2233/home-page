@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-20 09:30:57
+ * @LastEditTime: 2021-05-20 09:37:59
  * @LastEditors: mTm
 -->
 <template>
@@ -127,13 +127,16 @@ export default defineComponent({
 
     // 移除http, https
     const removePrefix = () => {
-      let url = formState.url
+      if (!formState.url) {
+        return
+      }
+      let url = `${formState.url}`.toLowerCase()
       if (url.includes('http://')) {
         urlType.value = 'http://'
       } else if (url.includes('https://')) {
         urlType.value = 'https://'
       }
-      formState.url = url.replace(/(http|https):\/\//, '')
+      formState.url = url.replace(/(http|https):\/\//gi, '')
     }
 
     // 编辑前，获取详细信息
@@ -166,7 +169,7 @@ export default defineComponent({
 
     const handleOk = () => {
       formRef.value.validate().then(() => {
-        // removePrefix()
+        removePrefix()
         const data = {
           ...formState,
           url: urlType.value + formState.url,
