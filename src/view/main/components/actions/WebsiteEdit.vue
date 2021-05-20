@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-18 09:56:52
+ * @LastEditTime: 2021-05-20 09:30:57
  * @LastEditors: mTm
 -->
 <template>
@@ -26,7 +26,7 @@
       <a-input v-model:value="formState.name" />
     </a-form-item>
     <a-form-item label="网址" name="url">
-      <a-input v-model:value="formState.url">
+      <a-input v-model:value="formState.url" @change="removePrefix">
         <template #addonBefore>
           <a-select v-model:value="urlType" style="width: 90px">
             <a-select-option value="http://">http://</a-select-option>
@@ -125,6 +125,17 @@ export default defineComponent({
       }
     }
 
+    // 移除http, https
+    const removePrefix = () => {
+      let url = formState.url
+      if (url.includes('http://')) {
+        urlType.value = 'http://'
+      } else if (url.includes('https://')) {
+        urlType.value = 'https://'
+      }
+      formState.url = url.replace(/(http|https):\/\//, '')
+    }
+
     // 编辑前，获取详细信息
     const getWebsiteInfo = () => {
       const { id, isEdit } = props
@@ -132,10 +143,12 @@ export default defineComponent({
       if (isEdit && numId && id.search('w') !== -1) {
         websitInfo(numId).then(res => {
           const { url, type_id, name, description = null } = res.data
+
           formState.url = url
           formState.type_id = type_id
           formState.name = name
           formState.description = description
+          removePrefix()
         })
       }
     }
@@ -152,8 +165,8 @@ export default defineComponent({
     }
 
     const handleOk = () => {
-      console.log(formState)
       formRef.value.validate().then(() => {
+        // removePrefix()
         const data = {
           ...formState,
           url: urlType.value + formState.url,
@@ -189,6 +202,7 @@ export default defineComponent({
       websiteRules,
       selectTreeData,
       filterTreeNode,
+      removePrefix,
       handleOk,
       cancel,
       init,
