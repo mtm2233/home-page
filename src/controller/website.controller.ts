@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:22:15
- * @LastEditTime: 2021-05-21 10:54:30
+ * @LastEditTime: 2021-05-21 11:20:19
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -84,7 +84,7 @@ class WebsiteController implements ControllerWebsite {
             const userId = ctx.user.id;
             const data = await service.listByType(typeId, userId);
             ctx.body = {
-                data,
+                data: sortResult(data),
                 message: '根据分类获取网址列表成功'
             }
         } catch (error) {

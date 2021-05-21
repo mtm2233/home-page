@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-05-21 10:06:48
- * @LastEditTime: 2021-05-21 10:59:31
+ * @LastEditTime: 2021-05-21 11:14:31
  * @LastEditors: mTm
  */
 export function sortResult(data: any): any {
@@ -16,7 +16,7 @@ export function sortResult(data: any): any {
 
 // 希尔排序
 function shellSort(data: any): any {
-  data = data.map((v: any) => ({ ...v, sort: (v.sort && v.sort !== 0) ? 999 : v.sort }));
+  data = data.map((v: any) => ({ ...v, sort: (!v.sort && v.sort !== 0) ? 999 : v.sort }));
   const len = data.length;
   let gap = Math.floor(len / 2);
   while (gap > 0) {
