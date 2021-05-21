@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-05-14 11:56:46
+ * @LastEditTime: 2021-05-21 09:45:31
  * @LastEditors: mTm
  */
 import connection from "../app/database";
@@ -93,11 +93,12 @@ class TypeService implements ServiceType {
       }
     }
 
-    if (data.name && (await this.isExist(data.name, data.user_id, pid))) {
+    const typeInfo: any = await this.isExist(data.name, data.user_id, pid)
+    if (data.name && Number(typeInfo.id) !== Number(typeId)) {
       throw new Error(`${data.name} 已存在`);
       return false;
     }
-
+ 
     const promiseList = Object.entries(data)
       .filter(([k, v]) => keys.includes(k))
       .map(([k, v]) => this.updateVal(k, v, typeId));
@@ -129,7 +130,7 @@ class TypeService implements ServiceType {
     );
 
     if (Array.isArray(result) && result.length) {
-      return true;
+      return result[0];
     }
     {
       return false;

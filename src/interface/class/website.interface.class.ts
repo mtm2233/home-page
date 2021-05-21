@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:24:37
- * @LastEditTime: 2021-05-07 23:01:55
+ * @LastEditTime: 2021-05-21 09:34:21
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -25,7 +25,7 @@ interface ServiceWebsite {
     update(websiteId: number, data: WebsiteUpdate):Promise<any>;
     listByType(pid: number, userId: number):Promise<any>;
     listByTypeAll(userId: number):Promise<any>;
-    isExist(name: string, user_id: number, id?: number): Promise<boolean>;
+    isExist(name: string, user_id: number): Promise<any>;
     remove(websiteId: number): Promise<any>;
 }
 

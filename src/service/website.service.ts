@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-05-14 11:58:50
+ * @LastEditTime: 2021-05-21 09:49:31
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -81,7 +81,7 @@ class WebsiteService implements ServiceWebsite {
             ON t.pid = mt.id
             WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && (t.user_id IS NULL || t.user_id in (${SYSTEM_USER_ID}, ?))
             GROUP BY mt.id
-            ORDER BY mt.sort ASC;
+            ORDER BY mt.sort ASC, t.sort ASC, mt.createAt ASC, t.createAt ASC;
         `;
 
         const [result] = await connection.execute(statement, [userId, userId, userId, userId, userId, userId])
@@ -137,7 +137,8 @@ class WebsiteService implements ServiceWebsite {
         // 'user_id', 
         const keys = ['name', 'url', 'icon', 'description', 'type_id', 'sort']
 
-        if (data.name && data.user_id && await this.isExist(data.name, data.user_id, websiteId)) {
+        const websiteInfo: any = await this.isExist(data.name, data.user_id)
+        if (data.name && Number(websiteInfo.id) !== Number(websiteId)) {
             throw new Error(`${data.name} 已存在`)
             return false
         }
@@ -160,17 +161,14 @@ class WebsiteService implements ServiceWebsite {
         return result;
     }
 
-    async isExist(name: string, user_id: number, id?: number) {
+    async isExist(name: string, user_id: number) {
         let statement = `
             SELECT * From website WHERE name = ? && user_id = ?;
         `
-        if (id) {
-            statement = 'SELECT * From website WHERE name = ? && user_id = ? && id != ?';
-        }
-        const [result] = await connection.execute(statement, id ? [name, user_id, id] : [name, user_id]);
+        const [result] = await connection.execute(statement, [name, user_id]);
 
         if (Array.isArray(result) && result.length) {
-            return true;
+            return result[0];
         } {
             return false;
         }
