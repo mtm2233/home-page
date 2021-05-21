@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 16:42:05
- * @LastEditTime: 2021-04-27 23:41:04
+ * @LastEditTime: 2021-05-21 10:50:50
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -11,6 +11,7 @@ import { ControllerSearch } from '../interface/class/search.interface.class'
 import service from '../service/search.service'
 
 import { CONTENT_DOES_NOT_EXISTS, MISSING_PARAMETER, CONTENT_IS_EXIST, ERROR_PARAMETER } from '../constants/error-types'
+import { sortResult } from '../units/sort'
 
 class SearchController implements ControllerSearch {
     async list(ctx: Context, next: () => Promise<any>) {
@@ -18,7 +19,7 @@ class SearchController implements ControllerSearch {
             const userId = ctx.user.id;
             const result = await service.list(userId);
             ctx.body = {
-                data: result,
+                data: sortResult(result),
                 message: "获取搜索引擎列表成功"
             }
         } catch (error) {

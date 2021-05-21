@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:22:15
- * @LastEditTime: 2021-05-07 22:53:29
+ * @LastEditTime: 2021-05-21 10:54:30
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -11,6 +11,7 @@ import { ControllerWebsite } from '../interface/class/website.interface.class'
 import service from '../service/website.service'
 
 import { MISSING_PARAMETER, CONTENT_IS_EXIST, ERROR_PARAMETER } from '../constants/error-types'
+import { sortResult } from '../units/sort'
 
 class WebsiteController implements ControllerWebsite {
     async create(ctx: Context, next: () => Promise<any>) {
@@ -51,7 +52,7 @@ class WebsiteController implements ControllerWebsite {
             });
             const { count } = (await service.count(name, url) as any)
             ctx.body = {
-                data,
+                data: sortResult(data),
                 message: '获取网址列表成功',
                 meta: {
                     ...ctx.meta,
@@ -69,7 +70,7 @@ class WebsiteController implements ControllerWebsite {
             const userId = ctx.user.id;
             const data = await service.listByTypeAll(userId);
             ctx.body = {
-                data,
+                data: sortResult(data),
                 message: '根据分类获取所以网址列表成功'
             }
         } catch (error) {

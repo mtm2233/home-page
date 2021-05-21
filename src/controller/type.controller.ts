@@ -2,13 +2,14 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 20:39:18
- * @LastEditTime: 2021-05-10 23:24:18
+ * @LastEditTime: 2021-05-21 10:53:57
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
 import { ControllerType } from '../interface/class/type.interface.class'
 
 import { MISSING_PARAMETER, ERROR_PARAMETER, CONTENT_DOES_NOT_EXISTS } from '../constants/error-types'
+import { sortResult } from '../units/sort'
 
 import service from '../service/type.service'
 
@@ -43,7 +44,7 @@ class TypeController implements ControllerType {
             const { pid } = ctx.request.query
             const data = await service.list(pid ? Number(pid) : null, userId)
             ctx.body = {
-                data,
+                data: sortResult(data),
                 message: '获取分类列表成功'
             }
         } catch (error) {

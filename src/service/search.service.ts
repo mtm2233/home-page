@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-21 17:02:09
- * @LastEditTime: 2021-05-07 23:22:16
+ * @LastEditTime: 2021-05-21 10:55:26
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -15,10 +15,9 @@ import { SearchAdd, SearchEdit } from '../interface/search.interface'
 class SearchService implements ServiceSearch {
     async list(userId: number) {
         const statement = `
-            SELECT id, name, website, search_key, icon, description, extra_key, placeholder,
+            SELECT id, name, website, search_key, icon, description, extra_key, placeholder, sort,
                 IF(user_id = ?, TRUE, FALSE) is_edit
-                FROM search WHERE user_id in (${SYSTEM_USER_ID}, ?)
-                ORDER BY sort ASC, createAt ASC;
+                FROM search WHERE user_id in (${SYSTEM_USER_ID}, ?);
         `;
 
         const [result] = await connection.execute(statement, [userId, userId]);

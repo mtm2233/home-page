@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-05-21 09:49:31
+ * @LastEditTime: 2021-05-21 10:59:55
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -47,7 +47,7 @@ class WebsiteService implements ServiceWebsite {
             user_id
         } = params;
         const statement = `
-            SELECT name, url, IF(user_id = ?, TRUE, FALSE) is_edit FROM website WHERE name LIKE '%${name}%' && url LIKE '%${url}%' && user_id in (${SYSTEM_USER_ID}, ?)
+            SELECT name, url, sort, IF(user_id = ?, TRUE, FALSE) is_edit FROM website WHERE name LIKE '%${name}%' && url LIKE '%${url}%' && user_id in (${SYSTEM_USER_ID}, ?)
             ORDER BY sort ASC, createAt ASC
             LIMIT ?, ?;
         `;
@@ -58,7 +58,7 @@ class WebsiteService implements ServiceWebsite {
 
     async listByTypeAll(userId: number) {
         const statement = `
-            SELECT mt.id, mt.name, IF(mt.user_id = ?, TRUE, FALSE) is_edit,
+            SELECT mt.id, mt.name, IF(mt.user_id = ?, TRUE, FALSE) is_edit, mt.sort,
             IF(
                 COUNT(t.id),
                 JSON_ARRAYAGG(
@@ -66,11 +66,11 @@ class WebsiteService implements ServiceWebsite {
                         'id', t.id,
                         'name', t.name,
                         'is_edit', IF(t.user_id = ?, TRUE, FALSE),
+                        'sort', t.sort,
                         'children', 
                         (
-                            SELECT JSON_ARRAYAGG(JSON_OBJECT('id', w.id, 'name', w.name, 'url', w.url, 'is_edit', IF(w.user_id = ?, TRUE, FALSE))) 
+                            SELECT JSON_ARRAYAGG(JSON_OBJECT('id', w.id, 'name', w.name, 'url', w.url, 'sort', w.sort, 'is_edit', IF(w.user_id = ?, TRUE, FALSE))) 
                             FROM website w WHERE w.type_id = t.id && w.user_id in (${SYSTEM_USER_ID}, ?)
-                            ORDER BY w.sort ASC
                         )
                     )
                 ),
@@ -81,7 +81,6 @@ class WebsiteService implements ServiceWebsite {
             ON t.pid = mt.id
             WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && (t.user_id IS NULL || t.user_id in (${SYSTEM_USER_ID}, ?))
             GROUP BY mt.id
-            ORDER BY mt.sort ASC, t.sort ASC, mt.createAt ASC, t.createAt ASC;
         `;
 
         const [result] = await connection.execute(statement, [userId, userId, userId, userId, userId, userId])
@@ -91,7 +90,7 @@ class WebsiteService implements ServiceWebsite {
 
     async listByType(pid: number, userId: number) {
         const statement = `
-            SELECT t.id, t.name, t.description,
+            SELECT t.id, t.name, t.description, t.sort,
             IF(t.user_id = ?, TRUE, FALSE) is_edit,
             IF(COUNT(w.id),
                 JSON_ARRAYAGG(JSON_OBJECT('id', w.id, 'name', w.name, 'url', w.url, 'icon', w.icon, 'description', w.description, 'sort', w.sort, 'is_edit', IF(w.user_id = ?, TRUE, FALSE))),
@@ -101,8 +100,7 @@ class WebsiteService implements ServiceWebsite {
             LEFT JOIN website w
             ON t.id = w.type_id
             WHERE t.pid = ? && t.user_id in (${SYSTEM_USER_ID}, ?) && w.user_id in (${SYSTEM_USER_ID}, ?)
-            GROUP BY t.id
-            ORDER BY t.sort ASC, t.createAt ASC, w.sort ASC, w.createAt ASC;
+            GROUP BY t.id;
         `;
 
         const [result] = await connection.execute(statement, [userId, userId, pid, userId, userId])

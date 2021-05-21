@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-05-21 09:45:31
+ * @LastEditTime: 2021-05-21 10:56:21
  * @LastEditors: mTm
  */
 import connection from "../app/database";
@@ -47,11 +47,11 @@ class TypeService implements ServiceType {
 
   async list(pid: number | null, userId: number) {
     let statement = `
-            SELECT id, name, description, IF(user_id = ?, TRUE, FALSE) is_edit FROM type WHERE pid = ? && user_id IN (${SYSTEM_USER_ID}, ?) ORDER BY sort ASC, createAt ASC;
+            SELECT id, name, description, sort, IF(user_id = ?, TRUE, FALSE) is_edit FROM type WHERE pid = ? && user_id IN (${SYSTEM_USER_ID}, ?);
         `;
     if (!pid) {
       statement = `
-            SELECT id, name, description, IF(user_id = ?, TRUE, FALSE) is_edit FROM type WHERE pid IS NULL && user_id IN (${SYSTEM_USER_ID}, ?) ORDER BY sort ASC, createAt ASC;
+            SELECT id, name, description, IF(user_id = ?, TRUE, FALSE) is_edit FROM type WHERE pid IS NULL && user_id IN (${SYSTEM_USER_ID}, ?);
             `;
     }
 
@@ -159,8 +159,7 @@ class TypeService implements ServiceType {
         LEFT JOIN type t
         ON t.pid = mt.id
         WHERE mt.pid IS NULL && mt.user_id in (${SYSTEM_USER_ID}, ?) && (t.user_id IS NULL || t.user_id in (${SYSTEM_USER_ID}, ?))
-        GROUP BY mt.id
-        ORDER BY mt.sort ASC;
+        GROUP BY mt.id;
     `;
 
     const [result] = await connection.execute(statement, [userId, userId]);
