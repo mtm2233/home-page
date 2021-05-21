@@ -2,12 +2,13 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-05-08 09:11:58
- * @LastEditTime: 2021-05-18 09:48:31
+ * @LastEditTime: 2021-05-21 09:14:43
  * @LastEditors: mTm
  */
 export interface TypeForm {
   pid: number | null
   name: string
+  sort: number | null
 }
 
 export interface Type {
@@ -35,6 +36,7 @@ export interface WebsiteForm {
   name: string
   url: string
   description?: string | null
+  sort: number | null
 }
 
 export const websiteRules = {

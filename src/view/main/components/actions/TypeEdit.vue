@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-14 15:36:28
+ * @LastEditTime: 2021-05-21 09:21:39
  * @LastEditors: mTm
 -->
 <template>
@@ -25,6 +25,13 @@
     </a-form-item>
     <a-form-item label="名称" name="name">
       <a-input v-model:value="formState.name" />
+    </a-form-item>
+    <a-form-item label="排序" name="sort">
+      <a-input-number
+        v-model:value="formState.sort"
+        :min="0"
+        style="width: 100%"
+      />
     </a-form-item>
   </a-form>
 </template>
@@ -63,6 +70,7 @@ export default defineComponent({
     const formState: UnwrapRef<TypeForm> = reactive({
       pid: null,
       name: '',
+      sort: null,
     })
     const selectOptions = ref([])
 
@@ -90,9 +98,10 @@ export default defineComponent({
       const numId = getNumId.value
       numId &&
         typeInfo(numId).then((res: any) => {
-          const { pid, name } = res.data
+          const { pid = null, name, sort = null } = res.data
           formState.pid = pid
           formState.name = name
+          formState.sort = sort
         })
     }
 

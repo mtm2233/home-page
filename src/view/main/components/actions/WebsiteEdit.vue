@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-20 09:37:59
+ * @LastEditTime: 2021-05-21 09:20:01
  * @LastEditors: mTm
 -->
 <template>
@@ -37,6 +37,13 @@
     </a-form-item>
     <a-form-item label="介绍" name="description">
       <a-input v-model:value="formState.description" />
+    </a-form-item>
+    <a-form-item label="排序" name="sort">
+      <a-input-number
+        v-model:value="formState.sort"
+        :min="0"
+        style="width: 100%"
+      />
     </a-form-item>
   </a-form>
 </template>
@@ -78,6 +85,7 @@ export default defineComponent({
       name: '',
       url: '',
       description: null,
+      sort: null,
     })
     const selectTreeData: Ref<any> = ref([])
 
@@ -145,12 +153,19 @@ export default defineComponent({
       const numId = getNumId.value
       if (isEdit && numId && id.search('w') !== -1) {
         websitInfo(numId).then(res => {
-          const { url, type_id, name, description = null } = res.data
+          const {
+            url,
+            type_id,
+            name,
+            description = null,
+            sort = null,
+          } = res.data
 
           formState.url = url
           formState.type_id = type_id
           formState.name = name
           formState.description = description
+          formState.sort = sort
           removePrefix()
         })
       }
