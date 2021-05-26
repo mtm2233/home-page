@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-21 21:01:01
- * @LastEditTime: 2021-05-21 10:56:21
+ * @LastEditTime: 2021-05-26 23:31:08
  * @LastEditors: mTm
  */
 import connection from "../app/database";
@@ -94,7 +94,7 @@ class TypeService implements ServiceType {
     }
 
     const typeInfo: any = await this.isExist(data.name, data.user_id, pid)
-    if (data.name && Number(typeInfo.id) !== Number(typeId)) {
+    if (data.name && typeInfo.id && Number(typeInfo.id) !== Number(typeId)) {
       throw new Error(`${data.name} 已存在`);
       return false;
     }

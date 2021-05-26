@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-05-21 10:59:55
+ * @LastEditTime: 2021-05-26 23:31:39
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -136,7 +136,7 @@ class WebsiteService implements ServiceWebsite {
         const keys = ['name', 'url', 'icon', 'description', 'type_id', 'sort']
 
         const websiteInfo: any = await this.isExist(data.name, data.user_id)
-        if (data.name && Number(websiteInfo.id) !== Number(websiteId)) {
+        if (data.name && websiteInfo.id && Number(websiteInfo.id) !== Number(websiteId)) {
             throw new Error(`${data.name} 已存在`)
             return false
         }
