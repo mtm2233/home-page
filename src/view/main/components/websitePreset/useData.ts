@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-27 18:06:29
- * @LastEditTime: 2021-05-08 10:37:44
+ * @LastEditTime: 2021-05-26 19:40:24
  * @LastEditors: mTm
  */
 /*
@@ -21,6 +21,7 @@ function changeKey(data: any[], editing = false): any {
       key: v.url ? `w${v.id}` : `t${v.id}`,
       title: v.name,
       disabled: editing && !v.is_edit,
+      selectable: editing,
       children: v.children ? changeKey(v.children, editing) : [],
     })) || []
   )
