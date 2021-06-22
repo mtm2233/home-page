@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 22:02:34
- * @LastEditTime: 2021-04-26 17:34:06
+ * @LastEditTime: 2021-06-22 17:38:20
  * @LastEditors: mTm
 -->
 <template>
@@ -67,9 +67,9 @@ export default defineComponent({
       if (value.value && currentSearch.value.website) {
         let { website, search_key, extra_key } = currentSearch.value
         if (extra_key) {
-          window.open(`${website}?${search_key}=${value.value}&${extra_key}`)
+          window.open(`${website}?${search_key}="${value.value}"&${extra_key}`)
         } else {
-          window.open(`${website}?${search_key}=${value.value}`)
+          window.open(`${website}?${search_key}="${value.value}"`)
         }
       }
     }

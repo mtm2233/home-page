@@ -2,14 +2,19 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 16:19:20
- * @LastEditTime: 2021-05-14 17:43:05
+ * @LastEditTime: 2021-06-22 17:31:31
  * @LastEditors: mTm
 -->
 <template>
   <ALayout>
     <ALayoutHeader>
       <Refresh />
-      <Setting />
+      <div>
+        <ASpace size="large">
+          <UpdateLog />
+          <Setting />
+        </ASpace>
+      </div>
     </ALayoutHeader>
     <ALayoutContent>
       <RouterView />
@@ -21,6 +26,7 @@
 import Setting from './components/Setting.vue'
 import Refresh from './components/Refresh.vue'
 import Footer from './components/Footer.vue'
+import UpdateLog from './components/updateLog/UpdateLog.vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Main',
@@ -28,6 +34,7 @@ export default defineComponent({
     Refresh,
     Setting,
     Footer,
+    UpdateLog,
   },
 })
 </script>
