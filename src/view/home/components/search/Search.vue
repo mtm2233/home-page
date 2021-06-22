@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 22:02:34
- * @LastEditTime: 2021-06-22 17:38:20
+ * @LastEditTime: 2021-06-22 22:35:59
  * @LastEditors: mTm
 -->
 <template>
@@ -30,8 +30,10 @@ import {
   computed,
   Ref,
   ComputedRef,
+  inject,
 } from 'vue'
 import { list } from '@/api/search'
+import { websiteByTypeAll } from '@/api/website'
 
 export default defineComponent({
   name: 'Search',
@@ -40,6 +42,7 @@ export default defineComponent({
     const activeKey: Ref<number | null> = ref(null)
     const searchs: Ref<any[]> = ref([])
     const searchRef: Ref<any | null> = ref(null)
+    const verifyHide = inject<any>('verifyHide')
 
     const getList = () => {
       list().then(({ data }) => {
@@ -56,15 +59,53 @@ export default defineComponent({
       }
     }
 
+    const websiteMap = new Map()
+    // 获取website
+    const getWebSite = () => {
+      websiteByTypeAll().then((res: any) => {
+        setWebsiteMap(res.data)
+      })
+    }
+
+    const setWebsiteMap = (data: any) => {
+      if (!data) {
+        return
+      }
+      const { url, id } = data
+      let { name } = data
+      if (Array.isArray(data)) {
+        data.forEach(v => {
+          setWebsiteMap(v)
+          v.children && setWebsiteMap(v.children)
+        })
+      } else if (url && verifyHide(`w${id}`)) {
+        name = name.toLowerCase()
+        const result = websiteMap.get(name)
+        if (result) {
+          result.count++
+          websiteMap.set(name, result)
+        } else {
+          websiteMap.set(name, { url, count: 0 })
+        }
+      }
+    }
+
     onMounted(() => {
       getList()
       searchFocus()
+      getWebSite()
     })
 
     // 搜索
     const value: Ref<string | null> = ref(null)
     const onSearch = () => {
-      if (value.value && currentSearch.value.website) {
+      if (!value.value) {
+        return
+      }
+      const website = websiteMap.get(value.value.toLowerCase())
+      if (website && website.count === 0) {
+        window.open(website.url)
+      } else if (currentSearch.value.website) {
         let { website, search_key, extra_key } = currentSearch.value
         if (extra_key) {
           window.open(`${website}?${search_key}="${value.value}"&${extra_key}`)
