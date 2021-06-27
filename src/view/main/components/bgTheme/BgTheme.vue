@@ -50,7 +50,7 @@ export default defineComponent({
       ;(window as any).less
         .modifyVars(variables)
         .then(() => {
-          store.commit('chageState', {
+          store.commit('changeState', {
             key: '@primary-bg',
             value: item,
           })
@@ -61,7 +61,7 @@ export default defineComponent({
     }
 
     const save = () => {
-      store.commit('chageState', {
+      store.commit('changeState', {
         key: '@primary-bg',
         value: theme.value,
         dbSet: true,

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 22:02:34
- * @LastEditTime: 2021-06-22 22:35:59
+ * @LastEditTime: 2021-06-27 21:54:38
  * @LastEditors: mTm
 -->
 <template>
@@ -34,10 +34,12 @@ import {
 } from 'vue'
 import { list } from '@/api/search'
 import { websiteByTypeAll } from '@/api/website'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'Search',
   setup() {
+    const store = useStore()
     // 初始化
     const activeKey: Ref<number | null> = ref(null)
     const searchs: Ref<any[]> = ref([])
@@ -103,14 +105,24 @@ export default defineComponent({
         return
       }
       const website = websiteMap.get(value.value.toLowerCase())
-      if (website && website.count === 0) {
+      // 用户是否开启功能 && 存在网址 && 只有一个
+      if (store.state.searchWebsite && website && website.count === 0) {
         window.open(website.url)
       } else if (currentSearch.value.website) {
         let { website, search_key, extra_key } = currentSearch.value
-        if (extra_key) {
-          window.open(`${website}?${search_key}="${value.value}"&${extra_key}`)
+        let url: string | null = null
+        // 精准搜索，开启
+        if (store.state.preciseSearch) {
+          url = `${website}?${search_key}="${value.value}"`
         } else {
-          window.open(`${website}?${search_key}="${value.value}"`)
+          url = `${website}?${search_key}=${value.value}`
+        }
+
+        // 是否需要其他搜索字段
+        if (extra_key) {
+          window.open(`${url}&${extra_key}`)
+        } else {
+          window.open(url)
         }
       }
     }

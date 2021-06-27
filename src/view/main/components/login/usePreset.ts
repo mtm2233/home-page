@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-05-15 21:06:44
- * @LastEditTime: 2021-05-17 10:04:22
+ * @LastEditTime: 2021-06-27 21:45:18
  * @LastEditors: mTm
  */
 // import db from '@/libs/db'
@@ -21,11 +21,15 @@ interface PresetTheme {
   primaryColor: any
   primaryBg: any
   typeWebsite: any
+  searchWebsite: boolean
+  preciseSearch: boolean
 }
 
 class Preset {
   private primaryColor = ''
   private primaryBg = ''
+  private searchWebsite = true
+  private preciseSearch = true
   private type: number[] = []
   private website: number[] = []
 
@@ -43,6 +47,8 @@ class Preset {
     return themeSet({
       primary_color: this.primaryColor,
       primary_bg: this.primaryBg,
+      search_website: this.searchWebsite,
+      precise_search: this.preciseSearch,
     })
   }
 
@@ -62,9 +68,14 @@ class Preset {
     return Number(val.replace(/[tw]/g, ''))
   }
 
+  // 从vuex获取最新的值
   private init = () => {
+    // theme
     this.primaryColor = JSON.stringify(store.state['@primary-color'])
     this.primaryBg = JSON.stringify(store.state['@primary-bg'])
+    this.searchWebsite = store.state.searchWebsite
+    this.preciseSearch = store.state.preciseSearch
+    // website
     const typeWebsite = store.state.typeWebsite
     this.type = typeWebsite
       .filter((v: string) => v.includes('t'))
@@ -74,28 +85,37 @@ class Preset {
       .map((v: string) => this.removeWT(v))
   }
 
+  // 保存样式到vuex localstorage
   private setPreset = (preset: PresetTheme) => {
-    const { typeWebsite, primaryColor, primaryBg } = preset
+    const { primaryColor, primaryBg } = preset
 
+    // 生产less配置
     const variables = Object.assign(
       {},
       primaryColor.variables,
       primaryBg.variables,
     )
-    store.commit('chageState', {
-      key: 'typeWebsite',
-      value: typeWebsite,
-      dbSet: true,
+
+    // 保存到vuex
+    const keys: string[] = ['typeWebsite', 'searchWebsite', 'preciseSearch']
+    keys.forEach((key: string) => {
+      console.log(key, (preset as any)[key])
+      store.commit('changeState', {
+        key,
+        value: (preset as any)[key],
+        dbSet: true,
+      })
     })
+    // 设置theme
     ;(window as any).less
       .modifyVars(variables)
       .then(() => {
-        store.commit('chageState', {
+        store.commit('changeState', {
           key: '@primary-color',
           value: primaryColor,
           dbSet: true,
         })
-        store.commit('chageState', {
+        store.commit('changeState', {
           key: '@primary-bg',
           value: primaryBg,
           dbSet: true,
@@ -121,12 +141,22 @@ class Preset {
   private syncPreset = () => {
     Promise.all([this.getType(), this.getWebsite(), this.getTheme()])
       .then((preset: any) => {
+        // 默认值
         const [type = [], Website = [], theme = {}] = preset
-        const { primary_color: primaryColor, primary_bg: primaryBg } = theme
+        // 别名
+        const {
+          primary_color: primaryColor,
+          primary_bg: primaryBg,
+          search_website: searchWebsite,
+          precise_search: preciseSearch,
+        } = theme
+        // 保存样式到vuex localstorage
         this.setPreset({
           primaryColor: primaryColor && JSON.parse(primaryColor),
           primaryBg: primaryBg && JSON.parse(primaryBg),
           typeWebsite: [...type, ...Website],
+          searchWebsite,
+          preciseSearch,
         })
         message.success('同步预设成功')
       })
@@ -134,6 +164,7 @@ class Preset {
         message.error('同步预设失败~')
       })
   }
+  // 暴露给.vue
   public get values() {
     const { savePreset, syncPreset } = this
     return {

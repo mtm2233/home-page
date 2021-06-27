@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-27 22:43:23
- * @LastEditTime: 2021-06-22 22:22:51
+ * @LastEditTime: 2021-06-27 21:40:31
  * @LastEditors: mTm
  */
 import { provide } from 'vue'
@@ -12,8 +12,10 @@ import { message } from 'ant-design-vue'
 
 function verifyHide(name: string): boolean {
   if (!name) return false
-  // const store = useStore()
   const typeWebsite = store.state.typeWebsite
+  if (!Array.isArray(typeWebsite)) {
+    return true
+  }
   return !typeWebsite.includes(name)
 }
 

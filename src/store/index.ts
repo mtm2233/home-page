@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:01:17
- * @LastEditTime: 2021-05-07 17:26:03
+ * @LastEditTime: 2021-06-27 21:14:56
  * @LastEditors: mTm
  */
 import { createStore } from 'vuex'
@@ -13,12 +13,14 @@ import config from '@/config'
 export const store = createStore({
   state: {
     typeWebsite: db.get('typeWebsite') || [],
+    searchWebsite: db.get('searchWebsite') || true,
+    preciseSearch: db.get('preciseSearch') || true,
     token: '',
     '@primary-color': db.get('@primary-color') || null,
     '@primary-bg': db.get('@primary-bg') || null,
   },
   mutations: {
-    chageState(
+    changeState(
       state: any,
       kv: { key: string; value: any; dbSet?: boolean },
     ): void {

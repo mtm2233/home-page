@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-28 16:15:02
- * @LastEditTime: 2021-06-22 17:15:38
+ * @LastEditTime: 2021-06-27 20:13:53
  * @LastEditors: mTm
  */
 import { App, Plugin } from 'vue'
@@ -29,6 +29,7 @@ import {
   InputNumber,
   Badge,
   Card,
+  Switch,
 } from 'ant-design-vue'
 
 const plugins: Plugin[] = [
@@ -54,6 +55,7 @@ const plugins: Plugin[] = [
   InputNumber,
   Badge,
   Card,
+  Switch,
 ]
 
 export const setupAntd = (app: App, options: any = {}): void => {

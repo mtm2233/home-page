@@ -109,7 +109,7 @@ export default defineComponent({
 
     // 保存
     const save = () => {
-      store.commit('chageState', {
+      store.commit('changeState', {
         key: 'typeWebsite',
         value: checkedKeys.value,
         dbSet: true,
