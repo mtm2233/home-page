@@ -56,7 +56,7 @@ export default ({ command }: ConfigEnv): any => {
         },
       },
     },
-    base: command === 'serve' ? './' : 'https://s.isdream.cn/', // 开发或生产环境服务的公共基础路径
+    base: '/', // 开发或生产环境服务的公共基础路径
     server: {
       host: '0.0.0.0',
       port: 3000, // 设置服务启动端口号
