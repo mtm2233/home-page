@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-17 11:19:17
- * @LastEditTime: 2021-04-20 00:11:25
+ * @LastEditTime: 2021-08-03 00:17:21
  * @LastEditors: mTm
  */
 import * as path from 'path';
@@ -10,7 +10,6 @@ import * as path from 'path';
 import * as Jimp from 'jimp';
 import * as Multer from 'koa-multer';
 
-import { FileCtx } from '../interface/file.interface'
 import mkdirsSync from '../units/mkdirsSync';
 import { FILE_PATH } from '../constants/file-path';
 import { File_IS_NOT_ARRAY } from '../constants/error-types'
@@ -37,7 +36,7 @@ const articleFileStorage = Multer.diskStorage({
   
   const fileHandler = articleFileUpload.array('files')
   
-  const imagesResize = async (ctx: FileCtx, next: () => Promise<any>) => {
+  const imagesResize = async (ctx: File.FileCtx, next: () => Promise<any>) => {
     try {
       // 1.获取所有的图像信息
       let files = ctx.req.files;

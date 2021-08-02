@@ -2,16 +2,13 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-17 12:31:18
- * @LastEditTime: 2021-04-19 09:17:56
+ * @LastEditTime: 2021-08-03 00:02:00
  * @LastEditors: mTm
  */
 import connection from '../app/database';
 
-import { File } from '../interface/file.interface'
-import { ServiceFile } from '../interface/class/file.interface.class';
-
-class FileService implements ServiceFile {
-    async fileCreate(file: File) {
+class FileService implements File.ServiceFile {
+    async fileCreate(file: File.File) {
         const {
             filename,
             mimetype,

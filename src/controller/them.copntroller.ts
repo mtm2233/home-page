@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-16 21:48:21
- * @LastEditTime: 2021-05-16 22:11:59
+ * @LastEditTime: 2021-08-03 00:16:15
  * @LastEditors: mTm
  */
 import { Context } from 'koa'
@@ -15,7 +15,7 @@ class ThemeController implements ControllerTheme {
         try {
             const { id } = ctx.user;
             const result = await themeService.detail(id)
-            ctx.body = {
+            ctx.body = { 
                 data: result,
                 message: '获取预设成功',
             }
