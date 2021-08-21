@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:01:17
- * @LastEditTime: 2021-06-27 21:14:56
+ * @LastEditTime: 2021-08-21 22:53:51
  * @LastEditors: mTm
  */
 import { createStore } from 'vuex'
@@ -13,8 +13,10 @@ import config from '@/config'
 export const store = createStore({
   state: {
     typeWebsite: db.get('typeWebsite') || [],
-    searchWebsite: db.get('searchWebsite') || true,
-    preciseSearch: db.get('preciseSearch') || true,
+    searchWebsite:
+      db.get('searchWebsite') === undefined ? true : db.get('searchWebsite'),
+    preciseSearch:
+      db.get('preciseSearch') === undefined ? false : db.get('preciseSearch'),
     token: '',
     '@primary-color': db.get('@primary-color') || null,
     '@primary-bg': db.get('@primary-bg') || null,

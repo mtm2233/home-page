@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-28 09:27:58
- * @LastEditTime: 2021-05-16 23:35:58
+ * @LastEditTime: 2021-08-21 23:04:18
  * @LastEditors: mTm
 -->
 <template>
@@ -27,7 +27,7 @@ import { defineComponent, inject, computed } from 'vue'
 import { CheckOutlined } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
 
-import { themeList } from './theme'
+import { themeList } from '@/libs/theme'
 
 export default defineComponent({
   name: 'Theme',

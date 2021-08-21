@@ -2,12 +2,12 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-28 09:27:58
- * @LastEditTime: 2021-05-16 23:35:15
+ * @LastEditTime: 2021-08-21 22:59:35
  * @LastEditors: mTm
 -->
 <template>
   <ul class="setting-theme v-to-zero">
-    <ATooltip v-for="item of themeList" :key="item.name" :title="item.text">
+    <ATooltip v-for="item of bgThemeList" :key="item.name" :title="item.text">
       <li
         :style="{
           backgroundColor: item.variables['@primary-bg'],
@@ -27,7 +27,7 @@ import { defineComponent, inject, computed } from 'vue'
 import { CheckOutlined } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
 
-import { themeList } from './theme'
+import { bgThemeList } from '@/libs/theme'
 
 export default defineComponent({
   name: 'Theme',
@@ -69,7 +69,7 @@ export default defineComponent({
     }
 
     return {
-      themeList,
+      bgThemeList,
       changeTheme,
       theme,
       save,

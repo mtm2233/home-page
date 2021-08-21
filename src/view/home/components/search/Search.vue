@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-25 22:02:34
- * @LastEditTime: 2021-06-27 21:54:38
+ * @LastEditTime: 2021-08-21 23:51:06
  * @LastEditors: mTm
 -->
 <template>
@@ -31,55 +31,78 @@ import {
   Ref,
   ComputedRef,
   inject,
+  watch,
+  reactive,
+  toRefs,
 } from 'vue'
 import { list } from '@/api/search'
 import { websiteByTypeAll } from '@/api/website'
 import { useStore } from 'vuex'
 
+interface State {
+  activeKey: number | null
+  searchs: any[]
+  value: string | null
+}
 export default defineComponent({
   name: 'Search',
   setup() {
     const store = useStore()
-    // 初始化
-    const activeKey: Ref<number | null> = ref(null)
-    const searchs: Ref<any[]> = ref([])
-    const searchRef: Ref<any | null> = ref(null)
+    // 校验是否被隐藏
     const verifyHide = inject<any>('verifyHide')
+    // 初始化
+    const state = reactive<State>({
+      // 默认的搜索引擎key
+      activeKey: null,
+      // 搜索引擎
+      searchs: [],
+      // input 内容
+      value: null,
+    })
 
+    // 搜索引擎列表
     const getList = () => {
       list().then(({ data }) => {
         if (Array.isArray(data) && data.length) {
-          searchs.value = data
-          activeKey.value = data[0].id
+          state.searchs = data
+          state.activeKey = data[0].id
         }
       })
     }
 
+    // input 输入框
+    const searchRef: Ref<any | null> = ref(null)
+    // 获得焦点
     const searchFocus = () => {
       if (searchRef.value) {
         searchRef.value.focus()
       }
     }
 
-    const websiteMap = new Map()
+    // 网址、分类
+    let typeWebsite: any[] = []
+    let websiteMap = new Map()
     // 获取website
     const getWebSite = () => {
       websiteByTypeAll().then((res: any) => {
-        setWebsiteMap(res.data)
+        typeWebsite = res.data
+        setWebsiteMap(typeWebsite)
       })
     }
 
+    // 设置搜索的网址
     const setWebsiteMap = (data: any) => {
       if (!data) {
         return
       }
       const { url, id } = data
       let { name } = data
-      if (Array.isArray(data)) {
+      if (Array.isArray(data) && data.length) {
         data.forEach(v => {
           setWebsiteMap(v)
           v.children && setWebsiteMap(v.children)
         })
+        // 网址且没有被隐藏
       } else if (url && verifyHide(`w${id}`)) {
         name = name.toLowerCase()
         const result = websiteMap.get(name)
@@ -91,6 +114,14 @@ export default defineComponent({
         }
       }
     }
+    // 隐藏网址更改，重置map
+    watch(
+      () => store.state.typeWebsite,
+      () => {
+        websiteMap = new Map()
+        setWebsiteMap(typeWebsite)
+      },
+    )
 
     onMounted(() => {
       getList()
@@ -99,12 +130,11 @@ export default defineComponent({
     })
 
     // 搜索
-    const value: Ref<string | null> = ref(null)
     const onSearch = () => {
-      if (!value.value) {
+      if (!state.value) {
         return
       }
-      const website = websiteMap.get(value.value.toLowerCase())
+      const website = websiteMap.get(state.value.toLowerCase())
       // 用户是否开启功能 && 存在网址 && 只有一个
       if (store.state.searchWebsite && website && website.count === 0) {
         window.open(website.url)
@@ -113,9 +143,9 @@ export default defineComponent({
         let url: string | null = null
         // 精准搜索，开启
         if (store.state.preciseSearch) {
-          url = `${website}?${search_key}="${value.value}"`
+          url = `${website}?${search_key}="${state.value}"`
         } else {
-          url = `${website}?${search_key}=${value.value}`
+          url = `${website}?${search_key}=${state.value}`
         }
 
         // 是否需要其他搜索字段
@@ -130,17 +160,14 @@ export default defineComponent({
     // 当前的搜索引擎
     const currentSearch: ComputedRef = computed(() => {
       searchFocus()
-      return searchs.value.find((v: any) => v.id === activeKey.value) || {}
+      return state.searchs.find((v: any) => v.id === state.activeKey) || {}
     })
 
     return {
-      activeKey,
-      searchs,
+      ...toRefs(state),
       searchRef,
-
-      value,
-      onSearch,
       currentSearch,
+      onSearch,
     }
   },
 })

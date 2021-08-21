@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-27 17:05:24
- * @LastEditTime: 2021-05-17 13:45:28
+ * @LastEditTime: 2021-08-21 23:48:36
  * @LastEditors: mTm
 -->
 <template>
@@ -39,7 +39,15 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
+import {
+  defineComponent,
+  nextTick,
+  onMounted,
+  ref,
+  watch,
+  reactive,
+  toRefs,
+} from 'vue'
 import { TreeDataItem } from 'ant-design-vue/es/tree/Tree'
 import { useStore } from 'vuex'
 
@@ -48,6 +56,16 @@ import { changeKey, generateList, getParentKey } from './useData'
 
 import Actions from '../actions/Actions.vue'
 
+interface State {
+  expandedKeys: string[]
+  selectedKeys: string[]
+  checkedKeys: string[]
+  searchValue: string
+  autoExpandParent: boolean
+  gData: TreeDataItem[]
+  gDataEditing: TreeDataItem[]
+  gDataList: any[]
+}
 export default defineComponent({
   name: 'WebsitePreset',
   components: {
@@ -55,22 +73,29 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    const expandedKeys = ref<string[]>([])
-    // 选中的项
-    const selectedKeys = ref<string[]>([])
-    const checkedKeys = ref<string[]>([])
-    const searchValue = ref<string>('')
-    const autoExpandParent = ref<boolean>(true)
-    const gData = ref<TreeDataItem[]>([])
-    const gDataEditing = ref<TreeDataItem[]>([])
+    const state = reactive<State>({
+      expandedKeys: [],
+      // 选中的项
+      selectedKeys: [],
+      checkedKeys: [],
+      searchValue: '',
+      autoExpandParent: true,
+      // 添加时
+      gData: [],
+      // 编辑时
+      gDataEditing: [],
+      // 搜索时
+      gDataList: [],
+    })
 
     const getData = () => {
       websiteByTypeAll().then(({ data }) => {
-        gData.value = changeKey(data)
-        gDataEditing.value = changeKey(data, true)
+        state.gData = changeKey(data)
+        state.gDataEditing = changeKey(data, true)
+        state.gDataList = generateList(state.gData)
         nextTick(() => {
           const { typeWebsite } = store.state
-          checkedKeys.value = typeWebsite
+          state.checkedKeys = typeWebsite
         })
       })
     }
@@ -80,29 +105,42 @@ export default defineComponent({
     })
 
     const onExpand = (keys: string[]) => {
-      expandedKeys.value = keys
-      autoExpandParent.value = false
+      state.expandedKeys = keys
+      state.autoExpandParent = false
     }
 
-    watch(searchValue, value => {
-      if (value) {
-        const expanded = generateList(gData.value)
-          .map((item: TreeDataItem) => {
-            if ((item.title as string).indexOf(value) > -1) {
-              return getParentKey(item.key as string, gData.value)
-            }
-            return null
-          })
-          .filter(
-            (item: any, i: any, self: any) => item && self.indexOf(item) === i,
-          )
-        expandedKeys.value = expanded as string[]
-      } else {
-        expandedKeys.value = []
-      }
-      searchValue.value = value
-      autoExpandParent.value = true
-    })
+    // 监听搜索内容
+    watch(
+      () => state.searchValue,
+      (value: string) => {
+        if (value) {
+          const expanded = state.gDataList
+            .map((item: TreeDataItem) => {
+              if ((item.title as string).indexOf(value) > -1) {
+                return getParentKey(item.key as string, state.gData)
+              }
+              return null
+            })
+            .filter(
+              (item: any, i: any, self: any) =>
+                item && self.indexOf(item) === i,
+            )
+          state.expandedKeys = expanded as string[]
+        } else {
+          state.expandedKeys = []
+        }
+        state.searchValue = value
+        state.autoExpandParent = true
+      },
+    )
+
+    // 同步预设时，调整选中
+    watch(
+      () => store.state.typeWebsite,
+      () => {
+        state.checkedKeys = store.state.typeWebsite
+      },
+    )
 
     // 正在编辑
     const editing = ref(false)
@@ -111,25 +149,19 @@ export default defineComponent({
     const save = () => {
       store.commit('changeState', {
         key: 'typeWebsite',
-        value: checkedKeys.value,
+        value: state.checkedKeys,
         dbSet: true,
       })
     }
 
     const websitePresetCancel = () => {
       getData()
-      selectedKeys.value = []
-      checkedKeys.value = []
+      state.selectedKeys = []
+      state.checkedKeys = []
     }
 
     return {
-      expandedKeys,
-      selectedKeys,
-      checkedKeys,
-      searchValue,
-      autoExpandParent,
-      gData,
-      gDataEditing,
+      ...toRefs(state),
       onExpand,
       save,
       editing,
