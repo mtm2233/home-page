@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-26 15:16:09
- * @LastEditTime: 2021-05-18 10:02:27
+ * @LastEditTime: 2021-09-21 13:30:55
  * @LastEditors: mTm
 -->
 <template>
@@ -100,6 +100,12 @@ export default defineComponent({
 
 <style scoped lang="less">
 .website {
+  .ant-col-4 {
+    padding: 12.5px 7.5px;
+  }
+  .website-list-item {
+    padding: 7.5px;
+  }
   &-type {
     color: #999;
   }
