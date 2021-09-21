@@ -5,9 +5,14 @@
     "dev": "node color && vite",
     "build": "node color && vue-tsc --noEmit && vite build",
     "serve": "vite preview",
+    "dev-staging": "cross-env VUE_APP_MODE=staging vite",
+    "build-staging": "node color && vue-tsc --noEmit && cross-env VUE_APP_MODE=staging vite build",
+    "dev-production": "cross-env VUE_APP_MODE=production vite",
+    "build-production": "node color && vue-tsc --noEmit && cross-env VUE_APP_MODE=production vite build",
     "lint": "eslint --fix --ext .ts,vue src/ --no-error-on-unmatched-pattern && prettier -w -u ."
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.1.3",
     "antd-theme-generator": "^1.2.8",

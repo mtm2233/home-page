@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-03 22:32:37
- * @LastEditTime: 2021-05-16 23:38:00
+ * @LastEditTime: 2021-09-21 11:51:04
  * @LastEditors: mTm
 -->
 <template>
@@ -20,13 +20,14 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
+import config from '@/config'
 
 import preset from './usePreset'
 
 export default defineComponent({
   setup() {
     const login = () => {
-      const newPath = `https://sso.isdream.cn/user/login?url=${
+      const newPath = `${config.baseUrl.sso}/login?url=${
         location.origin + location.pathname
       }`
       location.href = newPath
@@ -37,7 +38,7 @@ export default defineComponent({
 
     const logout = () => {
       store.commit('setToken', null)
-      const newPath = `https://sso.isdream.cn/user/logout?url=${
+      const newPath = `${config.baseUrl.sso}/logout?url=${
         location.origin + location.pathname
       }`
       location.href = newPath
