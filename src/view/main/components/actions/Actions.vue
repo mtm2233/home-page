@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-08 09:11:51
- * @LastEditTime: 2021-05-14 17:42:55
+ * @LastEditTime: 2021-09-21 14:08:42
  * @LastEditors: mTm
 -->
 <template>
@@ -92,8 +92,8 @@ export default defineComponent({
     }
 
     const remove = () => {
-      const numId = Number(props.id.replace(/[tw]/g, ''))
-      if (props.id.search('t') !== -1) {
+      const numId = Number(`${props.id}`.replace(/[tw]/g, ''))
+      if (`${props.id}`.search('t') !== -1) {
         typeDelete(numId).then(() => {
           props.websitePresetCancel && props.websitePresetCancel()
         })

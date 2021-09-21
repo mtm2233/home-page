@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-05-21 09:20:01
+ * @LastEditTime: 2021-09-21 14:08:53
  * @LastEditors: mTm
 -->
 <template>
@@ -151,7 +151,7 @@ export default defineComponent({
     const getWebsiteInfo = () => {
       const { id, isEdit } = props
       const numId = getNumId.value
-      if (isEdit && numId && id.search('w') !== -1) {
+      if (isEdit && numId && `${id}`.search('w') !== -1) {
         websitInfo(numId).then(res => {
           const {
             url,
