@@ -2,13 +2,13 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-26 22:02:12
- * @LastEditTime: 2021-09-21 12:12:31
+ * @LastEditTime: 2021-09-22 23:08:39
  * @LastEditors: mTm
  */
 
 import { baseUrl } from './url'
 
-const env: any = process?.env?.VUE_APP_MODE || 'staging'
+const env: any = import.meta.env ? import.meta.env.MODE : 'production'
 
 const config = {
   title: {

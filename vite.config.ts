@@ -2,12 +2,13 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-09-21 12:14:10
+ * @LastEditTime: 2021-09-22 23:29:11
  * @LastEditors: mTm
  */
 import { defineConfig, ConfigEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import styleImport from 'vite-plugin-style-import'
+import viteCompression from 'vite-plugin-compression'
 
 import { resolve } from 'path'
 import config from './src/config'
@@ -32,6 +33,7 @@ export default ({ command }: ConfigEnv): any => {
     },
     plugins: [
       vue(),
+      viteCompression(),
       styleImport({
         libs: [
           {
@@ -52,6 +54,19 @@ export default ({ command }: ConfigEnv): any => {
           drop_debugger: true,
         },
       },
+      // rollupOptions: {
+      //   output: {
+      //     manualChunks(id) {
+      //       if (id.includes('node_modules')) {
+      //         return id
+      //           .toString()
+      //           .split('node_modules/')[1]
+      //           .split('/')[0]
+      //           .toString()
+      //       }
+      //     },
+      //   },
+      // },
     },
     css: {
       preprocessorOptions: {
@@ -63,7 +78,7 @@ export default ({ command }: ConfigEnv): any => {
     base: '/', // 开发或生产环境服务的公共基础路径
     server: {
       host: 'localhost',
-      port: 3000, // 设置服务启动端口号
+      port: 3001, // 设置服务启动端口号
       open: true, // 设置服务启动时是否自动打开浏览器
       https: false,
       cors: true, // 允许跨域

@@ -5,14 +5,13 @@
     "dev": "node color && vite",
     "build": "node color && vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "dev-staging": "cross-env VUE_APP_MODE=staging vite",
-    "build-staging": "node color && vue-tsc --noEmit && cross-env VUE_APP_MODE=staging vite build",
-    "dev-production": "cross-env VUE_APP_MODE=production vite",
-    "build-production": "node color && vue-tsc --noEmit && cross-env VUE_APP_MODE=production vite build",
+    "dev-staging": "vite --mode staging",
+    "build-staging": "node color && vue-tsc --noEmit && vite build --mode staging",
+    "dev-production": "vite --mode production",
+    "build-production": "node color && vue-tsc --noEmit && vite build --mode production",
     "lint": "eslint --fix --ext .ts,vue src/ --no-error-on-unmatched-pattern && prettier -w -u ."
   },
   "dependencies": {
-    "cross-env": "^7.0.3",
     "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.2.8",
     "antd-theme-generator": "^1.2.10",
@@ -22,6 +21,7 @@
     "moment": "^2.29.1",
     "nprogress": "^0.2.0",
     "qs": "^6.10.1",
+    "vite-plugin-compression": "^0.3.5",
     "vue": "^3.2.2",
     "vue-router": "4",
     "vuex": "^4.0.0"
