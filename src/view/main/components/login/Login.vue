@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-03 22:32:37
- * @LastEditTime: 2021-09-21 11:51:04
+ * @LastEditTime: 2021-11-01 21:39:10
  * @LastEditors: mTm
 -->
 <template>
@@ -37,7 +37,7 @@ export default defineComponent({
     const token = computed(() => store.state.token)
 
     const logout = () => {
-      store.commit('setToken', null)
+      store.commit('setToken')
       const newPath = `${config.baseUrl.sso}/logout?url=${
         location.origin + location.pathname
       }`

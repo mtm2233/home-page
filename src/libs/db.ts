@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-26 22:00:13
- * @LastEditTime: 2021-04-28 22:41:53
+ * @LastEditTime: 2021-11-01 21:12:38
  * @LastEditors: mTm
  */
 import config from '@/config'
@@ -11,6 +11,7 @@ interface SetItem {
   key: string
   value: any
   expires?: number
+  startTime?: number
 }
 
 class DB {
@@ -82,7 +83,7 @@ class DB {
     }
     const itemData = Object.assign(obj, data, {
       //记录何时将值存入缓存，毫秒级
-      startTime: new Date().getTime(),
+      startTime: data.startTime || new Date().getTime(),
     })
 
     itemData.key = this.prefixKey(itemData.key)

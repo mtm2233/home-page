@@ -2,14 +2,13 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-26 22:02:12
- * @LastEditTime: 2021-09-22 23:08:39
+ * @LastEditTime: 2021-11-01 21:54:47
  * @LastEditors: mTm
  */
 
 import { baseUrl } from './url'
 
 const env: any = import.meta.env ? import.meta.env.MODE : 'production'
-
 const config = {
   title: {
     main: '起始页',

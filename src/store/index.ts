@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 20:01:17
- * @LastEditTime: 2021-08-21 22:53:51
+ * @LastEditTime: 2021-11-01 21:39:33
  * @LastEditors: mTm
  */
 import { createStore } from 'vuex'
@@ -35,13 +35,14 @@ export const store = createStore({
         })
       }
     },
-    setToken(state, token) {
+    setToken(state, { token = null, startTime }) {
       service.setToken(token)
       state.token = token
       db.set({
         key: 'token',
         value: token,
         expires: config.token.expires * 1000,
+        startTime,
       })
     },
   },

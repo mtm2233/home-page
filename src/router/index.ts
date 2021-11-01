@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 16:46:17
- * @LastEditTime: 2021-05-07 17:31:38
+ * @LastEditTime: 2021-11-01 21:38:48
  * @LastEditors: mTm
  */
 import Nprogress from 'nprogress'
@@ -25,11 +25,6 @@ const routes: Array<RouteRecordRaw> = [
         path: 'home',
         name: 'Home',
         component: () => import('@/view/home/Home.vue'),
-      },
-      {
-        path: 'details',
-        name: 'Details',
-        component: () => import('@/view/details/Details.vue'),
       },
     ],
   },
@@ -57,7 +52,8 @@ router.afterEach(to => {
 export { router }
 
 const first = () => {
-  if (!store.state.token && db.get('token')) {
-    store.commit('setToken', db.get('token'))
+  const token = db.get('token')
+  if (!store.state.token && token) {
+    store.commit('setToken', { token })
   }
 }

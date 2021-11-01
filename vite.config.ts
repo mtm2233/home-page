@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 15:17:49
- * @LastEditTime: 2021-09-22 23:29:11
+ * @LastEditTime: 2021-11-01 21:55:41
  * @LastEditors: mTm
  */
 import { defineConfig, ConfigEnv } from 'vite'
@@ -85,7 +85,8 @@ export default ({ command }: ConfigEnv): any => {
       // 设置代理
       proxy: {
         '^/api/.*': {
-          target: config.baseUrl.serve,
+          // target: config.baseUrl.serve,
+          target: 'http://localhost:8099',
           changeOrigin: true, // 将主机标头的来源更改为目标URL,
           rewrite: path => path.replace(/^\/api/, ''),
         },

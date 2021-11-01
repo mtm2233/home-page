@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-05-03 20:11:10
- * @LastEditTime: 2021-05-03 20:39:06
+ * @LastEditTime: 2021-11-01 21:52:15
  * @LastEditors: mTm
  */
 import { message as $message } from 'ant-design-vue'
@@ -10,7 +10,6 @@ import { message as $message } from 'ant-design-vue'
 import { store } from '@/store'
 import { router } from '@/router'
 import config from '@/config'
-
 
 let changeRouting = false
 

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-05-09 23:22:13
- * @LastEditTime: 2021-09-21 14:08:53
+ * @LastEditTime: 2021-11-01 21:47:39
  * @LastEditors: mTm
 -->
 <template>
@@ -138,15 +138,14 @@ export default defineComponent({
       if (!formState.url) {
         return
       }
-      let url = `${formState.url}`.toLowerCase()
-      if (url.includes('http://')) {
+      let url = formState.url
+      if (/^http:\/\//i.test(url)) {
         urlType.value = 'http://'
-      } else if (url.includes('https://')) {
+      } else if (/^https:\/\//i.test(url)) {
         urlType.value = 'https://'
       }
-      formState.url = url.replace(/(http|https):\/\//gi, '')
+      formState.url = url.replace(/^(http|https):\/\//gi, '')
     }
-
     // 编辑前，获取详细信息
     const getWebsiteInfo = () => {
       const { id, isEdit } = props
