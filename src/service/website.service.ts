@@ -135,7 +135,7 @@ class WebsiteService implements ServiceWebsite {
         // 'user_id', 
         const keys = ['name', 'url', 'icon', 'description', 'type_id', 'sort']
 
-        const websiteInfo: any = await this.isExist(data.name, data.user_id)
+        const websiteInfo: any = await this.isExist(data.name, data.user_id, data.type_id)
         if (data.name && websiteInfo.id && Number(websiteInfo.id) !== Number(websiteId)) {
             throw new Error(`${data.name} 已存在`)
             return false
