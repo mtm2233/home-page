@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: mTm
  * @Date: 2021-04-22 10:28:01
- * @LastEditTime: 2021-05-26 23:31:39
+ * @LastEditTime: 2021-11-01 22:17:19
  * @LastEditors: mTm
  */
 import connection from '../app/database'
@@ -24,7 +24,7 @@ class WebsiteService implements ServiceWebsite {
             sort = null,
         } = data
 
-        if (await this.isExist(name, user_id)) {
+        if (await this.isExist(name, user_id, type_id)) {
             throw new Error(`${name} 已存在`)
             return false;
         }
@@ -159,11 +159,16 @@ class WebsiteService implements ServiceWebsite {
         return result;
     }
 
-    async isExist(name: string, user_id: number) {
+    async isExist(name: string, user_id: number, type_id?: number) {
         let statement = `
             SELECT * From website WHERE name = ? && user_id = ?;
         `
-        const [result] = await connection.execute(statement, [name, user_id]);
+        if (type_id) {
+            statement = `
+                SELECT * From website WHERE name = ? && user_id = ? && type_id = ?;
+            `
+        }
+        const [result] = await connection.execute(statement, type_id ? [name, user_id, type_id] : [name, user_id]);
 
         if (Array.isArray(result) && result.length) {
             return result[0];
