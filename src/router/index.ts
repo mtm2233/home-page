@@ -2,7 +2,7 @@
  * @Description:
  * @Author: mTm
  * @Date: 2021-04-23 16:46:17
- * @LastEditTime: 2021-11-01 21:38:48
+ * @LastEditTime: 2021-11-03 22:04:57
  * @LastEditors: mTm
  */
 import Nprogress from 'nprogress'
@@ -54,6 +54,6 @@ export { router }
 const first = () => {
   const token = db.get('token')
   if (!store.state.token && token) {
-    store.commit('setToken', { token })
+    store.commit('setToken', { token, dbSet: false })
   }
 }
