@@ -35,7 +35,7 @@ export const store = createStore({
         })
       }
     },
-    setToken(state, { token = null, startTime, dbSet = true }) {
+    setToken(state, { token = null, startTime, dbSet = true } = {}) {
       service.setToken(token)
       state.token = token
       if (dbSet) {
