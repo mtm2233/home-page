@@ -155,8 +155,8 @@ class Preset {
           primaryColor: primaryColor && JSON.parse(primaryColor),
           primaryBg: primaryBg && JSON.parse(primaryBg),
           typeWebsite: [...type, ...Website],
-          searchWebsite,
-          preciseSearch,
+          searchWebsite: !!searchWebsite,
+          preciseSearch: !!preciseSearch,
         })
         message.success('同步预设成功')
       })
