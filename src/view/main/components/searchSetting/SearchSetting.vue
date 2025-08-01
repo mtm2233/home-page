@@ -7,11 +7,11 @@
 -->
 <template>
   <div class="item">
-    <div>搜索网址，直接打开</div>
+    <div>网址下拉搜索</div>
     <a-switch :checked="searchWebsite" @change="searchWebsiteChange" />
   </div>
   <div class="item">
-    <div>精准搜索，过滤广告</div>
+    <div>完全匹配搜索</div>
     <a-switch :checked="preciseSearch" @change="preciseSearchChange" />
   </div>
 </template>

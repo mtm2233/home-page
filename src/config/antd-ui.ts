@@ -30,6 +30,7 @@ import {
   Badge,
   Card,
   Switch,
+  Menu,
 } from 'ant-design-vue'
 
 const plugins: Plugin[] = [
@@ -56,6 +57,7 @@ const plugins: Plugin[] = [
   Badge,
   Card,
   Switch,
+  Menu,
 ]
 
 export const setupAntd = (app: App, options: any = {}): void => {

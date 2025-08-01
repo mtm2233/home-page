@@ -8,9 +8,11 @@
 <template>
   <div class="search">
     <ATabs v-model:activeKey="activeKey">
-      <a-tabs-pane v-for="v in searchs" :key="v.id" :tab="v.name" />
+      <a-tab-pane v-for="v in searchs" :key="v.id" :tab="v.name" />
     </ATabs>
+
     <AInputSearch
+      v-if="!searchWebsite"
       ref="searchRef"
       v-model:value="value"
       autofocus="autofocus"
@@ -20,6 +22,49 @@
       :allow-clear="true"
       @search="onSearch"
     />
+    <a-dropdown v-else :visible="visible">
+      <AInputSearch
+        ref="searchRef"
+        v-model:value="value"
+        autofocus="autofocus"
+        :placeholder="currentSearch.placeholder || currentSearch.name || '搜索'"
+        enter-button="搜索"
+        size="large"
+        :allow-clear="true"
+        @search="onSearch"
+        @change="keywordChange"
+        @focus="visible = true"
+        @blur="searchBlur"
+      />
+      <template #overlay>
+        <a-menu style="max-height: 240px; overflow-y: auto">
+          <div
+            v-for="item in websiteDataSearch"
+            v-show="item.show"
+            :key="item.id"
+          >
+            <a-menu-item>
+              <div class="website-item" @click="goWebsite(item)">
+                <div v-if="item.nameSearch">
+                  {{ item.nameSearch[0]
+                  }}<span class="primary-color"> {{ item.nameSearch[1] }} </span
+                  >{{ item.nameSearch[2] }}
+                </div>
+                <div v-else>{{ item.name }}</div>
+
+                <div v-if="item.descriptionSearch">
+                  {{ item.descriptionSearch[0]
+                  }}<span class="primary-color">
+                    {{ item.descriptionSearch[1] }} </span
+                  >{{ item.descriptionSearch[2] }}
+                </div>
+                <div v-else>{{ item.description }}</div>
+              </div>
+            </a-menu-item>
+          </div>
+        </a-menu>
+      </template>
+    </a-dropdown>
   </div>
 </template>
 <script lang="ts">
@@ -38,6 +83,7 @@ import {
 import { list } from '@/api/search'
 import { websiteByTypeAll } from '@/api/website'
 import { useStore } from 'vuex'
+import { throttle } from 'lodash-unified'
 
 interface State {
   activeKey: number | null
@@ -48,6 +94,7 @@ export default defineComponent({
   name: 'Search',
   setup() {
     const store = useStore()
+    const searchWebsite = computed(() => store.state.searchWebsite)
     // 校验是否被隐藏
     const verifyHide = inject<any>('verifyHide')
     // 初始化
@@ -59,6 +106,13 @@ export default defineComponent({
       // input 内容
       value: null,
     })
+
+    const visible = ref(false)
+
+    const keyword = ref('')
+    const keywordChange = throttle(() => {
+      keyword.value = state.value || ''
+    }, 300)
 
     // 搜索引擎列表
     const getList = () => {
@@ -72,54 +126,98 @@ export default defineComponent({
 
     // input 输入框
     const searchRef: Ref<any | null> = ref(null)
+    let searchBlurTimer: number
     // 获得焦点
     const searchFocus = () => {
+      if (searchBlurTimer) {
+        clearTimeout(searchBlurTimer)
+        searchBlurTimer = 0
+      }
       if (searchRef.value) {
         searchRef.value.focus()
       }
     }
 
-    // 网址、分类
-    let typeWebsite: any[] = []
-    let websiteMap = new Map()
+    const searchBlur = () => {
+      searchBlurTimer = window.setTimeout(() => {
+        visible.value = false
+      }, 200)
+    }
+
+    // 网址
+    const websiteData = ref<any[]>([])
+    const websiteDataSearch = computed(() => {
+      const keywordLower = keyword.value.trim().toLowerCase()
+      const keywordLen = keyword.value.length
+      const data: any[] = []
+
+      websiteData.value.forEach(item => {
+        const { name, nameLower, description, descriptionLower } = item
+        const val = {
+          ...item,
+        }
+
+        let index = nameLower.indexOf(keywordLower)
+        if (index !== -1) {
+          val.nameSearch = [
+            name.substring(0, index),
+            name.substring(index, index + keywordLen),
+            name.substring(index + keywordLen),
+          ]
+        }
+
+        index = descriptionLower.indexOf(keywordLower)
+        if (index !== -1) {
+          val.descriptionSearch = [
+            description.substring(0, index),
+            description.substring(index, index + keywordLen),
+            description.substring(index + keywordLen),
+          ]
+        }
+
+        val.show = val.nameSearch || val.descriptionSearch
+        data.push(val)
+      })
+      return data
+    })
+
     // 获取website
     const getWebSite = () => {
       websiteByTypeAll().then((res: any) => {
-        typeWebsite = res.data
-        setWebsiteMap(typeWebsite)
+        websiteData.value = getWebsiteData(res.data)
       })
     }
 
-    // 设置搜索的网址
-    const setWebsiteMap = (data: any) => {
+    const getWebsiteData = (data: any, list: any[] = []) => {
       if (!data) {
-        return
+        return list
       }
       const { url, id } = data
-      let { name } = data
       if (Array.isArray(data) && data.length) {
         data.forEach(v => {
-          setWebsiteMap(v)
-          v.children && setWebsiteMap(v.children)
+          getWebsiteData(v, list)
+          v.children && getWebsiteData(v.children, list)
         })
         // 网址且没有被隐藏
       } else if (url && verifyHide(`w${id}`)) {
-        name = name.toLowerCase()
-        const result = websiteMap.get(name)
-        if (result) {
-          result.count++
-          websiteMap.set(name, result)
-        } else {
-          websiteMap.set(name, { url, count: 0 })
-        }
+        list.push({
+          ...data,
+          description: data.description || '',
+          nameLower: data.name.toLowerCase(),
+          descriptionLower: data.description
+            ? data.description.toLowerCase()
+            : '',
+        })
       }
+
+      return list
     }
+
     // 隐藏网址更改，重置map
     watch(
       () => store.state.typeWebsite,
-      () => {
-        websiteMap = new Map()
-        setWebsiteMap(typeWebsite)
+      typeWebsite => {
+        websiteData.value = getWebsiteData(typeWebsite)
       },
     )
 
@@ -134,11 +232,7 @@ export default defineComponent({
       if (!state.value) {
         return
       }
-      const website = websiteMap.get(state.value.toLowerCase())
-      // 用户是否开启功能 && 存在网址 && 只有一个
-      if (store.state.searchWebsite && website && website.count === 0) {
-        window.open(website.url)
-      } else if (currentSearch.value.website) {
+      if (currentSearch.value.website) {
         let { website, search_key, extra_key } = currentSearch.value
         let url: string | null = null
         // 精准搜索，开启
@@ -163,19 +257,53 @@ export default defineComponent({
       return state.searchs.find((v: any) => v.id === state.activeKey) || {}
     })
 
+    const goWebsite = (v: any) => {
+      if (v.url) {
+        window.open(v.url)
+      }
+    }
+
     return {
       ...toRefs(state),
+      searchWebsite,
+      visible,
+      keyword,
+      websiteDataSearch,
+      keywordChange,
+      websiteData,
       searchRef,
       currentSearch,
       onSearch,
+      goWebsite,
+      searchBlur,
     }
   },
 })
 </script>
-<style scoped>
+<style lang="less" scoped>
 .search {
   max-width: 600px;
   margin: 0 auto;
   padding: 0 20px 80px 20px;
+}
+
+.website-item {
+  display: flex;
+  align-items: center;
+  div {
+    &:nth-child(1) {
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
+    &:nth-child(2) {
+      flex: 1;
+      min-width: 0;
+      width: 200px;
+      font-size: 12px;
+      color: #999999;
+      word-break: break-all;
+      white-space: normal;
+    }
+  }
 }
 </style>

@@ -12,7 +12,7 @@ type LoadViteEnv = {
   readonly [P in keyof DefineEnv]: string
 }
 
-interface ImportMetaEnv extends LoadViteEnv, {} {}
+interface ImportMetaEnv extends LoadViteEnv {}
 
 interface ViteEnv extends DefineEnv, ImportMetaEnv {}
 
