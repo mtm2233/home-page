@@ -29,7 +29,7 @@ class UserSearchController implements ControllerUserSearch {
     async update(ctx: Context, next: () => Promise<any>) {
         try {
             const { id } = ctx.user;
-            const { searchIds } = ctx.request.body;
+            const { searchIds } = ctx.request.body as any;
             if (!(Array.isArray(searchIds))) {
                 ctx.app.emit('error', new Error(MISSING_PARAMETER), ctx)
                 return false;

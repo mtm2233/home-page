@@ -67,9 +67,9 @@ class WebsiteService implements ServiceWebsite {
                         'name', t.name,
                         'is_edit', IF(t.user_id = ?, TRUE, FALSE),
                         'sort', t.sort,
-                        'children', 
+                        'children',
                         (
-                            SELECT JSON_ARRAYAGG(JSON_OBJECT('id', w.id, 'name', w.name, 'url', w.url, 'sort', w.sort, 'is_edit', IF(w.user_id = ?, TRUE, FALSE))) 
+                            SELECT JSON_ARRAYAGG(JSON_OBJECT('id', w.id, 'name', w.name, 'description', w.description, 'url', w.url, 'sort', w.sort, 'is_edit', IF(w.user_id = ?, TRUE, FALSE))) 
                             FROM website w WHERE w.type_id = t.id && w.user_id in (${SYSTEM_USER_ID}, ?)
                         )
                     )

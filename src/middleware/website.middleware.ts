@@ -14,7 +14,7 @@ import { ERROR_PARAMETER } from '../constants/error-types'
 
 const verifyTypeId = async (ctx: Context, next: () => Promise<any>) => {
     try {
-        const { type_id } = ctx.request.body
+        const { type_id } = ctx.request.body as any
         if (type_id) {
             const result: any = await typeService.detail(type_id);
             if (!result || !(result.pid)) {

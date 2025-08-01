@@ -29,7 +29,7 @@ class UserTypeController implements ControllerUserType {
     async update(ctx: Context, next: () => Promise<any>) {
         try {
             const { id } = ctx.user;
-            const { typeIds } = ctx.request.body;
+            const { typeIds } = ctx.request.body as any;
             if (!(Array.isArray(typeIds))) {
                 ctx.app.emit('error', new Error(MISSING_PARAMETER), ctx)
                 return false;

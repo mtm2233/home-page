@@ -5,38 +5,46 @@
  * @LastEditTime: 2021-04-22 17:07:03
  * @LastEditors: mTm
  */
-// 环境变量 .env
-import * as fs from "fs";
-import * as path from "path";
-
 import * as dotenv from "dotenv";
+import { join } from 'path';
+import { readFileSync, existsSync } from 'fs';
 
-// 公钥 用来解密token
-const PUBLIC_KEY = fs.readFileSync(path.resolve(__dirname, "../../key/public.key"));
-
+// load .env file
 dotenv.config();
+const envPath = join(__dirname, `../../.env.${process.env.CURRENT_ENV}`);
+if (existsSync(envPath)) {
+  const config = dotenv.parse(readFileSync(envPath));
+  for (const k in config) {
+    process.env[k] = config[k];
+  }
+}
 
 const {
   APP_PORT,
+  HS256_SECRET,
   MYSQL_HOST,
   MYSQL_PORT,
   MYSQL_DATABASE,
   MYSQL_USER,
   MYSQL_PASSWORD,
   SYSTEM_USER_ID,
-  SYSTEM_USER_NAME,
+  OAUTH_CLIENT_ID,
+  OAUTH_REDIRECT_URL,
+  OAUTH_CLIENT_SECRET,
   NGINX_PREFIX,
 } = process.env;
 
 export {
   APP_PORT,
+  HS256_SECRET,
   MYSQL_HOST,
   MYSQL_PORT,
   MYSQL_DATABASE,
   MYSQL_USER,
   MYSQL_PASSWORD,
-  PUBLIC_KEY,
   SYSTEM_USER_ID,
-  SYSTEM_USER_NAME,
+  OAUTH_CLIENT_ID,
+  OAUTH_REDIRECT_URL,
+  OAUTH_CLIENT_SECRET,
   NGINX_PREFIX,
 };

@@ -14,5 +14,6 @@ import { verifyAuth } from '../middleware/auth.middleware'
 const userRouter = new Router({prefix: '/user'});
 
 userRouter.get('/list', verifyAuth, limit(), userController.list);
+userRouter.post('/oauth_login', userController.oauthLogin)
 
 export default userRouter;

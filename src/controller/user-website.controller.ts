@@ -29,7 +29,7 @@ class UserWebsiteController implements ControllerUserWebsite {
     async update(ctx: Context, next: () => Promise<any>) {
         try {
             const { id } = ctx.user;
-            const { websiteIds } = ctx.request.body;
+            const { websiteIds } = ctx.request.body as any;
             if (!(Array.isArray(websiteIds))) {
                 ctx.app.emit('error', new Error(MISSING_PARAMETER), ctx)
                 return false;

@@ -10,5 +10,5 @@ const app = require('./app');
 const { APP_PORT } = require('./app/config')
 
 app.listen(APP_PORT, () => {
-    console.log(`项目启动成功: localhost:${APP_PORT}`);
+    console.log(`启动成功: http://127.0.0.1:${APP_PORT}`);
 })

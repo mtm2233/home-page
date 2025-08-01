@@ -47,12 +47,12 @@ class SearchController implements ControllerSearch {
     async create(ctx: Context, next: () => Promise<any>) {
         try {
             const userId = ctx.user.id;
-            const { name, website, search_key } = ctx.request.body;
+            const { name, website, search_key } = ctx.request.body as any;
             if (!name || !website || !search_key) {
                 ctx.app.emit('error', new Error(MISSING_PARAMETER), ctx);
                 return false;
             }
-            const result = await service.create(userId, ctx.request.body);
+            const result = await service.create(userId, ctx.request.body as any);
             if (!result) {
                 ctx.app.emit('error', new Error(CONTENT_IS_EXIST), ctx);
                 return false;
@@ -70,7 +70,7 @@ class SearchController implements ControllerSearch {
         try {
             const { searchId } = ctx.params;
             const result = await service.update(searchId, {
-                ...ctx.request.body,
+                ...ctx.request.body as any,
                 user_id: ctx.user.id
             });
             if (!result) {

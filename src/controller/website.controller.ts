@@ -16,13 +16,13 @@ import { sortResult } from '../units/sort'
 class WebsiteController implements ControllerWebsite {
     async create(ctx: Context, next: () => Promise<any>) {
         try {
-            const { name, url } = ctx.request.body;
+            const { name, url } = ctx.request.body as any;
             if (!(name && url)) {
                 ctx.app.emit('error', new Error(MISSING_PARAMETER), ctx);
                 return false
             }
             const result = await service.create({
-                ...ctx.request.body,
+                ...ctx.request.body as any,
                 user_id: ctx.user.id,
             });
             if (!result) {
@@ -109,7 +109,7 @@ class WebsiteController implements ControllerWebsite {
         try {
             const { websiteId } = ctx.params;
             const result = await service.update(websiteId, {
-                ...ctx.request.body,
+                ...ctx.request.body as any,
                 user_id: ctx.user.id
             })
             if (!result) {

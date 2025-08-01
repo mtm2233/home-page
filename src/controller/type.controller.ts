@@ -16,13 +16,13 @@ import service from '../service/type.service'
 class TypeController implements ControllerType {
     async create(ctx: Context, next: () => Promise<any>) {
         try {
-            const { name } = ctx.request.body;
+            const { name } = ctx.request.body as any;
             if(!name) {
                 ctx.app.emit('error', new Error(MISSING_PARAMETER), ctx);
                 return false;
             }
             const result = await service.create({
-                ...ctx.request.body,
+                ...ctx.request.body as any,
                 user_id: ctx.user.id
             });
             if (!result) {
@@ -73,7 +73,7 @@ class TypeController implements ControllerType {
         try {
             const { typeId } = ctx.params;
             const result = await service.update(typeId, {
-                ...ctx.request.body,
+                ...ctx.request.body as any,
                 user_id: ctx.user.id
             })
             if (!result) {
