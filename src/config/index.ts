@@ -5,10 +5,6 @@
  * @LastEditTime: 2021-11-01 21:54:47
  * @LastEditors: mTm
  */
-
-import { baseUrl } from './url'
-
-const env: any = import.meta.env ? import.meta.env.MODE : 'production'
 const config = {
   title: {
     main: '起始页',
@@ -25,7 +21,10 @@ const config = {
   /**
    * @description api请求基础路径
    */
-  baseUrl: (baseUrl as any)[env],
+  baseUrl: {
+    serve: import.meta.env.VITE_SERVE_URL,
+    file: '',
+  },
 
   // 储存时间
   expires: 30 * 24 * 3600,

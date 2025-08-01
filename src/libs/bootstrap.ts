@@ -5,20 +5,27 @@
  * @LastEditTime: 2021-11-01 21:15:51
  * @LastEditors: mTm
  */
+import { useCodeLogin } from 'isdream-oauth'
+import { oauthLogin } from '@/api/user'
 import { store } from '@/store'
+import preset from '@/view/main/components/login/usePreset'
 
-export default function (): void {
-  const searchParams = new URLSearchParams(location.search)
-  const token = searchParams.get('token')
-  const startTime = searchParams.get('startTime')
-  if (token) {
-    store.commit('setToken', { token, startTime })
+export default async function () {
+  try {
+    const { oauthLoginCallback } = useCodeLogin({
+      client_id: import.meta.env.VITE_OAUTH_CLIENT_ID!,
+      redirect_uri: import.meta.env.VITE_OAUTH_REDIRECT_URI!,
+    })
+    const data = await oauthLoginCallback()
+    const res = await oauthLogin(data)
+    store.commit('setToken', {
+      token: res.data.token,
+      expires: res.data.expires,
+    })
+
+    preset.values.syncPreset()
+
     const newPath = location.origin + location.pathname
-    // if (history.replaceState) {
-    //   history.replaceState(newPath, '', newPath)
-    // } else {
-    //   location.href = newPath
-    // }
     location.href = newPath
-  }
+  } catch (error) {}
 }

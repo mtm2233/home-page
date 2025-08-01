@@ -35,14 +35,14 @@ export const store = createStore({
         })
       }
     },
-    setToken(state, { token = null, startTime, dbSet = true } = {}) {
+    setToken(state, { token = null, startTime, expires, dbSet = true } = {}) {
       service.setToken(token)
       state.token = token
       if (dbSet) {
         db.set({
           key: 'token',
           value: token,
-          expires: config.token.expires * 1000,
+          expires: expires || config.token.expires * 1000,
           startTime,
         })
       }

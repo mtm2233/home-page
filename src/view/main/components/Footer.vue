@@ -25,14 +25,13 @@ export default defineComponent({
     const footList: footItem[] = [
       {
         name: 'ICP备案号',
-        link: '苏ICP备19073933号',
+        link: '苏ICP备19073933号-2',
         url: 'http://beian.miit.gov.cn',
       },
       {
         name: '备案苏公网安备',
         link: '32031202000595号',
-        url:
-          'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32031202000595',
+        url: 'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32031202000595',
       },
       {
         name: 'Copyright © ',

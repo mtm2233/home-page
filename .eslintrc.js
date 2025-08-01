@@ -26,5 +26,7 @@ module.exports = {
   plugins: [],
   rules: {
     '@typescript-eslint/no-explicit-any': ['off'], // 关闭any类型的警告
+    '@typescript-eslint/explicit-module-boundary-types': ['off'],
+    '@typescript-eslint/no-non-null-assertion': ['off'],
   },
 }

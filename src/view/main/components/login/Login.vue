@@ -7,7 +7,10 @@
 -->
 <template>
   <div v-if="!token">
-    <a-button @click="login">登录</a-button>
+    <a-button class="isdream-login" @click="oauthLoginTo">
+      <img :src="FAVICON_URL" alt="" />
+      主站账号登录
+    </a-button>
   </div>
   <div v-else>
     <a-space>
@@ -20,28 +23,22 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import config from '@/config'
+import { FAVICON_URL, useCodeLogin } from 'isdream-oauth'
 
 import preset from './usePreset'
 
 export default defineComponent({
   setup() {
-    const login = () => {
-      const newPath = `${config.baseUrl.sso}/login?url=${
-        location.origin + location.pathname
-      }`
-      location.href = newPath
-    }
+    const { oauthLoginTo } = useCodeLogin({
+      client_id: import.meta.env.VITE_OAUTH_CLIENT_ID!,
+      redirect_uri: import.meta.env.VITE_OAUTH_REDIRECT_URI!,
+    })
 
     const store = useStore()
     const token = computed(() => store.state.token)
 
     const logout = () => {
       store.commit('setToken')
-      const newPath = `${config.baseUrl.sso}/logout?url=${
-        location.origin + location.pathname
-      }`
-      location.href = newPath
     }
 
     const save = () => {
@@ -52,13 +49,25 @@ export default defineComponent({
     const { savePreset, syncPreset } = preset.values
 
     return {
-      login,
       save,
       token,
       logout,
       savePreset,
       syncPreset,
+
+      FAVICON_URL,
+      oauthLoginTo,
     }
   },
 })
 </script>
+<style lang="less" scoped>
+.isdream-login {
+  margin-left: 0;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+}
+</style>
