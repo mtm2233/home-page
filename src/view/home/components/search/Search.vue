@@ -13,9 +13,7 @@
 
     <AInputSearch
       v-if="!searchWebsite"
-      ref="searchRef"
       v-model:value="value"
-      autofocus="autofocus"
       :placeholder="currentSearch.placeholder || currentSearch.name || '搜索'"
       enter-button="搜索"
       size="large"
@@ -24,9 +22,7 @@
     />
     <a-dropdown v-else :visible="visible">
       <AInputSearch
-        ref="searchRef"
         v-model:value="value"
-        autofocus="autofocus"
         :placeholder="currentSearch.placeholder || currentSearch.name || '搜索'"
         enter-button="搜索"
         size="large"
@@ -34,7 +30,7 @@
         @search="onSearch"
         @change="keywordChange"
         @focus="visible = true"
-        @blur="searchBlur"
+        @blur="visible = false"
       />
       <template #overlay>
         <a-menu style="max-height: 240px; overflow-y: auto">
@@ -124,26 +120,6 @@ export default defineComponent({
       })
     }
 
-    // input 输入框
-    const searchRef: Ref<any | null> = ref(null)
-    let searchBlurTimer: number
-    // 获得焦点
-    const searchFocus = () => {
-      if (searchBlurTimer) {
-        clearTimeout(searchBlurTimer)
-        searchBlurTimer = 0
-      }
-      if (searchRef.value) {
-        searchRef.value.focus()
-      }
-    }
-
-    const searchBlur = () => {
-      searchBlurTimer = window.setTimeout(() => {
-        visible.value = false
-      }, 200)
-    }
-
     // 网址
     const websiteData = ref<any[]>([])
     const websiteDataSearch = computed(() => {
@@ -223,7 +199,6 @@ export default defineComponent({
 
     onMounted(() => {
       getList()
-      searchFocus()
       getWebSite()
     })
 
@@ -253,7 +228,6 @@ export default defineComponent({
 
     // 当前的搜索引擎
     const currentSearch: ComputedRef = computed(() => {
-      searchFocus()
       return state.searchs.find((v: any) => v.id === state.activeKey) || {}
     })
 
@@ -271,11 +245,9 @@ export default defineComponent({
       websiteDataSearch,
       keywordChange,
       websiteData,
-      searchRef,
       currentSearch,
       onSearch,
       goWebsite,
-      searchBlur,
     }
   },
 })

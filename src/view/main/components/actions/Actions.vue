@@ -11,6 +11,7 @@
     v-show="!is_action"
     type="link"
     class="actions"
+    style="padding: 0; height: auto"
     @click="changeAction(true)"
     >编辑</a-button
   >
@@ -34,12 +35,20 @@
         /></template>
         <a-button type="danger" @click="verifyId">删除</a-button>
       </a-popconfirm>
-      <a-button type="link" @click="changeAction(false)">取消编辑</a-button>
+      <a-button
+        type="link"
+        style="padding: 0; height: auto"
+        @click="changeAction(false)"
+        >取消编辑</a-button
+      >
     </a-space>
     <a-typography-text strong
       >注意：进行编辑、删除操作时,请先选择一项</a-typography-text
     >
   </a-space>
+  <div class="actions">
+    <a-typography-text strong>注意：勾选的内容将会被隐藏</a-typography-text>
+  </div>
   <Edit
     v-if="verifyLogin"
     :id="id"
@@ -126,6 +135,6 @@ export default defineComponent({
 
 <style scoped lang="less">
 .actions {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 </style>

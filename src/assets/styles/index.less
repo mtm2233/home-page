@@ -55,8 +55,28 @@
   background-color: @layout-footer-background;
 }
 
-.ant-drawer,
-.ant-modal-mask,
-.ant-modal-wrap {
-  z-index: 9000;
+// border-radius
+.ant-layout {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ant-tabs-tab,
+.website-list-item,
+.ant-dropdown-menu,
+.ant-dropdown-menu-item {
+  border-radius: 6px !important;
+}
+
+.ant-dropdown-menu {
+  padding: 6px;
+}
+
+.ant-input-search {
+  .ant-input-affix-wrapper {
+    border-radius: 6px 0 0 6px !important;
+  }
+  .ant-btn-lg {
+    border-radius: 6px;
+  }
 }
